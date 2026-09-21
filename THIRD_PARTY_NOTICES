@@ -1,0 +1,10 @@
+Third-party notices
+
+No third-party source is vendored in this repository at Stage 1.
+
+When dependencies are added, Licensee will check their licenses in CI
+(Stage 3). The app will show those notices on the open-source licenses
+screen built with AboutLibraries (Stage 4, settings).
+
+Do not copy third-party source into this repository without adding a notice
+here and keeping that code under its own license.

@@ -1,0 +1,25 @@
+FinPulse Source-Available License
+
+Copyright (c) 2026 Pavel Lebakin
+
+This is not an open-source license. All rights are reserved except for the
+narrow permission below.
+
+1. Permission. You may view this source code and compile it on your own
+   machine in order to evaluate the project.
+
+2. No redistribution. You may not copy, publish, distribute, sublicense, sell,
+   or otherwise make this software or a derivative available to anyone else.
+   This includes publishing an application or a modified build on Google Play,
+   the App Store, or any other store or distribution channel.
+
+3. No service. You may not use this software to provide a product or service
+   to third parties.
+
+4. No contributions. Pull requests are not accepted. See CONTRIBUTING.md.
+
+5. Warranty. This software is provided "as is", without warranty of any kind,
+   express or implied. The author is not liable for any claim, damages, or
+   other liability arising from its use.
+
+All rights not granted in section 1 are reserved.

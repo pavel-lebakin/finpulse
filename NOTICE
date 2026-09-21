@@ -1,0 +1,9 @@
+FinPulse
+Copyright (c) 2026 Pavel Lebakin
+
+This project is source-available. All rights reserved.
+The license terms are in the LICENSE file.
+
+Third-party components are not vendored in this repository yet.
+Their notices will be listed in THIRD_PARTY_NOTICES and, inside the app,
+on the open-source licenses screen.

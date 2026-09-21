@@ -1,0 +1,19 @@
+#!/bin/sh
+# Scan the staged snapshot for secrets. Requires gitleaks on PATH.
+# CI runs the same scan even when this hook is not installed.
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "gitleaks is not installed. Install it before committing (brew install gitleaks)." >&2
+  exit 1
+fi
+
+gitleaks protect --staged --redact=100 --no-banner
+status=$?
+if [ "$status" -ne 0 ]; then
+  echo "gitleaks found a secret in the staged files. The commit was not created." >&2
+  exit "$status"
+fi
+
+exit 0
