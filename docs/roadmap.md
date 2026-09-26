@@ -7,8 +7,8 @@ The server is last.
 
 | Stage | Status | Contents |
 | --- | --- | --- |
-| 1. Foundation | in progress | License, decision documents, AGENTS, skills, hooks, docs CI, and gitleaks |
-| 2. Build and core | pending | Wrapper, version catalog, build-logic, app shells, common/mvi/navigation/testing, UIKit, token showcase, Koin |
+| 1. Foundation | done | License, decision documents, AGENTS, skills, hooks, docs CI, and gitleaks |
+| 2. Build and core | next | Wrapper, version catalog, build-logic, app shells, common/mvi/navigation/testing, UIKit, token showcase, Koin |
 | 3. Quality | pending | detekt, Konsist, checkModuleGraph, Roborazzi, projectMap, mobile CI, Dependabot, CodeQL, Licensee |
 | 4.1 Room and ledger | pending | Room, DataStore, transactions, and showcase history |
 | 4.2 Onboarding | pending | Four screens, showcase banner, clear, show again |
@@ -50,3 +50,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 ## Log
 
 - Stage 1 started: license, architecture, product, security, tests, skills, and CI are written into the repository.
+- Stage 1 closed. The app does not build yet: Gradle arrives at Stage 2.
