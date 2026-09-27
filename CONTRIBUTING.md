@@ -9,5 +9,5 @@ See the LICENSE file.
 Security reports go by email, as described in SECURITY.md. Please do not
 send patches that include secrets.
 
-The repository is developed by Pavel Lebakin <glitchofmymind@gmail.com>.
+The repository is developed by Pavel Lebakin <lebronkingsg@gmail.com>.
 Commit messages follow Conventional Commits in English.
