@@ -42,9 +42,9 @@ object TransactionsReducer {
         copy(items = Loadable.Failed(error))
 }
 
-// In the ViewModel:
-// reduce { withItems(items) }
-// launchCatching(onError = { reduce { withError(it) } }) { ... }
+// In the ViewModel. Extensions live on the object, so the reducer is the receiver:
+// reduce { TransactionsReducer.run { withItems(items) } }
+// launchCatching(onError = { error -> reduce { TransactionsReducer.run { withError(error) } } }) { ... }
 ```
 
 ## api

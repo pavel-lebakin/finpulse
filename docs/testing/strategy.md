@@ -11,7 +11,7 @@ For the touched modules:
 - the tests of those modules;
 - detekt, starting at Stage 3.
 
-A full `xcodebuild` and a full CI run happen at the end of a stage, not on every commit. Write a long log to a file. Put the result and the error tail in chat.
+A full `xcodebuild` and a full CI run happen at the end of a stage, not on every commit. Run Gradle tasks through `scripts/check.sh`: chat gets the result, and the full log stays in `build/agent/last.log`. Which tasks to take is in the `finpulse-workflow` skill, file `references/build.md`.
 
 JDK: JBR 21 from Android Studio. The path is in the [glossary](../conventions.md). Do not commit `JAVA_HOME` or `local.properties`.
 

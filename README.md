@@ -13,9 +13,11 @@ to an app store. See [LICENSE](LICENSE).
 
 ## Status
 
-The app does not build yet. Stage 1 records the architecture and the agent
-workflow. The next stage adds the Gradle build. Current status:
-[docs/roadmap.md](docs/roadmap.md).
+Stage 2 builds. Android debug APKs, the desktop catalog, and the iOS simulator
+Kotlin framework compile. Current status: [docs/roadmap.md](docs/roadmap.md).
+
+Local JDK is JBR 21 from Android Studio, via `JAVA_HOME`. `sdk.dir` goes in
+gitignored `local.properties`. See [docs/conventions.md](docs/conventions.md).
 
 ## Docs
 

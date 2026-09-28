@@ -8,8 +8,8 @@ The server is last.
 | Stage | Status | Contents |
 | --- | --- | --- |
 | 1. Foundation | done | License, decision documents, AGENTS, skills, hooks, docs CI, and gitleaks |
-| 2. Build and core | next | Wrapper, version catalog, build-logic, app shells, common/mvi/navigation/testing, UIKit, token showcase, Koin |
-| 3. Quality | pending | detekt, Konsist, checkModuleGraph, Roborazzi, projectMap, mobile CI, Dependabot, CodeQL, Licensee |
+| 2. Build and core | done | Wrapper, version catalog, build-logic, app shells, common/mvi/navigation/testing, UIKit, token showcase, Koin |
+| 3. Quality | next | detekt, Konsist, checkModuleGraph, Roborazzi, projectMap, mobile CI, Dependabot, CodeQL, Licensee |
 | 4.1 Room and ledger | pending | Room, DataStore, transactions, and showcase history |
 | 4.2 Onboarding | pending | Four screens, showcase banner, clear, show again |
 | 4.3 Insights | pending | Dashboard and charts |
@@ -32,6 +32,18 @@ Stage 4 in the original plan is grouped as 4.1–4.7. The table splits the rows 
 
 Navigation 3 or navigation-compose 2.x is chosen here.
 
+## Stage 3 — what actually builds
+
+Take one item at a time. Do not open the whole architecture: module boundaries are already in the root `AGENTS.md`, and the check is in [docs/testing/strategy.md](testing/strategy.md).
+
+- detekt on the touched modules. Do not weaken a rule so a commit can pass.
+- Konsist: the reducer is called only from `reduce {}`, `Loadable` is a sealed interface, and DTOs and entities do not leave `data`.
+- `checkModuleGraph` by the rules in [docs/architecture/modules.md](architecture/modules.md).
+- Roborazzi for `:core:uikit` component states.
+- `projectMap` writes `docs/project-map.md` from the graph and the module `AGENTS.md` cards.
+- CI runs `scripts/check.sh` for the Android and iOS compile. A full `xcodebuild` runs at the end of the stage.
+- Dependabot, CodeQL, and Licensee — configs and a check that they run. Do not change feature code.
+
 ## Stage 5 — documents that do not exist yet
 
 The privacy policy is published through GitHub Pages from [docs/legal](legal/README.md).
@@ -43,7 +55,7 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 
 ## Decisions that do not block the start
 
-- Exact versions of Kotlin, CMP, AGP, Room, Koin, and Ktor are chosen at Stage 2.
+- Build versions are recorded in `gradle/libs.versions.toml`. Room and Ktor wait until their stage. Do not look them up again.
 - ML Kit GenAI Prompt API availability — Stage 4.
 - OpenAPI or a shared KMP module for the client-server contract — Stage 6.
 
@@ -51,3 +63,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 
 - Stage 1 started: license, architecture, product, security, tests, skills, and CI are written into the repository.
 - Stage 1 closed. The app does not build yet: Gradle arrives at Stage 2.
+- Stage 2 closed. Build: Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, Koin 4.2.2. Navigation is Navigation 3 (`navigation3-ui` 1.2.0-rc01). `compileSdk` 37.1, `minSdk` 28, `targetSdk` 36. Cloud is off: `finpulse.cloud.enabled=false`. Agent notes are in the `finpulse-workflow` skill. The check is `scripts/check.sh`.

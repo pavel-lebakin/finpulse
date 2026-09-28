@@ -19,11 +19,10 @@ You may read the sources and build them to evaluate the project. You may not red
 ## Where to look
 
 1. [docs/roadmap.md](docs/roadmap.md) — what is done and which step is next.
-2. `docs/project-map.md` — from Stage 3. Until then [docs/architecture/modules.md](docs/architecture/modules.md).
-3. The module `AGENTS.md`, once the module exists.
-4. One skill from `.agents/skills/` for the task.
+2. The module `AGENTS.md`. `docs/project-map.md` arrives at Stage 3.
+3. One skill from `.agents/skills/`. Build and versions: `finpulse-workflow/references/build.md`.
 
-Start a repository-wide search only when the roadmap, the map, and the module card no longer answer the question.
+Call Grep and Glob with the repository root. Do not look at neighboring projects. Open other documents only when these three points did not answer.
 
 ## Seven phases
 
@@ -40,7 +39,7 @@ Phase details: skill `finpulse-workflow`.
 ## Checks
 
 - Before Stage 2 there is no Gradle: the check is `scripts/check-agent-docs.sh` and gitleaks.
-- After that: the Android build of the touched modules, `compileKotlinIosSimulatorArm64` for the touched KMP modules, and their tests.
+- After that: `scripts/check.sh` with tasks of the touched modules. Put its short line in chat, not the Gradle log.
 - A full `xcodebuild` and full CI run happen at the end of a stage.
 - JDK is JBR 21 from Android Studio via `JAVA_HOME`. Do not commit `local.properties`. The JDK path is in [docs/conventions.md](docs/conventions.md).
 - Commit messages are Conventional Commits in English.

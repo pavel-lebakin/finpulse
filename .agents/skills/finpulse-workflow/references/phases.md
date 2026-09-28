@@ -20,7 +20,7 @@ Change only what the named contract needs. Check names against the glossary. Do 
 
 ## 4. Test
 
-Commands are in [docs/testing/strategy.md](../../../../docs/testing/strategy.md). At Stage 1 that is `scripts/check-agent-docs.sh` and gitleaks. From Stage 2, build and test the touched modules, not the whole monorepo for every small change.
+Commands are in [docs/testing/strategy.md](../../../../docs/testing/strategy.md) and [build.md](build.md). Run `scripts/check.sh` with the tasks of the touched modules. Put `OK` or a short error tail in chat. Do not build the whole monorepo for every small change.
 
 ## 5. Review
 

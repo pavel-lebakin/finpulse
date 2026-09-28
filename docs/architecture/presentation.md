@@ -18,7 +18,9 @@ Each feature has `<Feature>Navigator` and `<Feature>NavigatorImpl`. The Navigato
 
 Feature routes are an `@Serializable` sealed type `<Feature>Destination`. `<Feature>Graph` registers them in the NavHost. `<Screen>Host` receives the ViewModel and state. `<Screen>Screen` is a pure function `(state, onAction)`.
 
-The Compose Multiplatform navigation library (`org.jetbrains.androidx.navigation:navigation-compose`, type-safe routes) works on Android and on iOS. Version 2.x or Navigation 3 is chosen at Stage 2 based on stability at that time. `RootNavigator` hides that choice from features.
+Stage 2 chose Navigation 3: `org.jetbrains.androidx.navigation3:navigation3-ui` version `1.2.0-rc01`, published by Compose Multiplatform 1.12.2. Navigation 2 in the same release is also a release candidate (`2.10.0-rc01`). Kotlin Multiplatform documentation describes Navigation 3 as the path that works on Android and on iOS when route keys are serialized explicitly.
+
+`Destination` inside `:core:navigation` extends the Navigation 3 key. A feature does not choose that: the ViewModel calls `RootNavigator`. `ComposeRootNavigator` holds a command queue until the Compose host is attached. Route registration in `NavDisplay` lives in `:shared`.
 
 ## Errors
 
