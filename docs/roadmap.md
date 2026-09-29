@@ -9,7 +9,7 @@ The server is last.
 | --- | --- | --- |
 | 1. Foundation | done | License, decision documents, AGENTS, skills, hooks, docs CI, and gitleaks |
 | 2. Build and core | done | Wrapper, version catalog, build-logic, app shells, common/mvi/navigation/testing, UIKit, token showcase, Koin |
-| 3. Quality | next | detekt, Konsist, checkModuleGraph, Roborazzi, projectMap, mobile CI, Dependabot, CodeQL, Licensee |
+| 3. Quality | in progress | detekt, Konsist, checkModuleGraph, Roborazzi, projectMap, mobile CI, Dependabot, CodeQL, Licensee |
 | 4.1 Room and ledger | pending | Room, DataStore, transactions, and showcase history |
 | 4.2 Onboarding | pending | Four screens, showcase banner, clear, show again |
 | 4.3 Insights | pending | Dashboard and charts |
@@ -36,7 +36,7 @@ Navigation 3 or navigation-compose 2.x is chosen here.
 
 Take one item at a time. Do not open the whole architecture: module boundaries are already in the root `AGENTS.md`, and the check is in [docs/testing/strategy.md](testing/strategy.md).
 
-- detekt on the touched modules. Do not weaken a rule so a commit can pass.
+- detekt on the touched modules. Done: `finpulse.detekt`, task `:module:detekt`. Do not weaken a rule so a commit can pass.
 - Konsist: the reducer is called only from `reduce {}`, `Loadable` is a sealed interface, and DTOs and entities do not leave `data`.
 - `checkModuleGraph` by the rules in [docs/architecture/modules.md](architecture/modules.md).
 - Roborazzi for `:core:uikit` component states.
@@ -64,3 +64,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 1 started: license, architecture, product, security, tests, skills, and CI are written into the repository.
 - Stage 1 closed. The app does not build yet: Gradle arrives at Stage 2.
 - Stage 2 closed. Build: Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, Koin 4.2.2. Navigation is Navigation 3 (`navigation3-ui` 1.2.0-rc01). `compileSdk` 37.1, `minSdk` 28, `targetSdk` 36. Cloud is off: `finpulse.cloud.enabled=false`. Agent notes are in the `finpulse-workflow` skill. The check is `scripts/check.sh`.
+- Stage 3 started. detekt 2.0.0-alpha.6 is wired, and the `:module:detekt` task is green. The next item is Konsist.

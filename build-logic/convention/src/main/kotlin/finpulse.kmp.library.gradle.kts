@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.kotlin.multiplatform.library")
+    id("finpulse.detekt")
 }
 
 val compileSdkValue = providers.gradleProperty("finpulse.compileSdk").get().toInt()

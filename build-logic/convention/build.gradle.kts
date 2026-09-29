@@ -8,4 +8,5 @@ dependencies {
     implementation(libs.compose.gradlePlugin)
     implementation(libs.kotlin.compose.compiler.gradlePlugin)
     implementation(libs.kotlin.serialization.gradlePlugin)
+    implementation(libs.detekt.gradlePlugin)
 }

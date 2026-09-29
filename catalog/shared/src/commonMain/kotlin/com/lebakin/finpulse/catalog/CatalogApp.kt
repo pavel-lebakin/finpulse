@@ -37,6 +37,8 @@ private val seeds = listOf(
     Color(0xFFB85C38),
 )
 
+private val sampleAmounts = listOf(12f, 40f, 18f, 32f)
+
 private fun seedName(index: Int): String = when (index) {
     0 -> "Green"
     1 -> "Blue"
@@ -85,25 +87,36 @@ fun CatalogApp() {
             Slider(value = spacing, onValueChange = { spacing = it }, valueRange = 0.5f..2f)
             Text(text = "Font ${fontScale}")
             Slider(value = fontScale, onValueChange = { fontScale = it }, valueRange = 0.8f..1.6f)
-            MoneyAmount(amount = "1,240.50 ₽")
-            TransactionRow(
-                title = "Groceries",
-                subtitle = "Oct 28",
-                amount = "−860.00 ₽",
-            )
-            NoticeBanner(
-                message = "This is sample data. It is removed when you add your first transaction.",
-                actionLabel = "Clear now",
-                onAction = { bannerClicks += 1 },
-            )
-            Text(text = "Taps: $bannerClicks")
-            AmountBars(amounts = listOf(12f, 40f, 18f, 32f))
-            Text(text = "Empty chart")
-            AmountBars(amounts = emptyList(), modifier = Modifier.fillMaxWidth())
-            EmptyState(
-                title = "Nothing here yet",
-                body = "Add your first transaction, or look at a sample.",
+            CatalogSamples(
+                bannerClicks = bannerClicks,
+                onClearSample = { bannerClicks += 1 },
             )
         }
     }
+}
+
+@Composable
+private fun CatalogSamples(
+    bannerClicks: Int,
+    onClearSample: () -> Unit,
+) {
+    MoneyAmount(amount = "1,240.50 ₽")
+    TransactionRow(
+        title = "Groceries",
+        subtitle = "Oct 28",
+        amount = "−860.00 ₽",
+    )
+    NoticeBanner(
+        message = "This is sample data. It is removed when you add your first transaction.",
+        actionLabel = "Clear now",
+        onAction = onClearSample,
+    )
+    Text(text = "Taps: $bannerClicks")
+    AmountBars(amounts = sampleAmounts)
+    Text(text = "Empty chart")
+    AmountBars(amounts = emptyList(), modifier = Modifier.fillMaxWidth())
+    EmptyState(
+        title = "Nothing here yet",
+        body = "Add your first transaction, or look at a sample.",
+    )
 }

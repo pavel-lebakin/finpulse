@@ -1,0 +1,7 @@
+# Sits on top of the default rule set. buildUponDefaultConfig is set in finpulse.detekt.
+# Do not turn a rule off to make a commit pass.
+naming:
+  FunctionNaming:
+    # Compose functions and the iOS entry point are PascalCase.
+    # detekt 2.0.0-alpha.6 FunctionNaming has no ignoreAnnotated.
+    functionPattern: '[a-zA-Z][a-zA-Z0-9]*'

@@ -94,21 +94,20 @@ private class TestScreenViewModel : ScreenViewModel<TestState, TestAction>() {
             TestAction.Succeed -> launchCatching(onError = { reported = it }) {
                 reduce { TestReducer.run { withReady("ok") } }
             }
-            TestAction.Fail -> launchCatching(onError = { error ->
-                reported = error
-                reduce { TestReducer.run { withError(error) } }
-            }) {
-                throw NoConnectionException()
-            }
-            TestAction.Server -> launchCatching(onError = { error ->
-                reported = error
-                reduce { TestReducer.run { withError(error) } }
-            }) {
-                throw ServerStatusException(statusCode = 503)
-            }
+            TestAction.Fail -> failWith(NoConnectionException())
+            TestAction.Server -> failWith(ServerStatusException(statusCode = 503))
             TestAction.Cancel -> launchCatching(onError = { reported = it }) {
                 throw CancellationException("stop")
             }
+        }
+    }
+
+    private fun failWith(cause: Throwable) {
+        launchCatching(onError = { error ->
+            reported = error
+            reduce { TestReducer.run { withError(error) } }
+        }) {
+            throw cause
         }
     }
 }

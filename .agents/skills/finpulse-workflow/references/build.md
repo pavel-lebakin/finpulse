@@ -6,7 +6,7 @@ Read this before the first Gradle command. The versions below were checked on 20
 
 File: [gradle/libs.versions.toml](../../../../gradle/libs.versions.toml).
 
-Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, coroutines 1.11.0, serialization 1.12.0, Koin 4.2.2, lifecycle 2.11.0, navigation3-ui 1.2.0-rc01, activity-compose 1.13.0.
+Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, coroutines 1.11.0, serialization 1.12.0, Koin 4.2.2, lifecycle 2.11.0, navigation3-ui 1.2.0-rc01, activity-compose 1.13.0, detekt 2.0.0-alpha.6 (`dev.detekt`). Stable 1.23.8 does not parse Kotlin 2.4.
 
 `compileSdk` 37.1, `minSdk` 28, `targetSdk` 36. JDK is JBR 21. The path is in [docs/conventions.md](../../../../docs/conventions.md).
 
@@ -14,7 +14,7 @@ Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, coroutines
 
 `scripts/check.sh` with full task names. Success prints one line, `OK`. Failure prints the `What went wrong` block and the `e:` lines. Full log: `build/agent/last.log`. Do not copy it into chat.
 
-For a KMP module: `:module:jvmTest` and `:module:compileKotlinIosSimulatorArm64`. Host Android tests are off. Tests live in `commonTest` and run through `jvm()`. For `:androidApp` and `:catalog:android`: `assembleDebug`. For `:catalog:desktop`: `compileKotlin`.
+For a KMP module: `:module:jvmTest` and `:module:compileKotlinIosSimulatorArm64`. Host Android tests are off. Tests live in `commonTest` and run through `jvm()`. For `:androidApp` and `:catalog:android`: `assembleDebug`. For `:catalog:desktop`: `compileKotlin`. Module detekt: `:module:detekt`. All modules at once: `detekt`. Config on top of the default is `config/detekt/detekt.yml`, when that file exists. Type resolution is off: the plain task reads all of `src/**/*.kt`, including iOS.
 
 A full `xcodebuild` runs at the end of a stage, not for every module:
 

@@ -33,6 +33,8 @@ abstract class ScreenViewModel<S : ScreenState, A : ScreenAction> : ViewModel() 
         states.update { current -> current.block() }
     }
 
+    // Unknown failures become AppError. CancellationException is rethrown above.
+    @Suppress("TooGenericExceptionCaught")
     protected fun launchCatching(
         onError: (AppError) -> Unit,
         block: suspend CoroutineScope.() -> Unit,

@@ -9,6 +9,8 @@ lifecycle = "2.11.0"
 # CMP 1.12.2 publishes this Navigation 3 line. Navigation 2 in the same release is also a candidate.
 navigation3 = "1.2.0-rc01"
 activity = "1.13.0"
+# 1.23.8 does not parse Kotlin 2.4. This line is the current dev.detekt release.
+detekt = "2.0.0-alpha.6"
 
 [libraries]
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -25,6 +27,7 @@ kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ve
 compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
 kotlin-compose-compiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+detekt-gradlePlugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
