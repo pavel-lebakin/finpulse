@@ -4,6 +4,10 @@ Offline-first personal money tracker for Android and iOS. Logic is Kotlin Multip
 
 You may read the sources and build them to evaluate the project. You may not redistribute them or publish them to stores. See [LICENSE](LICENSE).
 
+## Language
+
+Write every project artifact in English: skills, docs, code comments, UI copy, commit messages, and roadmap notes. Do not add Russian text to the repository.
+
 ## Invariants
 
 - Feature business logic lives in `commonMain`. ViewModel and State have no Compose types.
@@ -29,7 +33,7 @@ Call Grep and Glob with the repository root. Do not look at neighboring projects
 1. Understand — roadmap, map, contract. Name the module, file, and contract before editing.
 2. Plan — follow an existing file or, while none exists, the glossary.
 3. Implement — only names from the glossary.
-4. Test — build and tests of the touched modules. From Stage 3 also detekt.
+4. Test — build and tests of the touched modules. From Stage 3 also detekt and `:tooling:architecture-tests:test`.
 5. Review — compare the diff with the sample and the invariants.
 6. Fix — three iterations for one red-build cause, then a report.
 7. Report — what was done and what was not checked. Write the status in the roadmap.

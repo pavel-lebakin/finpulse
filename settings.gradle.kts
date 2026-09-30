@@ -29,6 +29,7 @@ include(
     ":catalog:shared",
     ":catalog:android",
     ":catalog:desktop",
+    ":tooling:architecture-tests",
 )
 
 // Renaming changes the Gradle path to `:catalog:catalogShared`, so it does not clash with `:shared`.

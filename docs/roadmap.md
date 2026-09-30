@@ -37,7 +37,7 @@ Navigation 3 or navigation-compose 2.x is chosen here.
 Take one item at a time. Do not open the whole architecture: module boundaries are already in the root `AGENTS.md`, and the check is in [docs/testing/strategy.md](testing/strategy.md).
 
 - detekt on the touched modules. Done: `finpulse.detekt`, task `:module:detekt`. Do not weaken a rule so a commit can pass.
-- Konsist: the reducer is called only from `reduce {}`, `Loadable` is a sealed interface, and DTOs and entities do not leave `data`.
+- Konsist. Done: `:tooling:architecture-tests`, Konsist 0.18.1. Extensions of `*Reducer` on `*State` only from `reduce {}`. `Loadable` is a sealed interface. `*Dto` and `*Entity` stay in a `data` package or in `com.lebakin.finpulse.core.database`.
 - `checkModuleGraph` by the rules in [docs/architecture/modules.md](architecture/modules.md).
 - Roborazzi for `:core:uikit` component states.
 - `projectMap` writes `docs/project-map.md` from the graph and the module `AGENTS.md` cards.
@@ -65,3 +65,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 1 closed. The app does not build yet: Gradle arrives at Stage 2.
 - Stage 2 closed. Build: Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, Koin 4.2.2. Navigation is Navigation 3 (`navigation3-ui` 1.2.0-rc01). `compileSdk` 37.1, `minSdk` 28, `targetSdk` 36. Cloud is off: `finpulse.cloud.enabled=false`. Agent notes are in the `finpulse-workflow` skill. The check is `scripts/check.sh`.
 - Stage 3 started. detekt 2.0.0-alpha.6 is wired, and the `:module:detekt` task is green. The next item is Konsist.
+- Stage 3, Konsist. Module `:tooling:architecture-tests`, Konsist 0.18.1. The next item is `checkModuleGraph`.
