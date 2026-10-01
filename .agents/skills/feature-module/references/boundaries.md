@@ -1,6 +1,6 @@
 # Module boundaries
 
-Until `checkModuleGraph` exists, check a new dependency by hand:
+`checkModuleGraph` enforces this table. Run `scripts/check.sh checkModuleGraph`.
 
 | From | Allowed | Not allowed |
 | --- | --- | --- |

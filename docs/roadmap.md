@@ -66,3 +66,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 2 closed. Build: Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, Koin 4.2.2. Navigation is Navigation 3 (`navigation3-ui` 1.2.0-rc01). `compileSdk` 37.1, `minSdk` 28, `targetSdk` 36. Cloud is off: `finpulse.cloud.enabled=false`. Agent notes are in the `finpulse-workflow` skill. The check is `scripts/check.sh`.
 - Stage 3 started. detekt 2.0.0-alpha.6 is wired, and the `:module:detekt` task is green. The next item is Konsist.
 - Stage 3, Konsist. Module `:tooling:architecture-tests`, Konsist 0.18.1. The next item is `checkModuleGraph`.
+- Stage 3, `checkModuleGraph`. The root task checks feature, core, and catalog dependency boundaries. The next item is Roborazzi.
