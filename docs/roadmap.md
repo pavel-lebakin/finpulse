@@ -67,3 +67,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 3 started. detekt 2.0.0-alpha.6 is wired, and the `:module:detekt` task is green. The next item is Konsist.
 - Stage 3, Konsist. Module `:tooling:architecture-tests`, Konsist 0.18.1. The next item is `checkModuleGraph`.
 - Stage 3, `checkModuleGraph`. The root task checks feature, core, and catalog dependency boundaries. The next item is Roborazzi.
+- Stage 3, Roborazzi. `:core:uikit` `jvmTest` captures component states with Roborazzi 1.77.0. The next item is `projectMap`.

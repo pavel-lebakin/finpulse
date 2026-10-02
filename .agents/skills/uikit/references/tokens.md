@@ -6,4 +6,4 @@ A custom component is worth it when the same combination is already needed by tw
 
 The catalog must show the component states that exist in the API: normal, empty, error, and dark theme, when the component distinguishes them. The token configurator changes the theme live and does not rebuild the app.
 
-Roborazzi screenshots for UIKit are wired at Stage 3. Until then, do not claim the visuals match if nobody opened the screen.
+Roborazzi screenshots for UIKit component states run in `:core:uikit:jvmTest`. Do not claim the visuals match unless that comparison was run.

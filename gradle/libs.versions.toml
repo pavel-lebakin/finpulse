@@ -13,6 +13,8 @@ activity = "1.13.0"
 detekt = "2.0.0-alpha.6"
 # Same Kotlin line as the project compiler. Checked against maven-metadata.xml on 2026-10-29.
 konsist = "0.18.1"
+# Desktop Compose screenshots. Checked against maven-metadata.xml on 2026-10-29.
+roborazzi = "1.77.0"
 
 [libraries]
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -31,6 +33,7 @@ kotlin-compose-compiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-
 kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 detekt-gradlePlugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
+roborazzi-compose-desktop = { module = "io.github.takahirom.roborazzi:roborazzi-compose-desktop", version.ref = "roborazzi" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

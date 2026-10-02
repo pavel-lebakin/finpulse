@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.Test
+
 plugins {
     id("finpulse.kmp.compose")
 }
@@ -16,4 +18,20 @@ kotlin {
             implementation(compose.desktop.currentOs)
         }
     }
+    sourceSets.named("jvmTest") {
+        dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(compose.desktop.uiTestJUnit4)
+            implementation(libs.roborazzi.compose.desktop)
+        }
+    }
+}
+
+tasks.withType<Test>().configureEach {
+    if (name != "jvmTest") {
+        return@configureEach
+    }
+    val record = providers.gradleProperty("roborazzi.record").orNull == "true"
+    systemProperty("roborazzi.test.record", record.toString())
+    systemProperty("roborazzi.test.verify", (!record).toString())
 }

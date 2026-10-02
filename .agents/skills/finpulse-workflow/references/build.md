@@ -6,7 +6,7 @@ Read this before the first Gradle command. The versions below were checked on 20
 
 File: [gradle/libs.versions.toml](../../../../gradle/libs.versions.toml).
 
-Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, coroutines 1.11.0, serialization 1.12.0, Koin 4.2.2, lifecycle 2.11.0, navigation3-ui 1.2.0-rc01, activity-compose 1.13.0, detekt 2.0.0-alpha.6 (`dev.detekt`). Stable 1.23.8 does not parse Kotlin 2.4. Konsist 0.18.1 (`com.lemonappdev:konsist`) uses the same Kotlin 2.4.21.
+Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, coroutines 1.11.0, serialization 1.12.0, Koin 4.2.2, lifecycle 2.11.0, navigation3-ui 1.2.0-rc01, activity-compose 1.13.0, detekt 2.0.0-alpha.6 (`dev.detekt`). Stable 1.23.8 does not parse Kotlin 2.4. Konsist 0.18.1 (`com.lemonappdev:konsist`) uses the same Kotlin 2.4.21. Roborazzi 1.77.0 (`roborazzi-compose-desktop`) captures `:core:uikit` component states on the JVM. Record with `-Proborazzi.record=true`; the plain `jvmTest` task verifies.
 
 `compileSdk` 37.1, `minSdk` 28, `targetSdk` 36. JDK is JBR 21. The path is in [docs/conventions.md](../../../../docs/conventions.md).
 

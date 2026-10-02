@@ -32,4 +32,4 @@ JDK: JBR 21 from Android Studio. The path is in the [glossary](../conventions.md
 
 - Do not mark a stage done because one module compiled, if a contract between modules changed.
 - Do not disable a test so a commit can pass. If a check is temporarily impossible, say in the stage report what was not run.
-- Do not replace a UI screenshot, before Roborazzi, with a claim that the layout matches the design.
+- Do not claim a UIKit layout matches the design unless `:core:uikit:jvmTest` compared the Roborazzi images.
