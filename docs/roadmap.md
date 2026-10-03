@@ -40,7 +40,7 @@ Take one item at a time. Do not open the whole architecture: module boundaries a
 - Konsist. Done: `:tooling:architecture-tests`, Konsist 0.18.1. Extensions of `*Reducer` on `*State` only from `reduce {}`. `Loadable` is a sealed interface. `*Dto` and `*Entity` stay in a `data` package or in `com.lebakin.finpulse.core.database`.
 - `checkModuleGraph` by the rules in [docs/architecture/modules.md](architecture/modules.md).
 - Roborazzi for `:core:uikit` component states.
-- `projectMap` writes `docs/project-map.md` from the graph and the module `AGENTS.md` cards.
+- `projectMap` writes `docs/project-map.md` from the graph and the module `AGENTS.md` cards. `checkProjectMap` fails when the file is stale.
 - CI runs `scripts/check.sh` for the Android and iOS compile. A full `xcodebuild` runs at the end of the stage.
 - Dependabot, CodeQL, and Licensee — configs and a check that they run. Do not change feature code.
 
@@ -68,3 +68,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 3, Konsist. Module `:tooling:architecture-tests`, Konsist 0.18.1. The next item is `checkModuleGraph`.
 - Stage 3, `checkModuleGraph`. The root task checks feature, core, and catalog dependency boundaries. The next item is Roborazzi.
 - Stage 3, Roborazzi. `:core:uikit` `jvmTest` captures component states with Roborazzi 1.77.0. The next item is `projectMap`.
+- Stage 3, `projectMap`. `./gradlew projectMap` writes `docs/project-map.md`. `checkProjectMap` fails when the file is stale. The next item is mobile CI, which should run `checkProjectMap`.

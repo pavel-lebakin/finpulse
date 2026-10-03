@@ -23,6 +23,7 @@ JDK: JBR 21 from Android Studio. The path is in the [glossary](../conventions.md
 | DI graph | Koin assembles in `:shared` | Stage 2 |
 | Konsist | The reducer is called only from `reduce {}`, plus layer and package boundaries | Stage 3 |
 | `checkModuleGraph` | `impl` does not see another feature's `impl`, `api` does not see features | Stage 3 |
+| `checkProjectMap` | `docs/project-map.md` matches the Gradle graph and module cards | Stage 3 |
 | Roborazzi | UIKit component states | Stage 3 |
 | Room migrations | The schema is exported and the move from the old version passes | Stage 4 |
 | Receipt parser | The same text produces the same draft | Stage 4 |

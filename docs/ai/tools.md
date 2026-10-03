@@ -8,7 +8,7 @@ Agents read a short entry file and open one skill for the task. Do not load the 
 - `AGENTS.md` inside a module — purpose, public contract, platform parts, business rules. Those cards appear together with the module.
 - `.agents/skills/<name>/SKILL.md` — a skill. Cursor and Codex read this directory.
 - `.claude/skills` — a symlink to `../.agents/skills`. `CLAUDE.md` contains only `@AGENTS.md`.
-- `docs/project-map.md` — from Stage 3, command `./gradlew projectMap`. CI checks that the file is not stale.
+- `docs/project-map.md` — written by `./gradlew projectMap`. `./gradlew checkProjectMap` fails when the file is stale.
 
 A skill is shorter than 300 lines. Details live in `references/` next to it. `scripts/check-agent-docs.sh` checks frontmatter (`name`, `description`), links, and sizes. The script runs in CI.
 

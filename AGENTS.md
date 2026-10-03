@@ -23,7 +23,7 @@ Write every project artifact in English: skills, docs, code comments, UI copy, c
 ## Where to look
 
 1. [docs/roadmap.md](docs/roadmap.md) — what is done and which step is next.
-2. The module `AGENTS.md`. `docs/project-map.md` arrives at Stage 3.
+2. [docs/project-map.md](docs/project-map.md), then the module `AGENTS.md`.
 3. One skill from `.agents/skills/`. Build and versions: `finpulse-workflow/references/build.md`.
 
 Call Grep and Glob with the repository root. Do not look at neighboring projects. Open other documents only when these three points did not answer.
