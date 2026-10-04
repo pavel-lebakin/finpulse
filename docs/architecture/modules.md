@@ -51,4 +51,4 @@ flowchart TD
 
 `checkModuleGraph` checks the dependency rules in this list. `:shared` may depend on a feature `impl` only through an `implementation` configuration, so other modules do not compile against it. The `core.database` import rule stays in Konsist. Run `scripts/check.sh checkModuleGraph`.
 
-`./gradlew projectMap` writes `docs/project-map.md` from the Gradle graph and the module cards. `./gradlew checkProjectMap` fails when that file does not match the repository. This file stays the written rule; the map is the generated view of the current modules.
+`./gradlew projectMap` writes `docs/project-map.md` from the Gradle graph and the module cards. `./gradlew checkProjectMap` fails when that file does not match the repository. The mobile workflow runs that check on every push. This file stays the written rule; the map is the generated view of the current modules.

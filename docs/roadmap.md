@@ -41,7 +41,7 @@ Take one item at a time. Do not open the whole architecture: module boundaries a
 - `checkModuleGraph` by the rules in [docs/architecture/modules.md](architecture/modules.md).
 - Roborazzi for `:core:uikit` component states.
 - `projectMap` writes `docs/project-map.md` from the graph and the module `AGENTS.md` cards. `checkProjectMap` fails when the file is stale.
-- CI runs `scripts/check.sh` for the Android and iOS compile. A full `xcodebuild` runs at the end of the stage.
+- CI runs `scripts/check.sh` for the Android and iOS compile. Done: `.github/workflows/mobile.yml` assembles the Android debug apps, compiles `iosSimulatorArm64`, and runs `checkProjectMap`. A full `xcodebuild` runs at the end of the stage.
 - Dependabot, CodeQL, and Licensee — configs and a check that they run. Do not change feature code.
 
 ## Stage 5 — documents that do not exist yet
@@ -69,3 +69,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 3, `checkModuleGraph`. The root task checks feature, core, and catalog dependency boundaries. The next item is Roborazzi.
 - Stage 3, Roborazzi. `:core:uikit` `jvmTest` captures component states with Roborazzi 1.77.0. The next item is `projectMap`.
 - Stage 3, `projectMap`. `./gradlew projectMap` writes `docs/project-map.md`. `checkProjectMap` fails when the file is stale. The next item is mobile CI, which should run `checkProjectMap`.
+- Stage 3, mobile CI. `.github/workflows/mobile.yml` runs the Android debug assemble, `compileKotlinIosSimulatorArm64`, and `checkProjectMap`. The next item is Dependabot.

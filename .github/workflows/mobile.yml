@@ -1,0 +1,56 @@
+name: mobile
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  android:
+    name: android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Set up JDK 21
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+        with:
+          packages: platform-tools platforms;android-37.1 build-tools;36.1.0
+      - name: Assemble Android and check the project map
+        run: bash scripts/check.sh :androidApp:assembleDebug :catalog:android:assembleDebug checkProjectMap
+
+  ios:
+    name: ios
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Set up JDK 21
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      # The iOS compile still configures the Android targets, so the compile SDK has to be present.
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+        with:
+          packages: platform-tools platforms;android-37.1 build-tools;36.1.0
+      - name: Compile iOS simulator Kotlin
+        run: >
+          bash scripts/check.sh
+          :shared:compileKotlinIosSimulatorArm64
+          :core:common:compileKotlinIosSimulatorArm64
+          :core:mvi:compileKotlinIosSimulatorArm64
+          :core:navigation:compileKotlinIosSimulatorArm64
+          :core:testing:compileKotlinIosSimulatorArm64
+          :core:uikit:compileKotlinIosSimulatorArm64
+          :catalog:catalogShared:compileKotlinIosSimulatorArm64
