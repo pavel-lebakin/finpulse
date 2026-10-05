@@ -70,3 +70,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 3, Roborazzi. `:core:uikit` `jvmTest` captures component states with Roborazzi 1.77.0. The next item is `projectMap`.
 - Stage 3, `projectMap`. `./gradlew projectMap` writes `docs/project-map.md`. `checkProjectMap` fails when the file is stale. The next item is mobile CI, which should run `checkProjectMap`.
 - Stage 3, mobile CI. `.github/workflows/mobile.yml` runs the Android debug assemble, `compileKotlinIosSimulatorArm64`, and `checkProjectMap`. The next item is Dependabot.
+- Stage 3, Dependabot. `.github/dependabot.yml` schedules weekly Gradle updates for `/` and `/build-logic`, and GitHub Actions updates. `scripts/check-dependabot.sh` checks the file. The next item is CodeQL.

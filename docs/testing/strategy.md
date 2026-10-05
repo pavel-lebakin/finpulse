@@ -15,6 +15,8 @@ A full `xcodebuild` happens at the end of a stage, not on every commit. Run Grad
 
 [`.github/workflows/mobile.yml`](../../.github/workflows/mobile.yml) runs on every push and pull request. The Android job assembles `:androidApp` and `:catalog:android` debug and runs `checkProjectMap`. The iOS job runs `compileKotlinIosSimulatorArm64` for each Kotlin Multiplatform module. That job does not run `xcodebuild`.
 
+[`.github/dependabot.yml`](../../.github/dependabot.yml) asks GitHub to open weekly version-update pull requests for Gradle (`/` and `/build-logic`) and for GitHub Actions. `scripts/check-dependabot.sh` checks that file. The `docs-and-secrets` workflow runs the script. Dependabot itself runs on GitHub after the file is on the default branch.
+
 JDK: JBR 21 from Android Studio. The path is in the [glossary](../conventions.md). Do not commit `JAVA_HOME` or `local.properties`.
 
 ## Kinds of tests

@@ -1,0 +1,16 @@
+# The included build shares gradle/libs.versions.toml, but includeBuild is a
+# separate Gradle build, so Dependabot needs its own directory entry.
+version: 2
+updates:
+  - package-ecosystem: gradle
+    directory: "/"
+    schedule:
+      interval: weekly
+  - package-ecosystem: gradle
+    directory: "/build-logic"
+    schedule:
+      interval: weekly
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
