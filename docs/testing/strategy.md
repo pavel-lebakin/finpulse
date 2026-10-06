@@ -17,6 +17,8 @@ A full `xcodebuild` happens at the end of a stage, not on every commit. Run Grad
 
 [`.github/dependabot.yml`](../../.github/dependabot.yml) asks GitHub to open weekly version-update pull requests for Gradle (`/` and `/build-logic`) and for GitHub Actions. `scripts/check-dependabot.sh` checks that file. The `docs-and-secrets` workflow runs the script. Dependabot itself runs on GitHub after the file is on the default branch.
 
+[`.github/workflows/codeql.yml`](../../.github/workflows/codeql.yml) analyzes `java-kotlin` on every push and pull request. Kotlin needs a build, so the job compiles with `./gradlew --no-daemon` after CodeQL init and does not compile the iOS targets. `scripts/check-codeql.sh` checks that workflow. The `docs-and-secrets` workflow runs the script. The analysis itself runs on GitHub.
+
 JDK: JBR 21 from Android Studio. The path is in the [glossary](../conventions.md). Do not commit `JAVA_HOME` or `local.properties`.
 
 ## Kinds of tests

@@ -1,0 +1,56 @@
+name: codeql
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Set up JDK 21
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+        with:
+          packages: platform-tools platforms;android-37.1 build-tools;36.1.0
+      # Kotlin is not analyzed with build-mode none. Call gradlew here so CodeQL
+      # traces kotlinc. scripts/check.sh hides that process. iOS targets need Xcode.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          languages: java-kotlin
+          build-mode: manual
+      - name: Compile Kotlin for analysis
+        run: >
+          ./gradlew --no-daemon -p build-logic :convention:compileKotlin
+          && ./gradlew --no-daemon
+          :androidApp:assembleDebug
+          :catalog:android:assembleDebug
+          :catalog:desktop:compileKotlin
+          :tooling:architecture-tests:compileKotlin
+          :shared:compileKotlinJvm
+          :catalog:catalogShared:compileKotlinJvm
+          :core:common:compileKotlinJvm
+          :core:mvi:compileKotlinJvm
+          :core:navigation:compileKotlinJvm
+          :core:testing:compileKotlinJvm
+          :core:uikit:compileKotlinJvm
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        with:
+          category: "/language:java-kotlin"
