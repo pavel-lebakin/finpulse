@@ -10,6 +10,8 @@ Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, coroutines
 
 `compileSdk` 37.1, `minSdk` 28, `targetSdk` 36. JDK is JBR 21. The path is in [docs/conventions.md](../../../../docs/conventions.md).
 
+Licensee 1.14.1 (`app.cash.licensee:licensee-gradle-plugin`) checks runtime licenses. The task is `licensee`. Checked against maven-metadata.xml on 2026-10-29.
+
 ## Command
 
 `scripts/check.sh` with full task names. Success prints one line, `OK`. Failure prints the `What went wrong` block and the `e:` lines. Full log: `build/agent/last.log`. Do not copy it into chat.

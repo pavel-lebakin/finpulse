@@ -7,6 +7,7 @@ plugins {
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.plugin.compose")
     id("finpulse.detekt")
+    id("finpulse.licensee")
 }
 
 extensions.configure<ApplicationExtension>("android") {

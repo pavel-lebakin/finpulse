@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.kotlin.multiplatform.library")
     id("finpulse.detekt")
+    id("finpulse.licensee")
 }
 
 val compileSdkValue = providers.gradleProperty("finpulse.compileSdk").get().toInt()

@@ -15,6 +15,8 @@ detekt = "2.0.0-alpha.6"
 konsist = "0.18.1"
 # Desktop Compose screenshots. Checked against maven-metadata.xml on 2026-10-29.
 roborazzi = "1.77.0"
+# Dependency license check. Checked against maven-metadata.xml on 2026-10-29.
+licensee = "1.14.1"
 
 [libraries]
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -34,6 +36,7 @@ kotlin-serialization-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-seri
 detekt-gradlePlugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 roborazzi-compose-desktop = { module = "io.github.takahirom.roborazzi:roborazzi-compose-desktop", version.ref = "roborazzi" }
+licensee-gradlePlugin = { module = "app.cash.licensee:licensee-gradle-plugin", version.ref = "licensee" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

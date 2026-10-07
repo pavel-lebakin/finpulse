@@ -42,7 +42,7 @@ Take one item at a time. Do not open the whole architecture: module boundaries a
 - Roborazzi for `:core:uikit` component states.
 - `projectMap` writes `docs/project-map.md` from the graph and the module `AGENTS.md` cards. `checkProjectMap` fails when the file is stale.
 - CI runs `scripts/check.sh` for the Android and iOS compile. Done: `.github/workflows/mobile.yml` assembles the Android debug apps, compiles `iosSimulatorArm64`, and runs `checkProjectMap`. A full `xcodebuild` runs at the end of the stage.
-- Dependabot, CodeQL, and Licensee — configs and a check that they run. Do not change feature code.
+- Dependabot, CodeQL, and Licensee — configs and a check that they run. Do not change feature code. Done: each has a config and a `scripts/check-*.sh` job in `docs-and-secrets`. Licensee also runs as the `licensee` task on the mobile iOS job.
 
 ## Stage 5 — documents that do not exist yet
 
@@ -72,3 +72,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 3, mobile CI. `.github/workflows/mobile.yml` runs the Android debug assemble, `compileKotlinIosSimulatorArm64`, and `checkProjectMap`. The next item is Dependabot.
 - Stage 3, Dependabot. `.github/dependabot.yml` schedules weekly Gradle updates for `/` and `/build-logic`, and GitHub Actions updates. `scripts/check-dependabot.sh` checks the file. The next item is CodeQL.
 - Stage 3, CodeQL. `.github/workflows/codeql.yml` analyzes `java-kotlin` with a manual Gradle build. `scripts/check-codeql.sh` checks the workflow. The next item is Licensee.
+- Stage 3, Licensee. `finpulse.licensee` allows Apache-2.0, MIT, BSD-2-Clause, and BSD-3-Clause. `scripts/check-licensee.sh` checks the config, and the mobile iOS job runs `licensee`. The next item is the Stage 3 close: a full `xcodebuild`.

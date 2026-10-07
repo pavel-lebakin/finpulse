@@ -54,3 +54,4 @@ jobs:
           :core:testing:compileKotlinIosSimulatorArm64
           :core:uikit:compileKotlinIosSimulatorArm64
           :catalog:catalogShared:compileKotlinIosSimulatorArm64
+          licensee
