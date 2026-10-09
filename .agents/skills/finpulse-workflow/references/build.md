@@ -12,6 +12,8 @@ Kotlin 2.4.21, AGP 9.3.1, Gradle 9.5.0, Compose Multiplatform 1.12.2, coroutines
 
 Licensee 1.14.1 (`app.cash.licensee:licensee-gradle-plugin`) checks runtime licenses. The task is `licensee`. Checked against maven-metadata.xml on 2026-10-29.
 
+Room 2.8.5 (`androidx.room:room-runtime`, `room-compiler`, plugin `androidx.room`) with `androidx.sqlite:sqlite-bundled` 2.6.2. KSP 2.3.12 (`com.google.devtools.ksp`) compiles Kotlin 2.4.21. DataStore preferences core 1.3.0 and Okio 3.17.0. `kotlinx-datetime` 0.7.1. Checked against maven-metadata.xml on 2026-10-29.
+
 ## Command
 
 `scripts/check.sh` with full task names. Success prints one line, `OK`. Failure prints the `What went wrong` block and the `e:` lines. Full log: `build/agent/last.log`. Do not copy it into chat.

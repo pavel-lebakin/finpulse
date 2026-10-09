@@ -10,8 +10,8 @@ The server is last.
 | 1. Foundation | done | License, decision documents, AGENTS, skills, hooks, docs CI, and gitleaks |
 | 2. Build and core | done | Wrapper, version catalog, build-logic, app shells, common/mvi/navigation/testing, UIKit, token showcase, Koin |
 | 3. Quality | done | detekt, Konsist, checkModuleGraph, Roborazzi, projectMap, mobile CI, Dependabot, CodeQL, Licensee |
-| 4.1 Room and ledger | next | Room, DataStore, transactions, and showcase history |
-| 4.2 Onboarding | pending | Four screens, showcase banner, clear, show again |
+| 4.1 Room and ledger | done | Room, DataStore, transactions, and showcase history |
+| 4.2 Onboarding | next | Four screens, showcase banner, clear, show again |
 | 4.3 Insights | pending | Dashboard and charts |
 | 4.4 Scanner | pending | Camera, gallery, samples, OCR, rule-based parser, review screen |
 | 4.5 AI platform | pending | security, network, ai, on-device, Swift bridge, BYOK, consent, settings, licenses |
@@ -74,3 +74,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 3, CodeQL. `.github/workflows/codeql.yml` analyzes `java-kotlin` with a manual Gradle build. `scripts/check-codeql.sh` checks the workflow. The next item is Licensee.
 - Stage 3, Licensee. `finpulse.licensee` allows Apache-2.0, MIT, BSD-2-Clause, and BSD-3-Clause. `scripts/check-licensee.sh` checks the config, and the mobile iOS job runs `licensee`. The next item is the Stage 3 close: a full `xcodebuild`.
 - Stage 3 closed. `xcodebuild -project iosApp/iosApp.xcodeproj -target iosApp -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO ARCHS=arm64 ONLY_ACTIVE_ARCH=YES build` succeeded. Stage 4.1 is next.
+- Stage 4.1 closed. Room 2.8.5, bundled SQLite 2.6.2, DataStore 1.3.0, KSP 2.3.12. `:core:database` stores categories and transactions. `:core:preferences` stores the showcase flag. `:feature:ledger` seeds three months of `SHOWCASE` rows, and the first user write deletes them in one Room transaction. No ledger screen yet. Stage 4.2 is next.

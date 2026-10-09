@@ -17,6 +17,15 @@ konsist = "0.18.1"
 roborazzi = "1.77.0"
 # Dependency license check. Checked against maven-metadata.xml on 2026-10-29.
 licensee = "1.14.1"
+# Room 2.8.5 metadata pulls sqlite 2.6.2. Checked against maven-metadata.xml on 2026-10-29.
+room = "2.8.5"
+sqlite = "2.6.2"
+# KSP 2.3.12 is the line that compiles Kotlin 2.4. Checked against maven-metadata.xml on 2026-10-29.
+ksp = "2.3.12"
+# Checked against maven-metadata.xml on 2026-10-29.
+datastore = "1.3.0"
+okio = "3.17.0"
+datetime = "0.7.1"
 
 [libraries]
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -37,6 +46,12 @@ detekt-gradlePlugin = { module = "dev.detekt:detekt-gradle-plugin", version.ref 
 konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
 roborazzi-compose-desktop = { module = "io.github.takahirom.roborazzi:roborazzi-compose-desktop", version.ref = "roborazzi" }
 licensee-gradlePlugin = { module = "app.cash.licensee:licensee-gradle-plugin", version.ref = "licensee" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -46,3 +61,5 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-kmp-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }

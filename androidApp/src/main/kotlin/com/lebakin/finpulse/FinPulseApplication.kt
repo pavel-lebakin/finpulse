@@ -6,6 +6,7 @@ import com.lebakin.finpulse.di.initKoin
 class FinPulseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        prepareAndroidStorage(this)
         initKoin()
     }
 }

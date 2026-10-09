@@ -14,8 +14,11 @@ kotlin {
     sourceSets.named("commonMain") {
         dependencies {
             implementation(projects.core.common)
+            implementation(projects.core.database)
             implementation(projects.core.navigation)
+            implementation(projects.core.preferences)
             implementation(projects.core.uikit)
+            implementation(projects.feature.ledger.impl)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.serialization.json)
