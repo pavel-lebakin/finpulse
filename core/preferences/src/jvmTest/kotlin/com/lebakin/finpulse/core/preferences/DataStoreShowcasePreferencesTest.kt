@@ -30,4 +30,26 @@ class DataStoreShowcasePreferencesTest {
             scope.cancel()
         }
     }
+
+    @Test
+    fun onboardingAndShowcaseShareOneFile() = runTest {
+        val directory = Files.createTempDirectory("finpulse-preferences-both")
+        val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+        val preferences = openAppPreferences(
+            path = directory.resolve("finpulse.preferences_pb").toString(),
+            scope = scope,
+        )
+        try {
+            assertFalse(preferences.onboarding.observeCompleted().first())
+            preferences.onboarding.setCompleted(true)
+            preferences.showcase.setShowcaseMode(true)
+            assertTrue(preferences.onboarding.observeCompleted().first())
+            assertTrue(preferences.showcase.observeShowcaseMode().first())
+            preferences.onboarding.setCompleted(false)
+            assertFalse(preferences.onboarding.observeCompleted().first())
+            assertTrue(preferences.showcase.observeShowcaseMode().first())
+        } finally {
+            scope.cancel()
+        }
+    }
 }

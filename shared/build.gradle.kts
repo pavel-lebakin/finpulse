@@ -19,6 +19,7 @@ kotlin {
             implementation(projects.core.preferences)
             implementation(projects.core.uikit)
             implementation(projects.feature.ledger.impl)
+            implementation(projects.feature.onboarding.impl)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.serialization.json)

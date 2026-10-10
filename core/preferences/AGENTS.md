@@ -2,8 +2,8 @@
 
 Package `com.lebakin.finpulse.core.preferences`. DataStore file in the app directory.
 
-Public types: `ShowcasePreferences`, `openShowcasePreferences`, `preferencesFilePath`. Android calls `bindAndroidPreferencesDirectory` before the first open.
+Public types: `ShowcasePreferences`, `OnboardingPreferences`, `AppPreferences`, `openAppPreferences`, `openShowcasePreferences`, `preferencesFilePath`. Android calls `bindAndroidPreferencesDirectory` before the first open. The app opens one file through `openAppPreferences`.
 
-`observeShowcaseMode` stays false until the sample ledger is stored. The first user write and a clear both set it to false.
+`observeShowcaseMode` stays false until the sample ledger is stored. The first user write and a clear both set it to false. `observeCompleted` stays false until onboarding finishes. Showing onboarding again sets it back to false.
 
 Check: `scripts/check.sh :core:preferences:jvmTest :core:preferences:compileKotlinIosSimulatorArm64 :core:preferences:detekt`.

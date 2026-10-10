@@ -30,6 +30,8 @@ include(
     ":core:preferences",
     ":feature:ledger:api",
     ":feature:ledger:impl",
+    ":feature:onboarding:api",
+    ":feature:onboarding:impl",
     ":catalog:shared",
     ":catalog:android",
     ":catalog:desktop",

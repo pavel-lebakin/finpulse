@@ -3,6 +3,8 @@ package com.lebakin.finpulse.core.navigation
 sealed interface RootCommand {
     data class Open(val destination: Destination) : RootCommand
 
+    data class Replace(val destination: Destination) : RootCommand
+
     data object Back : RootCommand
 }
 
@@ -23,6 +25,10 @@ class ComposeRootNavigator : RootNavigator {
 
     override fun navigate(destination: Destination) {
         dispatch(RootCommand.Open(destination))
+    }
+
+    override fun replace(destination: Destination) {
+        dispatch(RootCommand.Replace(destination))
     }
 
     override fun back() {

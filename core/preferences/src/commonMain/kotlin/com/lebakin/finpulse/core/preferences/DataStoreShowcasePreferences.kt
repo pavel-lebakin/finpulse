@@ -16,16 +16,24 @@ internal expect val preferencesDispatcher: CoroutineDispatcher
 
 expect fun preferencesFilePath(): String
 
-fun openShowcasePreferences(
+fun openAppPreferences(
     path: String,
     scope: CoroutineScope = CoroutineScope(preferencesDispatcher + SupervisorJob()),
-): ShowcasePreferences {
+): AppPreferences {
     val store = PreferenceDataStoreFactory.createWithPath(
         scope = scope,
         produceFile = { path.toPath() },
     )
-    return DataStoreShowcasePreferences(store)
+    return AppPreferences(
+        showcase = DataStoreShowcasePreferences(store),
+        onboarding = DataStoreOnboardingPreferences(store),
+    )
 }
+
+fun openShowcasePreferences(
+    path: String,
+    scope: CoroutineScope = CoroutineScope(preferencesDispatcher + SupervisorJob()),
+): ShowcasePreferences = openAppPreferences(path, scope).showcase
 
 private class DataStoreShowcasePreferences(
     private val store: DataStore<Preferences>,
@@ -42,5 +50,23 @@ private class DataStoreShowcasePreferences(
 
     private companion object {
         val SHOWCASE_MODE = booleanPreferencesKey("showcase_mode")
+    }
+}
+
+private class DataStoreOnboardingPreferences(
+    private val store: DataStore<Preferences>,
+) : OnboardingPreferences {
+    override fun observeCompleted(): Flow<Boolean> = store.data.map { preferences ->
+        preferences[ONBOARDING_COMPLETED] ?: false
+    }
+
+    override suspend fun setCompleted(completed: Boolean) {
+        store.edit { preferences ->
+            preferences[ONBOARDING_COMPLETED] = completed
+        }
+    }
+
+    private companion object {
+        val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
     }
 }

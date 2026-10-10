@@ -9,9 +9,11 @@ class FakeRootNavigatorTest {
     fun recordsNavigation() {
         val navigator = FakeRootNavigator()
         navigator.navigate(SampleDestination)
+        navigator.replace(SampleDestination)
         navigator.back()
         val opened: List<Destination> = listOf(SampleDestination)
         assertEquals(opened, navigator.opened)
+        assertEquals(opened, navigator.replaced)
         assertEquals(1, navigator.backCount)
     }
 }

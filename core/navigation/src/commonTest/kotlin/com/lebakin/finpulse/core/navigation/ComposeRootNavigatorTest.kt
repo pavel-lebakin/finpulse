@@ -18,6 +18,16 @@ class ComposeRootNavigatorTest {
     }
 
     @Test
+    fun replaceWaitsUntilTheHostIsAttached() {
+        val navigator = ComposeRootNavigator()
+        val received = mutableListOf<RootCommand>()
+        navigator.replace(SampleDestination)
+        navigator.attach { command -> received += command }
+        val replace = assertIs<RootCommand.Replace>(received.single())
+        assertEquals(SampleDestination, replace.destination)
+    }
+
+    @Test
     fun detachQueuesTheNextCommand() {
         val navigator = ComposeRootNavigator()
         val first = mutableListOf<RootCommand>()

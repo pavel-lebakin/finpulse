@@ -5,9 +5,14 @@ import com.lebakin.finpulse.core.common.ErrorReporter
 import com.lebakin.finpulse.core.database.databaseFilePath
 import com.lebakin.finpulse.core.database.openFinPulseDatabase
 import com.lebakin.finpulse.core.navigation.ComposeRootNavigator
-import com.lebakin.finpulse.core.preferences.openShowcasePreferences
+import com.lebakin.finpulse.core.navigation.RootNavigator
+import com.lebakin.finpulse.core.preferences.AppPreferences
+import com.lebakin.finpulse.core.preferences.OnboardingPreferences
+import com.lebakin.finpulse.core.preferences.ShowcasePreferences
+import com.lebakin.finpulse.core.preferences.openAppPreferences
 import com.lebakin.finpulse.core.preferences.preferencesFilePath
 import com.lebakin.finpulse.feature.ledger.di.ledgerModule
+import com.lebakin.finpulse.feature.onboarding.di.onboardingModule
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -21,10 +26,14 @@ class NoOpErrorReporter : ErrorReporter {
 val appModule = module {
     includes(platformModule())
     single { openFinPulseDatabase(databaseFilePath()) }
-    single { openShowcasePreferences(preferencesFilePath()) }
+    single { openAppPreferences(preferencesFilePath()) }
+    single<ShowcasePreferences> { get<AppPreferences>().showcase }
+    single<OnboardingPreferences> { get<AppPreferences>().onboarding }
     includes(ledgerModule)
+    includes(onboardingModule)
     single<ErrorReporter> { NoOpErrorReporter() }
     single { ComposeRootNavigator() }
+    single<RootNavigator> { get<ComposeRootNavigator>() }
 }
 
 fun initKoin() {
