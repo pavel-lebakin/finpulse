@@ -1,14 +1,17 @@
-package com.lebakin.finpulse.feature.onboarding.presentation.viewmodel
+package com.lebakin.finpulse.feature.insights.presentation.viewmodel
 
 import com.lebakin.finpulse.core.common.Loadable
 import com.lebakin.finpulse.core.preferences.ShowcasePreferences
+import com.lebakin.finpulse.feature.insights.domain.InsightsClock
+import com.lebakin.finpulse.feature.insights.presentation.model.mvi.DashboardAction
+import com.lebakin.finpulse.feature.insights.presentation.model.mvi.DashboardContent
 import com.lebakin.finpulse.feature.ledger.api.Category
 import com.lebakin.finpulse.feature.ledger.api.LedgerReader
 import com.lebakin.finpulse.feature.ledger.api.LedgerWriter
+import com.lebakin.finpulse.feature.ledger.api.MoneyDirection
+import com.lebakin.finpulse.feature.ledger.api.RecordOrigin
 import com.lebakin.finpulse.feature.ledger.api.Transaction
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
-import com.lebakin.finpulse.feature.onboarding.presentation.model.mvi.HomeAction
-import com.lebakin.finpulse.feature.onboarding.presentation.model.mvi.HomeContent
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -21,9 +24,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
+import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class HomeScreenViewModelTest {
+class DashboardScreenViewModelTest {
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
@@ -38,40 +42,66 @@ class HomeScreenViewModelTest {
     fun clearRemovesTheSampleAndShowsTheMessage() {
         val showcase = FakeShowcasePreferences(true)
         val writer = RecordingLedgerWriter(showcase)
-        val model = HomeScreenViewModel(
+        val model = DashboardScreenViewModel(
             showcase = showcase,
             ledgerReader = EmptyLedgerReader(),
             ledgerWriter = writer,
             entry = RecordingOnboardingEntry(),
+            clock = FixedClock,
         )
-        val before = assertIs<Loadable.Ready<HomeContent>>(model.state.value.content)
-        assertEquals(HomeContent.Showcase, before.value)
-        model.onAction(HomeAction.ClearSample)
+        val before = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
+        assertIs<DashboardContent.Ready>(before.value)
+        model.onAction(DashboardAction.ClearSample)
         assertEquals(listOf("clear"), writer.calls)
-        val after = assertIs<Loadable.Ready<HomeContent>>(model.state.value.content)
-        assertEquals(HomeContent.Empty, after.value)
+        val after = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
+        assertEquals(DashboardContent.Empty, after.value)
         assertEquals("The sample was removed.", model.state.value.message?.text)
     }
 
     @Test
     fun showAgainCallsTheEntry() {
         val entry = RecordingOnboardingEntry()
-        val model = HomeScreenViewModel(
+        val model = DashboardScreenViewModel(
             showcase = FakeShowcasePreferences(false),
             ledgerReader = EmptyLedgerReader(),
             ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
             entry = entry,
+            clock = FixedClock,
         )
-        val ready = assertIs<Loadable.Ready<HomeContent>>(model.state.value.content)
-        assertEquals(HomeContent.Empty, ready.value)
-        model.onAction(HomeAction.ShowOnboardingAgain)
+        val ready = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
+        assertEquals(DashboardContent.Empty, ready.value)
+        model.onAction(DashboardAction.ShowOnboardingAgain)
         assertEquals(1, entry.calls)
     }
 
     @Test
-    fun userRowsAreReady() {
-        assertEquals(HomeContent.Ready, homeContent(showcaseOn = false, ledgerEmpty = false))
+    fun userExpenseIsReady() {
+        val content = dashboardContent(
+            showcaseOn = false,
+            transactions = listOf(
+                Transaction(
+                    id = "cafe",
+                    categoryId = "eating-out",
+                    amountMinor = 18_645,
+                    currencyCode = "RUB",
+                    direction = MoneyDirection.EXPENSE,
+                    merchant = "Cafe",
+                    occurredOn = LocalDate(2026, 10, 1),
+                    origin = RecordOrigin.USER,
+                ),
+            ),
+            categories = listOf(Category(id = "eating-out", name = "Eating out", origin = RecordOrigin.USER)),
+            today = LocalDate(2026, 10, 29),
+        )
+        val ready = assertIs<DashboardContent.Ready>(content)
+        assertEquals(false, ready.showcase)
+        assertEquals("−186.45 RUB", ready.spending.monthExpense)
+        assertEquals(listOf("Aug", "Sep", "Oct"), ready.spending.months.map { it.label })
     }
+}
+
+private object FixedClock : InsightsClock {
+    override fun today(): LocalDate = LocalDate(2026, 10, 29)
 }
 
 private class FakeShowcasePreferences(

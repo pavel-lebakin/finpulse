@@ -11,6 +11,7 @@ import com.lebakin.finpulse.core.preferences.OnboardingPreferences
 import com.lebakin.finpulse.core.preferences.ShowcasePreferences
 import com.lebakin.finpulse.core.preferences.openAppPreferences
 import com.lebakin.finpulse.core.preferences.preferencesFilePath
+import com.lebakin.finpulse.feature.insights.di.insightsModule
 import com.lebakin.finpulse.feature.ledger.di.ledgerModule
 import com.lebakin.finpulse.feature.onboarding.di.onboardingModule
 import org.koin.core.context.startKoin
@@ -31,6 +32,7 @@ val appModule = module {
     single<OnboardingPreferences> { get<AppPreferences>().onboarding }
     includes(ledgerModule)
     includes(onboardingModule)
+    includes(insightsModule)
     single<ErrorReporter> { NoOpErrorReporter() }
     single { ComposeRootNavigator() }
     single<RootNavigator> { get<ComposeRootNavigator>() }

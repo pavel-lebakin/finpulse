@@ -3,6 +3,7 @@ package com.lebakin.finpulse.di
 import com.lebakin.finpulse.core.navigation.RootNavigator
 import com.lebakin.finpulse.core.preferences.OnboardingPreferences
 import com.lebakin.finpulse.core.preferences.ShowcasePreferences
+import com.lebakin.finpulse.feature.insights.api.InsightsEntry
 import com.lebakin.finpulse.feature.ledger.api.LedgerReader
 import com.lebakin.finpulse.feature.ledger.api.LedgerWriter
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
@@ -29,6 +30,7 @@ class LedgerGraphTest {
             koin.get<OnboardingReader>()
             koin.get<OnboardingWriter>()
             koin.get<OnboardingEntry>()
+            koin.get<InsightsEntry>()
             koin.get<RootNavigator>()
         } finally {
             System.clearProperty("finpulse.database.file")

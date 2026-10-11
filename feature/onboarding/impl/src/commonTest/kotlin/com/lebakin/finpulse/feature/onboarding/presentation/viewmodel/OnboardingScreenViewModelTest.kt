@@ -1,5 +1,6 @@
 package com.lebakin.finpulse.feature.onboarding.presentation.viewmodel
 
+import com.lebakin.finpulse.feature.insights.api.InsightsEntry
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingChoice
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingWriter
 import com.lebakin.finpulse.feature.onboarding.presentation.model.mvi.OnboardingAction
@@ -30,36 +31,42 @@ class OnboardingScreenViewModelTest {
     fun sampleChoiceIsIgnoredUntilTheLastPage() {
         val writer = FakeOnboardingWriter()
         val navigator = FakeOnboardingNavigator()
-        val model = OnboardingScreenViewModel(writer, navigator)
+        val insights = RecordingInsightsEntry()
+        val model = OnboardingScreenViewModel(writer, navigator, insights)
         model.onAction(OnboardingAction.SeeSample)
         assertEquals(emptyList(), writer.choices)
         assertEquals(emptyList(), navigator.calls)
+        assertEquals(0, insights.calls)
     }
 
     @Test
-    fun lastPageSampleOpensHome() {
+    fun lastPageSampleOpensTheDashboard() {
         val writer = FakeOnboardingWriter()
         val navigator = FakeOnboardingNavigator()
-        val model = OnboardingScreenViewModel(writer, navigator)
+        val insights = RecordingInsightsEntry()
+        val model = OnboardingScreenViewModel(writer, navigator, insights)
         repeat(3) {
             model.onAction(OnboardingAction.Next)
         }
         model.onAction(OnboardingAction.SeeSample)
         assertEquals(listOf(OnboardingChoice.Sample), writer.choices)
-        assertEquals(listOf("home"), navigator.calls)
+        assertEquals(emptyList(), navigator.calls)
+        assertEquals(1, insights.calls)
     }
 
     @Test
-    fun lastPageEmptyOpensHome() {
+    fun lastPageEmptyOpensTheDashboard() {
         val writer = FakeOnboardingWriter()
         val navigator = FakeOnboardingNavigator()
-        val model = OnboardingScreenViewModel(writer, navigator)
+        val insights = RecordingInsightsEntry()
+        val model = OnboardingScreenViewModel(writer, navigator, insights)
         repeat(3) {
             model.onAction(OnboardingAction.Next)
         }
         model.onAction(OnboardingAction.StartEmpty)
         assertEquals(listOf(OnboardingChoice.Empty), writer.choices)
-        assertEquals(listOf("home"), navigator.calls)
+        assertEquals(emptyList(), navigator.calls)
+        assertEquals(1, insights.calls)
     }
 }
 
@@ -79,8 +86,12 @@ private class FakeOnboardingNavigator : OnboardingNavigator {
     override fun openFlow() {
         calls += "flow"
     }
+}
 
-    override fun openHome() {
-        calls += "home"
+private class RecordingInsightsEntry : InsightsEntry {
+    var calls: Int = 0
+
+    override fun openDashboard() {
+        calls += 1
     }
 }

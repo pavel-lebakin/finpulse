@@ -6,8 +6,6 @@ import com.lebakin.finpulse.feature.onboarding.api.OnboardingWriter
 
 internal interface OnboardingNavigator {
     fun openFlow()
-
-    fun openHome()
 }
 
 internal class OnboardingNavigatorImpl(
@@ -15,10 +13,6 @@ internal class OnboardingNavigatorImpl(
 ) : OnboardingNavigator {
     override fun openFlow() {
         root.replace(OnboardingDestination.Flow)
-    }
-
-    override fun openHome() {
-        root.replace(OnboardingDestination.Home)
     }
 }
 

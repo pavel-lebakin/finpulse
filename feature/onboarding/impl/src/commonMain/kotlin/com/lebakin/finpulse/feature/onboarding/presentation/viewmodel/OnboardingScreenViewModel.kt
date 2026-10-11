@@ -1,6 +1,7 @@
 package com.lebakin.finpulse.feature.onboarding.presentation.viewmodel
 
 import com.lebakin.finpulse.core.mvi.ScreenViewModel
+import com.lebakin.finpulse.feature.insights.api.InsightsEntry
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingChoice
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingWriter
 import com.lebakin.finpulse.feature.onboarding.presentation.model.mvi.OnboardingAction
@@ -12,6 +13,7 @@ import com.lebakin.finpulse.feature.onboarding.presentation.navigation.Onboardin
 internal class OnboardingScreenViewModel(
     private val writer: OnboardingWriter,
     private val navigator: OnboardingNavigator,
+    private val insights: InsightsEntry,
 ) : ScreenViewModel<OnboardingState, OnboardingAction>() {
     override fun createInitialState(): OnboardingState = OnboardingReducer.initial()
 
@@ -34,7 +36,7 @@ internal class OnboardingScreenViewModel(
             reduce { OnboardingReducer.run { withMessage(error.toUserMessage()) } }
         }) {
             writer.complete(choice)
-            navigator.openHome()
+            insights.openDashboard()
         }
     }
 }

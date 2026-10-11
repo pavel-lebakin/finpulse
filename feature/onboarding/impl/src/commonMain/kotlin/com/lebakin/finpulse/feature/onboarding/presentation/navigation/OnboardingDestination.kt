@@ -10,7 +10,4 @@ sealed interface OnboardingDestination : Destination {
 
     @Serializable
     data object Flow : OnboardingDestination
-
-    @Serializable
-    data object Home : OnboardingDestination
 }

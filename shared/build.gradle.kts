@@ -20,6 +20,7 @@ kotlin {
             implementation(projects.core.uikit)
             implementation(projects.feature.ledger.impl)
             implementation(projects.feature.onboarding.impl)
+            implementation(projects.feature.insights.impl)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.serialization.json)

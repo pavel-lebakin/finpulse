@@ -32,6 +32,8 @@ include(
     ":feature:ledger:impl",
     ":feature:onboarding:api",
     ":feature:onboarding:impl",
+    ":feature:insights:api",
+    ":feature:insights:impl",
     ":catalog:shared",
     ":catalog:android",
     ":catalog:desktop",

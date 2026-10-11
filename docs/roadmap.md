@@ -12,8 +12,8 @@ The server is last.
 | 3. Quality | done | detekt, Konsist, checkModuleGraph, Roborazzi, projectMap, mobile CI, Dependabot, CodeQL, Licensee |
 | 4.1 Room and ledger | done | Room, DataStore, transactions, and showcase history |
 | 4.2 Onboarding | done | Four screens, showcase banner, clear, show again |
-| 4.3 Insights | next | Dashboard and charts |
-| 4.4 Scanner | pending | Camera, gallery, samples, OCR, rule-based parser, review screen |
+| 4.3 Insights | done | Dashboard and charts |
+| 4.4 Scanner | next | Camera, gallery, samples, OCR, rule-based parser, review screen |
 | 4.5 AI platform | pending | security, network, ai, on-device, Swift bridge, BYOK, consent, settings, licenses |
 | 4.6 Receipt parsing by a model | pending | Engine chain in the scanner |
 | 4.7 Assistant | pending | Drafts from a phrase and answers through a read-only use case |
@@ -76,3 +76,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 3 closed. `xcodebuild -project iosApp/iosApp.xcodeproj -target iosApp -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO ARCHS=arm64 ONLY_ACTIVE_ARCH=YES build` succeeded. Stage 4.1 is next.
 - Stage 4.1 closed. Room 2.8.5, bundled SQLite 2.6.2, DataStore 1.3.0, KSP 2.3.12. `:core:database` stores categories and transactions. `:core:preferences` stores the showcase flag. `:feature:ledger` seeds three months of `SHOWCASE` rows, and the first user write deletes them in one Room transaction. No ledger screen yet. Stage 4.2 is next.
 - Stage 4.2 closed. `:feature:onboarding` shows four promises, then seeds or clears the sample through `LedgerWriter`. Home keeps the sample banner with Clear now, an empty hint, and Show onboarding again through `OnboardingEntry`. The completed flag shares the preferences file. Stage 4.3 is next.
+- Stage 4.3 closed. `:feature:insights` is the dashboard. `spendingOf` totals expenses for this month and the two before it, in the currency of the newest transaction. The screen draws that total, `AmountBars`, category rows, and recent movements. The sample banner and Clear now live here. An empty ledger keeps the hint. Show onboarding again calls `OnboardingEntry`. Stage 4.4 is next.

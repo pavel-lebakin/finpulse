@@ -7,7 +7,6 @@ import com.lebakin.finpulse.feature.onboarding.data.repository.OnboardingReposit
 import com.lebakin.finpulse.feature.onboarding.presentation.navigation.OnboardingEntryImpl
 import com.lebakin.finpulse.feature.onboarding.presentation.navigation.OnboardingNavigator
 import com.lebakin.finpulse.feature.onboarding.presentation.navigation.OnboardingNavigatorImpl
-import com.lebakin.finpulse.feature.onboarding.presentation.viewmodel.HomeScreenViewModel
 import com.lebakin.finpulse.feature.onboarding.presentation.viewmodel.LaunchScreenViewModel
 import com.lebakin.finpulse.feature.onboarding.presentation.viewmodel.OnboardingScreenViewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -21,5 +20,4 @@ val onboardingModule = module {
     single<OnboardingEntry> { OnboardingEntryImpl(get(), get()) }
     viewModelOf(::LaunchScreenViewModel)
     viewModelOf(::OnboardingScreenViewModel)
-    viewModelOf(::HomeScreenViewModel)
 }
