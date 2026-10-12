@@ -12,4 +12,38 @@ extensions.configure<LicenseeExtension>("licensee") {
     allow("BSD-3-Clause")
     // The allowlist is the policy. An identifier that no current dependency uses is not a violation.
     unusedAction(UnusedAction.IGNORE)
+    // Reviewed exception: on-device receipt OCR. These coordinates are not SPDX.
+    allowDependency("com.google.mlkit", "text-recognition", "16.0.1") {
+        because("On-device Latin receipt text recognition. ML Kit Terms of Service.")
+    }
+    allowDependency("com.google.mlkit", "text-recognition-bundled-common", "17.0.0") {
+        because("Bundled Latin model for ML Kit text recognition. ML Kit Terms of Service.")
+    }
+    allowDependency("com.google.mlkit", "common", "18.11.0") {
+        because("Required by ML Kit text recognition. ML Kit Terms of Service.")
+    }
+    allowDependency("com.google.mlkit", "vision-common", "17.3.0") {
+        because("Required by ML Kit text recognition. ML Kit Terms of Service.")
+    }
+    allowDependency("com.google.mlkit", "vision-interfaces", "16.3.0") {
+        because("Required by ML Kit text recognition. ML Kit Terms of Service.")
+    }
+    allowDependency("com.google.android.gms", "play-services-mlkit-text-recognition", "19.0.1") {
+        because("Required by ML Kit text recognition. ML Kit Terms of Service.")
+    }
+    allowDependency("com.google.android.gms", "play-services-mlkit-text-recognition-common", "19.1.0") {
+        because("Required by ML Kit text recognition. ML Kit Terms of Service.")
+    }
+    allowDependency("com.google.android.gms", "play-services-base", "18.5.0") {
+        because("Required by ML Kit text recognition. Android SDK license.")
+    }
+    allowDependency("com.google.android.gms", "play-services-basement", "18.4.0") {
+        because("Required by ML Kit text recognition. Android SDK license.")
+    }
+    allowDependency("com.google.android.gms", "play-services-tasks", "18.2.0") {
+        because("Required by ML Kit text recognition. Android SDK license.")
+    }
+    allowDependency("com.google.android.odml", "image", "1.0.0-beta1") {
+        because("Required by ML Kit text recognition. Android SDK license.")
+    }
 }

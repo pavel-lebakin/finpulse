@@ -12,6 +12,7 @@ import com.lebakin.finpulse.feature.ledger.api.MoneyDirection
 import com.lebakin.finpulse.feature.ledger.api.RecordOrigin
 import com.lebakin.finpulse.feature.ledger.api.Transaction
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
+import com.lebakin.finpulse.feature.scanner.api.ScannerEntry
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -47,6 +48,7 @@ class DashboardScreenViewModelTest {
             ledgerReader = EmptyLedgerReader(),
             ledgerWriter = writer,
             entry = RecordingOnboardingEntry(),
+            scanner = RecordingScannerEntry(),
             clock = FixedClock,
         )
         val before = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
@@ -66,6 +68,7 @@ class DashboardScreenViewModelTest {
             ledgerReader = EmptyLedgerReader(),
             ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
             entry = entry,
+            scanner = RecordingScannerEntry(),
             clock = FixedClock,
         )
         val ready = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
@@ -137,6 +140,14 @@ private class RecordingLedgerWriter(
     }
 
     override suspend fun addUserTransaction(category: Category, transaction: Transaction): Boolean = false
+}
+
+private class RecordingScannerEntry : ScannerEntry {
+    var calls: Int = 0
+
+    override fun openCapture() {
+        calls += 1
+    }
 }
 
 private class RecordingOnboardingEntry : OnboardingEntry {

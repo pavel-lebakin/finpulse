@@ -16,6 +16,7 @@ import com.lebakin.finpulse.feature.ledger.api.LedgerReader
 import com.lebakin.finpulse.feature.ledger.api.LedgerWriter
 import com.lebakin.finpulse.feature.ledger.api.Transaction
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
+import com.lebakin.finpulse.feature.scanner.api.ScannerEntry
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.yield
 import kotlinx.datetime.LocalDate
@@ -25,6 +26,7 @@ internal class DashboardScreenViewModel(
     private val ledgerReader: LedgerReader,
     private val ledgerWriter: LedgerWriter,
     private val entry: OnboardingEntry,
+    private val scanner: ScannerEntry,
     private val clock: InsightsClock,
 ) : ScreenViewModel<DashboardState, DashboardAction>() {
     init {
@@ -36,6 +38,7 @@ internal class DashboardScreenViewModel(
     override fun onAction(action: DashboardAction) {
         when (action) {
             DashboardAction.ClearSample -> clearSample()
+            DashboardAction.ScanReceipt -> scanner.openCapture()
             DashboardAction.ShowOnboardingAgain -> showAgain()
             DashboardAction.Retry -> observe()
             DashboardAction.DismissMessage -> reduce { DashboardReducer.run { withMessage(null) } }

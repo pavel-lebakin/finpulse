@@ -59,7 +59,7 @@ Phase details: skill `finpulse-workflow`.
 | Tokens and components | `uikit` |
 | expect/actual and Swift | `kmp-platform` |
 | Scanner, assistant, BYOK | `ai-features` |
-| Threats and secrets | `security-review` |
+| Threats, secrets, licenses | `security-review` |
 | Diff review | `code-review` |
 | Stores | `release` |
 

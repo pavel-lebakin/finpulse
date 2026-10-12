@@ -11,7 +11,7 @@ A repository of documentation and rules for agents. The mobile client, the serve
 | Asset | Where it will live | When it appears |
 | --- | --- | --- |
 | Transactions and categories | Room on the device | Stage 4 |
-| Receipt photos | App files, later R2 | Stage 4, cloud at Stage 6 |
+| Receipt photos | Memory during capture and recognition. Not stored in Room. Cloud copies are Stage 6 | Stage 4.4, cloud at Stage 6 |
 | BYOK key | Keystore + DataStore / Keychain | Stage 4 |
 | Showcase history | Room, `origin = SHOWCASE` | Stage 4 |
 | Release signing | a gitignored file and GitHub Secrets | Stage 5 |
@@ -49,3 +49,11 @@ At Stage 1 there is no binary, database, or network. The controls of this revisi
 ## How to update
 
 At the end of a stage, append a revision: the date, what appeared in the system, which table row is closed by code, and what remains. Do not replace the table with a paragraph that says security was considered.
+
+## Revision 2026-10-29 — Stage 4.4
+
+The scanner holds a receipt image in memory only long enough to read it. The image is not inserted into Room and is not sent to a server. The review screen writes a transaction only after Confirm, through `LedgerWriter`. That write is the first user operation, so showcase rows are still deleted with it.
+
+iOS reads the image with Vision. Android reads Latin text with ML Kit on the device. The image is not written to Room and is not sent by our code. ML Kit `text-recognition` 16.0.1 and the Play Services artifacts it pulls are a reviewed license exception. Samples are parsed on both platforms without a photo.
+
+Still open: the on-device model, BYOK, network, and receipt storage in the cloud.

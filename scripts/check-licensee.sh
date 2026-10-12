@@ -62,8 +62,37 @@ if plugin_text:
         errors.append("violationAction must stay the default FAIL")
     if "ignoreDependencies" in plugin_text:
         errors.append("ignoreDependencies hides a dependency from the license check")
-    if "allowUrl" in plugin_text or "allowDependency" in plugin_text:
-        errors.append("allowUrl and allowDependency need a reviewed exception, not a blanket entry")
+    if "allowUrl" in plugin_text:
+        errors.append("allowUrl is not a reviewed exception")
+    reviewed = {
+        ("com.google.mlkit", "text-recognition", "16.0.1"),
+        ("com.google.mlkit", "text-recognition-bundled-common", "17.0.0"),
+        ("com.google.mlkit", "common", "18.11.0"),
+        ("com.google.mlkit", "vision-common", "17.3.0"),
+        ("com.google.mlkit", "vision-interfaces", "16.3.0"),
+        ("com.google.android.gms", "play-services-mlkit-text-recognition", "19.0.1"),
+        ("com.google.android.gms", "play-services-mlkit-text-recognition-common", "19.1.0"),
+        ("com.google.android.gms", "play-services-base", "18.5.0"),
+        ("com.google.android.gms", "play-services-basement", "18.4.0"),
+        ("com.google.android.gms", "play-services-tasks", "18.2.0"),
+        ("com.google.android.odml", "image", "1.0.0-beta1"),
+    }
+    dependencies = re.findall(
+        r'allowDependency\(\s*"([^"]+)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"',
+        plugin_text,
+    )
+    found = {tuple(item) for item in dependencies}
+    if found != reviewed:
+        missing = sorted(reviewed - found)
+        extra = sorted(found - reviewed)
+        if missing:
+            errors.append("reviewed OCR exceptions missing: " + ", ".join(":".join(item) for item in missing))
+        if extra:
+            errors.append("allowDependency is outside the reviewed OCR set: " + ", ".join(":".join(item) for item in extra))
+    if plugin_text.count("allowDependency(") != len(reviewed):
+        errors.append("each reviewed OCR artifact needs one allowDependency")
+    if plugin_text.count("because(") != len(reviewed):
+        errors.append("each allowDependency needs its own because reason")
     allows = re.findall(r'allow\("([^"]+)"\)', plugin_text)
     for spdx in required_allows:
         if spdx not in allows:
@@ -93,5 +122,5 @@ if errors:
         print(f"  - {error}")
     sys.exit(1)
 
-print("licensee check passed (Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause)")
+print("licensee check passed (Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, plus reviewed ML Kit OCR artifacts)")
 PY

@@ -26,6 +26,8 @@ data class DashboardState(
 sealed interface DashboardAction : ScreenAction {
     data object ClearSample : DashboardAction
 
+    data object ScanReceipt : DashboardAction
+
     data object ShowOnboardingAgain : DashboardAction
 
     data object Retry : DashboardAction

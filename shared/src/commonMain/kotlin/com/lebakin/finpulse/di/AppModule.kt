@@ -14,6 +14,7 @@ import com.lebakin.finpulse.core.preferences.preferencesFilePath
 import com.lebakin.finpulse.feature.insights.di.insightsModule
 import com.lebakin.finpulse.feature.ledger.di.ledgerModule
 import com.lebakin.finpulse.feature.onboarding.di.onboardingModule
+import com.lebakin.finpulse.feature.scanner.di.scannerModule
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -33,6 +34,7 @@ val appModule = module {
     includes(ledgerModule)
     includes(onboardingModule)
     includes(insightsModule)
+    includes(scannerModule)
     single<ErrorReporter> { NoOpErrorReporter() }
     single { ComposeRootNavigator() }
     single<RootNavigator> { get<ComposeRootNavigator>() }

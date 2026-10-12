@@ -21,6 +21,7 @@ kotlin {
             implementation(projects.feature.ledger.impl)
             implementation(projects.feature.onboarding.impl)
             implementation(projects.feature.insights.impl)
+            implementation(projects.feature.scanner.impl)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.serialization.json)
@@ -34,6 +35,11 @@ kotlin {
     sourceSets.named("commonTest") {
         dependencies {
             implementation(libs.koin.test)
+        }
+    }
+    sourceSets.named("androidMain") {
+        dependencies {
+            implementation(libs.androidx.activity.compose)
         }
     }
     sourceSets.named("jvmMain") {

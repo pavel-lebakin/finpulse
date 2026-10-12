@@ -42,6 +42,9 @@ internal fun DashboardScreen(
         verticalArrangement = Arrangement.spacedBy(spacing.m),
     ) {
         Text(text = "Dashboard", style = MaterialTheme.typography.headlineSmall)
+        Button(onClick = { onAction(DashboardAction.ScanReceipt) }) {
+            Text(text = "Scan a receipt")
+        }
         when (val content = state.content) {
             Loadable.Loading -> Text(text = "Loading")
             is Loadable.Failed -> FailedContent(message = content.error.toUserMessage().text, onAction = onAction)

@@ -34,6 +34,8 @@ include(
     ":feature:onboarding:impl",
     ":feature:insights:api",
     ":feature:insights:impl",
+    ":feature:scanner:api",
+    ":feature:scanner:impl",
     ":catalog:shared",
     ":catalog:android",
     ":catalog:desktop",

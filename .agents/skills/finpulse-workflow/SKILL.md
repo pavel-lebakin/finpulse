@@ -23,8 +23,10 @@ Read this at the start of a task, before searching the repository.
 | Theme, token, component, catalog | `uikit` |
 | Android/iOS implementation, Swift, expect/actual | `kmp-platform` |
 | Scanner, assistant, Gemini key, prompt | `ai-features` |
-| Secret, storage, network, threat model | `security-review` |
+| Secret, storage, network, threat model, dependency license | `security-review` |
 | Diff review before a commit | `code-review` |
 | Signing, store, policy | `release` |
 
 Phases: [references/phases.md](references/phases.md). Build and versions already checked: [references/build.md](references/build.md). Open the second file before Gradle, not instead of the roadmap.
+
+A library the task needs whose license fails `finpulse.licensee` is a stop. Ask the user before dropping it, replacing it, or editing the allowlist. The rule is in `security-review`.

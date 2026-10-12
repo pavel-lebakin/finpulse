@@ -7,3 +7,4 @@
 - The client does not pin the Cloudflare leaf certificate.
 - The offline build does not contain account modules.
 - The threat model received this stage's revision if assets changed.
+- A dependency outside the license allowlist was added only after the user agreed. The coordinate is a reviewed `allowDependency` in `scripts/check-licensee.sh`.

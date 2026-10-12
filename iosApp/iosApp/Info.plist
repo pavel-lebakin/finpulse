@@ -22,6 +22,10 @@
 	<true/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>FinPulse uses the camera to read a receipt on this device.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>FinPulse uses a photo you choose to read a receipt on this device.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

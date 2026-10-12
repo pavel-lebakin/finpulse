@@ -61,5 +61,7 @@ jobs:
           :feature:onboarding:impl:compileKotlinIosSimulatorArm64
           :feature:insights:api:compileKotlinIosSimulatorArm64
           :feature:insights:impl:compileKotlinIosSimulatorArm64
+          :feature:scanner:api:compileKotlinIosSimulatorArm64
+          :feature:scanner:impl:compileKotlinIosSimulatorArm64
           :catalog:catalogShared:compileKotlinIosSimulatorArm64
           licensee
