@@ -57,3 +57,11 @@ The scanner holds a receipt image in memory only long enough to read it. The ima
 iOS reads the image with Vision. Android reads Latin text with ML Kit on the device. The image is not written to Room and is not sent by our code. ML Kit `text-recognition` 16.0.1 and the Play Services artifacts it pulls are a reviewed license exception. Samples are parsed on both platforms without a photo.
 
 Still open: the on-device model, BYOK, network, and receipt storage in the cloud.
+
+## Revision 2026-10-29 — Stage 4.5 security
+
+`:core:security` can store one secret. Android generates an AES-GCM key in Android Keystore (`finpulse_byok`) and writes only ciphertext to DataStore. That file is under `noBackupFilesDir`, so backup does not copy it. The keystore key is not extractable and is not created with `security-crypto`. iOS stores the secret in the Keychain as a generic password with `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`. `observeSaved` reports a boolean. Callers that need the value use `read()` and must not put it in screen State or logs.
+
+The JVM `openSecretStore` keeps the value in memory so graph tests can run. It is not a product store.
+
+Still open: network and cleartext policy, the on-device model, the consent and settings screens that collect the key, prompt checks, and receipt storage in the cloud. The store is not called from a screen yet.

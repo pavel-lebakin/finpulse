@@ -17,6 +17,7 @@ kotlin {
             implementation(projects.core.database)
             implementation(projects.core.navigation)
             implementation(projects.core.preferences)
+            implementation(projects.core.security)
             implementation(projects.core.uikit)
             implementation(projects.feature.ledger.impl)
             implementation(projects.feature.onboarding.impl)
@@ -35,6 +36,7 @@ kotlin {
     sourceSets.named("commonTest") {
         dependencies {
             implementation(libs.koin.test)
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
     sourceSets.named("androidMain") {

@@ -14,7 +14,7 @@ The server is last.
 | 4.2 Onboarding | done | Four screens, showcase banner, clear, show again |
 | 4.3 Insights | done | Dashboard and charts |
 | 4.4 Scanner | done | Camera, gallery, samples, OCR, rule-based parser, review screen |
-| 4.5 AI platform | next | security, network, ai, on-device, Swift bridge, BYOK, consent, settings, licenses |
+| 4.5 AI platform | in progress | security, network, ai, on-device, Swift bridge, BYOK, consent, settings, licenses |
 | 4.6 Receipt parsing by a model | pending | Engine chain in the scanner |
 | 4.7 Assistant | pending | Drafts from a phrase and answers through a read-only use case |
 | 5. Stores | pending | R8, signing, policy, Data safety, App Privacy, xcprivacy, assets, release workflow, final README |
@@ -78,3 +78,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 4.2 closed. `:feature:onboarding` shows four promises, then seeds or clears the sample through `LedgerWriter`. Home keeps the sample banner with Clear now, an empty hint, and Show onboarding again through `OnboardingEntry`. The completed flag shares the preferences file. Stage 4.3 is next.
 - Stage 4.3 closed. `:feature:insights` is the dashboard. `spendingOf` totals expenses for this month and the two before it, in the currency of the newest transaction. The screen draws that total, `AmountBars`, category rows, and recent movements. The sample banner and Clear now live here. An empty ledger keeps the hint. Show onboarding again calls `OnboardingEntry`. Stage 4.4 is next.
 - Stage 4.4 closed. `:feature:scanner` takes a camera photo, a gallery image, or a bundled sample. Samples, iOS Vision, and Android ML Kit Latin text recognition go through one rule-based parser. The review screen writes an expense only after Confirm, via `LedgerWriter`. ML Kit `text-recognition` 16.0.1 and the Play Services artifacts it pulls are a reviewed Licensee exception. Stage 4.5 is next.
+- Stage 4.5 started. `:core:security` stores one secret. Android uses an AES-GCM key in Android Keystore and ciphertext in DataStore under `noBackupFilesDir`. iOS uses the Keychain with `WhenUnlockedThisDeviceOnly`. The JVM store is in memory for tests. The value is not exposed through `observeSaved`. The next item is network.

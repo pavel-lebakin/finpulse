@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.activity.ComponentActivity
 import com.lebakin.finpulse.core.database.bindAndroidDatabase
 import com.lebakin.finpulse.core.preferences.bindAndroidPreferencesDirectory
+import com.lebakin.finpulse.core.security.bindAndroidSecretDirectory
 import com.lebakin.finpulse.feature.scanner.platform.attachAndroidReceiptCapture
 
 fun prepareAndroidStorage(context: Context) {
     bindAndroidDatabase(context)
     bindAndroidPreferencesDirectory(context.filesDir.absolutePath)
+    bindAndroidSecretDirectory(context.noBackupFilesDir.absolutePath)
 }
 
 fun attachReceiptCapture(activity: ComponentActivity) {

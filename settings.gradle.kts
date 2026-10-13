@@ -28,6 +28,7 @@ include(
     ":core:uikit",
     ":core:database",
     ":core:preferences",
+    ":core:security",
     ":feature:ledger:api",
     ":feature:ledger:impl",
     ":feature:onboarding:api",
