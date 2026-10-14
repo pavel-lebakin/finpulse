@@ -46,4 +46,9 @@ extensions.configure<LicenseeExtension>("licensee") {
     allowDependency("com.google.android.odml", "image", "1.0.0-beta1") {
         because("Required by ML Kit text recognition. Android SDK license.")
     }
+    // Reviewed exception: OkHttp pulls this API. The license is MIT.
+    // Licensee 1.14.1 does not map https://opensource.org/license/mit to SPDX MIT.
+    allowDependency("org.slf4j", "slf4j-api", "2.0.19") {
+        because("MIT logging API pulled by the Ktor OkHttp engine. The published URL is not mapped to SPDX MIT.")
+    }
 }

@@ -29,6 +29,7 @@ include(
     ":core:database",
     ":core:preferences",
     ":core:security",
+    ":core:network",
     ":feature:ledger:api",
     ":feature:ledger:impl",
     ":feature:onboarding:api",

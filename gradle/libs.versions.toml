@@ -28,6 +28,8 @@ okio = "3.17.0"
 datetime = "0.7.1"
 # On-device Latin text recognition. Checked against maven-metadata.xml on 2026-10-29.
 mlkit-text-recognition = "16.0.1"
+# HTTPS client. maven-metadata.xml on 2026-10-29 lists 3.6.1, but that release has no iOS artifacts.
+ktor = "3.6.0"
 
 [libraries]
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -58,6 +60,9 @@ androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-p
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 mlkit-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "mlkit-text-recognition" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

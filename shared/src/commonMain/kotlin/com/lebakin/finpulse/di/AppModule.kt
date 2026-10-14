@@ -11,6 +11,7 @@ import com.lebakin.finpulse.core.preferences.OnboardingPreferences
 import com.lebakin.finpulse.core.preferences.ShowcasePreferences
 import com.lebakin.finpulse.core.preferences.openAppPreferences
 import com.lebakin.finpulse.core.preferences.preferencesFilePath
+import com.lebakin.finpulse.core.network.openHttpsClient
 import com.lebakin.finpulse.core.security.openSecretStore
 import com.lebakin.finpulse.feature.insights.di.insightsModule
 import com.lebakin.finpulse.feature.ledger.di.ledgerModule
@@ -31,6 +32,7 @@ val appModule = module {
     single { openFinPulseDatabase(databaseFilePath()) }
     single { openAppPreferences(preferencesFilePath()) }
     single { openSecretStore() }
+    single { openHttpsClient() }
     single<ShowcasePreferences> { get<AppPreferences>().showcase }
     single<OnboardingPreferences> { get<AppPreferences>().onboarding }
     includes(ledgerModule)

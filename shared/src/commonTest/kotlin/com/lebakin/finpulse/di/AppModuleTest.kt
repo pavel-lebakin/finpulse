@@ -2,6 +2,7 @@ package com.lebakin.finpulse.di
 
 import com.lebakin.finpulse.core.common.AppError
 import com.lebakin.finpulse.core.common.ErrorReporter
+import com.lebakin.finpulse.core.network.HttpsClient
 import com.lebakin.finpulse.core.security.SecretStore
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -22,6 +23,7 @@ class AppModuleTest {
         assertIs<NoOpErrorReporter>(reporter)
         reporter.report(AppError.Unexpected(IllegalStateException("unused")))
         koin.get<com.lebakin.finpulse.core.navigation.ComposeRootNavigator>()
+        koin.get<HttpsClient>()
         val store = koin.get<SecretStore>()
         assertFalse(store.observeSaved().first())
         store.save("local-only")

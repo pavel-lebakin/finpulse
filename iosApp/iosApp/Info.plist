@@ -22,6 +22,11 @@
 	<true/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>FinPulse uses the camera to read a receipt on this device.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

@@ -14,6 +14,8 @@ Licensee 1.14.1 (`app.cash.licensee:licensee-gradle-plugin`) checks runtime lice
 
 Room 2.8.5 (`androidx.room:room-runtime`, `room-compiler`, plugin `androidx.room`) with `androidx.sqlite:sqlite-bundled` 2.6.2. KSP 2.3.12 (`com.google.devtools.ksp`) compiles Kotlin 2.4.21. DataStore preferences core 1.3.0 and Okio 3.17.0. `kotlinx-datetime` 0.7.1. Checked against maven-metadata.xml on 2026-10-29.
 
+Ktor client 3.6.0 (`io.ktor:ktor-client-core`, `ktor-client-okhttp`, `ktor-client-darwin`). Checked against maven-metadata.xml on 2026-10-29. Release 3.6.1 has no iOS artifacts. The server build stays at Stage 6.
+
 Koin screen binding is `io.insert-koin:koin-core-viewmodel` and `io.insert-koin:koin-compose-viewmodel` 4.2.2. State collection is `org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose` 2.11.0. Checked against maven-metadata.xml on 2026-10-29.
 
 ## Command

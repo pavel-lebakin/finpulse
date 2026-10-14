@@ -65,3 +65,11 @@ Still open: the on-device model, BYOK, network, and receipt storage in the cloud
 The JVM `openSecretStore` keeps the value in memory so graph tests can run. It is not a product store.
 
 Still open: network and cleartext policy, the on-device model, the consent and settings screens that collect the key, prompt checks, and receipt storage in the cloud. The store is not called from a screen yet.
+
+## Revision 2026-10-29 — Stage 4.5 network
+
+`:core:network` sends one HTTPS POST. `HttpsClient` rejects any other scheme, and a URL with userinfo, before the engine is called. Redirects stay off, so a 3xx cannot continue onto cleartext. A transport failure is `NoConnectionException`. Any other status is `ServerStatusException` without the response body. The client does not pin a certificate and does not log the body or headers. Android declares `INTERNET` and sets `usesCleartextTraffic` to false with a network security config that applies to every build, including debug. iOS sets `NSAllowsArbitraryLoads` to false. No feature calls the client yet. The offline build still has no account.
+
+`org.slf4j:slf4j-api:2.0.19` is a reviewed Licensee exception. OkHttp pulls it for the JVM and Android engines. The license is MIT. Licensee 1.14.1 does not map `https://opensource.org/license/mit` to that SPDX id.
+
+Still open: the on-device model, the consent and settings screens that collect the key, prompt checks, and receipt storage in the cloud. The secret store is not called from a screen yet. The HTTPS client is not called from a screen yet.
