@@ -30,6 +30,7 @@ include(
     ":core:preferences",
     ":core:security",
     ":core:network",
+    ":core:ai",
     ":feature:ledger:api",
     ":feature:ledger:impl",
     ":feature:onboarding:api",

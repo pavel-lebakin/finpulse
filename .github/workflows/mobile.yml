@@ -55,6 +55,7 @@ jobs:
           :core:uikit:compileKotlinIosSimulatorArm64
           :core:database:compileKotlinIosSimulatorArm64
           :core:preferences:compileKotlinIosSimulatorArm64
+          :core:ai:compileKotlinIosSimulatorArm64
           :feature:ledger:api:compileKotlinIosSimulatorArm64
           :feature:ledger:impl:compileKotlinIosSimulatorArm64
           :feature:onboarding:api:compileKotlinIosSimulatorArm64

@@ -73,3 +73,9 @@ Still open: network and cleartext policy, the on-device model, the consent and s
 `org.slf4j:slf4j-api:2.0.19` is a reviewed Licensee exception. OkHttp pulls it for the JVM and Android engines. The license is MIT. Licensee 1.14.1 does not map `https://opensource.org/license/mit` to that SPDX id.
 
 Still open: the on-device model, the consent and settings screens that collect the key, prompt checks, and receipt storage in the cloud. The secret store is not called from a screen yet. The HTTPS client is not called from a screen yet.
+
+## Revision 2026-10-29 — Stage 4.5 ai
+
+`:core:ai` keeps receipt text between data markers. A marker that appears inside the receipt is broken, so the block still has one end. The instruction text does not tell the model to follow commands from that block. `checkReceiptReply` accepts only one JSON object with the five receipt keys. A repeated key is rejected. The amount is a positive integer of at most nine digits, the currency is USD, EUR, GBP, or RUB, the date is a real calendar day, and the category is one of four labels. Any other reply, including invalid JSON, is `ReceiptCheck.Rejected`. The accepted value is a `ReceiptReply`. It is not written as a transaction. No feature calls the module yet.
+
+Still open: the on-device model, the consent and settings screens that collect the key, and receipt storage in the cloud. The secret store is not called from a screen yet. The HTTPS client is not called from a screen yet. The prompt helper is not called from a screen yet.
