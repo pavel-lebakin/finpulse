@@ -46,6 +46,22 @@ extensions.configure<LicenseeExtension>("licensee") {
     allowDependency("com.google.android.odml", "image", "1.0.0-beta1") {
         because("Required by ML Kit text recognition. Android SDK license.")
     }
+    // Reviewed exception: on-device Gemini Nano. These coordinates are not SPDX.
+    allowDependency("com.google.mlkit", "genai-prompt", "1.0.0-beta5") {
+        because("On-device Gemini Nano prompt API. ML Kit Terms of Service.")
+    }
+    allowDependency("com.google.mlkit", "genai-common", "1.0.0-beta5") {
+        because("Required by the ML Kit prompt API. ML Kit Terms of Service.")
+    }
+    allowDependency("com.google.mlkit", "genai-schema", "1.0.0-alpha2") {
+        because("Required by the ML Kit prompt API. Android Software Development Kit License.")
+    }
+    allowDependency("com.google.android.gms", "play-services-basement", "18.9.0") {
+        because("Required by the ML Kit prompt API. Android Software Development Kit License.")
+    }
+    allowDependency("org.reactivestreams", "reactive-streams", "1.0.3") {
+        because("CC0-1.0 streams API pulled by the ML Kit prompt API through kotlinx-coroutines-reactive.")
+    }
     // Reviewed exception: OkHttp pulls this API. The license is MIT.
     // Licensee 1.14.1 does not map https://opensource.org/license/mit to SPDX MIT.
     allowDependency("org.slf4j", "slf4j-api", "2.0.19") {

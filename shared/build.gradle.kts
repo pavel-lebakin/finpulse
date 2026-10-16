@@ -19,6 +19,7 @@ kotlin {
             implementation(projects.core.preferences)
             implementation(projects.core.security)
             implementation(projects.core.network)
+            implementation(projects.core.ai)
             implementation(projects.core.uikit)
             implementation(projects.feature.ledger.impl)
             implementation(projects.feature.onboarding.impl)

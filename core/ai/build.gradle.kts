@@ -3,10 +3,22 @@ plugins {
 }
 
 kotlin {
+    // The default hierarchy is applied after this script, so androidMain does not exist yet.
+    applyDefaultHierarchyTemplate()
     sourceSets.named("commonMain") {
         dependencies {
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
+        }
+    }
+    sourceSets.named("androidMain") {
+        dependencies {
+            implementation(libs.mlkit.genai.prompt)
+        }
+    }
+    sourceSets.named("jvmTest") {
+        dependencies {
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }

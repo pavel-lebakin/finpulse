@@ -76,6 +76,11 @@ if plugin_text:
         ("com.google.android.gms", "play-services-basement", "18.4.0"),
         ("com.google.android.gms", "play-services-tasks", "18.2.0"),
         ("com.google.android.odml", "image", "1.0.0-beta1"),
+        ("com.google.mlkit", "genai-prompt", "1.0.0-beta5"),
+        ("com.google.mlkit", "genai-common", "1.0.0-beta5"),
+        ("com.google.mlkit", "genai-schema", "1.0.0-alpha2"),
+        ("com.google.android.gms", "play-services-basement", "18.9.0"),
+        ("org.reactivestreams", "reactive-streams", "1.0.3"),
         ("org.slf4j", "slf4j-api", "2.0.19"),
     }
     dependencies = re.findall(
@@ -123,5 +128,5 @@ if errors:
         print(f"  - {error}")
     sys.exit(1)
 
-print("licensee check passed (Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, plus reviewed ML Kit OCR artifacts and org.slf4j:slf4j-api:2.0.19)")
+print("licensee check passed (Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, plus reviewed ML Kit OCR and GenAI artifacts, org.reactivestreams:reactive-streams:1.0.3, and org.slf4j:slf4j-api:2.0.19)")
 PY
