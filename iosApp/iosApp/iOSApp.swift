@@ -4,6 +4,7 @@ import Shared
 @main
 struct iOSApp: App {
     init() {
+        registerFoundationOnDeviceEngine()
         KoinKt.doInitKoin()
     }
 

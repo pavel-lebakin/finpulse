@@ -9,6 +9,7 @@ kotlin {
         binaries.framework {
             baseName = "Shared"
             isStatic = true
+            export(projects.core.ai)
         }
     }
     sourceSets.named("commonMain") {
@@ -19,7 +20,7 @@ kotlin {
             implementation(projects.core.preferences)
             implementation(projects.core.security)
             implementation(projects.core.network)
-            implementation(projects.core.ai)
+            api(projects.core.ai)
             implementation(projects.core.uikit)
             implementation(projects.feature.ledger.impl)
             implementation(projects.feature.onboarding.impl)
