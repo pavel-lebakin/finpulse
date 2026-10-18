@@ -7,6 +7,8 @@ kotlin {
     applyDefaultHierarchyTemplate()
     sourceSets.named("commonMain") {
         dependencies {
+            api(projects.core.network)
+            api(projects.core.security)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
         }
@@ -19,6 +21,7 @@ kotlin {
     sourceSets.named("jvmTest") {
         dependencies {
             implementation(libs.kotlinx.coroutines.test)
+            implementation(projects.core.common)
         }
     }
 }
