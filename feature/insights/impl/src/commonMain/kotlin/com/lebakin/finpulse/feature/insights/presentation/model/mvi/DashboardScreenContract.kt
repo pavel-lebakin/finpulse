@@ -30,6 +30,8 @@ sealed interface DashboardAction : ScreenAction {
 
     data object ShowOnboardingAgain : DashboardAction
 
+    data object OpenConsent : DashboardAction
+
     data object Retry : DashboardAction
 
     data object DismissMessage : DashboardAction

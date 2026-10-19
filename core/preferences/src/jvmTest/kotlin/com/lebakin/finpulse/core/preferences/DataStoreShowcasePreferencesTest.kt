@@ -52,4 +52,26 @@ class DataStoreShowcasePreferencesTest {
             scope.cancel()
         }
     }
+
+    @Test
+    fun consentStartsOffAndSharesTheFile() = runTest {
+        val directory = Files.createTempDirectory("finpulse-preferences-consent")
+        val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+        val preferences = openAppPreferences(
+            path = directory.resolve("finpulse.preferences_pb").toString(),
+            scope = scope,
+        )
+        try {
+            assertFalse(preferences.consent.isGranted())
+            preferences.consent.setGranted(true)
+            preferences.onboarding.setCompleted(true)
+            assertTrue(preferences.consent.observeGranted().first())
+            assertTrue(preferences.onboarding.observeCompleted().first())
+            preferences.consent.setGranted(false)
+            assertFalse(preferences.consent.isGranted())
+            assertTrue(preferences.onboarding.observeCompleted().first())
+        } finally {
+            scope.cancel()
+        }
+    }
 }

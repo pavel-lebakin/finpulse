@@ -4,6 +4,7 @@ import com.lebakin.finpulse.core.common.NoConnectionException
 import com.lebakin.finpulse.core.common.ServerStatusException
 import com.lebakin.finpulse.core.network.HttpReply
 import com.lebakin.finpulse.core.network.HttpsClient
+import com.lebakin.finpulse.core.preferences.ConsentPreferences
 import com.lebakin.finpulse.core.security.SecretStore
 import java.io.IOException
 import kotlin.coroutines.cancellation.CancellationException
@@ -22,9 +23,9 @@ class ByokModelTest {
     fun aMissingKeyDoesNotCallGemini() = runTest {
         val client = RecordingClient()
 
-        assertNull(openByokModel(MemoryStore(), client))
-        assertNull(openByokModel(MemoryStore("not a key"), client))
-        assertNull(openByokModel(MemoryStore("line\nbreak"), client))
+        assertNull(openByokModel(MemoryStore(), client, grantedConsent()))
+        assertNull(openByokModel(MemoryStore("not a key"), client, grantedConsent()))
+        assertNull(openByokModel(MemoryStore("line\nbreak"), client, grantedConsent()))
         assertEquals(0, client.calls)
     }
 
@@ -42,7 +43,7 @@ class ByokModelTest {
                 """.trimIndent(),
             ),
         )
-        val model = openByokModel(MemoryStore(key), client)
+        val model = openByokModel(MemoryStore(key), client, grantedConsent())
 
         val text = model?.complete("say \"hi\"")
 
@@ -64,7 +65,7 @@ class ByokModelTest {
     @Test
     fun aBlankPromptDoesNotCallGemini() = runTest {
         val client = RecordingClient()
-        val model = openByokModel(MemoryStore("test-gemini-key"), client)
+        val model = openByokModel(MemoryStore("test-gemini-key"), client, grantedConsent())
 
         assertFailsWith<IllegalArgumentException> {
             model?.complete("  ")
@@ -76,7 +77,7 @@ class ByokModelTest {
     fun aDeletedKeyDoesNotCallGemini() = runTest {
         val store = MemoryStore("test-gemini-key")
         val client = RecordingClient()
-        val model = openByokModel(store, client)
+        val model = openByokModel(store, client, grantedConsent())
         store.delete()
 
         val error = assertFailsWith<ByokFailed> {
@@ -91,7 +92,7 @@ class ByokModelTest {
     fun anUnreadableReplyIsNotATransaction() = runTest {
         val key = "test-gemini-key"
         val client = RecordingClient(HttpReply(statusCode = 200, body = "not-json $key"))
-        val model = openByokModel(MemoryStore(key), client)
+        val model = openByokModel(MemoryStore(key), client, grantedConsent())
 
         val error = assertFailsWith<ByokFailed> {
             model?.complete("receipt")
@@ -109,16 +110,39 @@ class ByokModelTest {
         val stopped = RecordingClient(failure = CancellationException("stop"))
 
         assertFailsWith<NoConnectionException> {
-            openByokModel(store, offline)?.complete("receipt")
+            openByokModel(store, offline, grantedConsent())?.complete("receipt")
         }
         val server = assertFailsWith<ServerStatusException> {
-            openByokModel(store, denied)?.complete("receipt")
+            openByokModel(store, denied, grantedConsent())?.complete("receipt")
         }
         assertEquals(401, server.statusCode)
         assertFalse(server.message.orEmpty().contains("test-gemini-key"))
         assertFailsWith<CancellationException> {
-            openByokModel(store, stopped)?.complete("receipt")
+            openByokModel(store, stopped, grantedConsent())?.complete("receipt")
         }
+    }
+
+    @Test
+    fun aSavedKeyWithoutConsentDoesNotCallGemini() = runTest {
+        val client = RecordingClient()
+
+        assertNull(openByokModel(MemoryStore("test-gemini-key"), client, MemoryConsent(false)))
+        assertEquals(0, client.calls)
+    }
+
+    @Test
+    fun aRevokedConsentDoesNotCallGemini() = runTest {
+        val consent = MemoryConsent(true)
+        val client = RecordingClient()
+        val model = openByokModel(MemoryStore("test-gemini-key"), client, consent)
+        consent.setGranted(false)
+
+        val error = assertFailsWith<ByokFailed> {
+            model?.complete("receipt")
+        }
+        assertEquals("BYOK model failed", error.message)
+        assertNull(error.cause)
+        assertEquals(0, client.calls)
     }
 }
 
@@ -138,6 +162,20 @@ private class RecordingClient(
         this.headers = headers
         failure?.let { throw it }
         return reply
+    }
+}
+
+private fun grantedConsent(): ConsentPreferences = MemoryConsent(true)
+
+private class MemoryConsent(initial: Boolean) : ConsentPreferences {
+    private val granted = MutableStateFlow(initial)
+
+    override fun observeGranted(): Flow<Boolean> = granted
+
+    override suspend fun isGranted(): Boolean = granted.value
+
+    override suspend fun setGranted(granted: Boolean) {
+        this.granted.value = granted
     }
 }
 

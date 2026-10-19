@@ -1,6 +1,7 @@
 package com.lebakin.finpulse.di
 
 import com.lebakin.finpulse.core.navigation.RootNavigator
+import com.lebakin.finpulse.core.preferences.ConsentPreferences
 import com.lebakin.finpulse.core.preferences.OnboardingPreferences
 import com.lebakin.finpulse.core.preferences.ShowcasePreferences
 import com.lebakin.finpulse.feature.insights.api.InsightsEntry
@@ -10,6 +11,9 @@ import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingReader
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingWriter
 import com.lebakin.finpulse.feature.scanner.api.ScannerEntry
+import com.lebakin.finpulse.feature.settings.api.SettingsEntry
+import com.lebakin.finpulse.feature.settings.api.SettingsReader
+import com.lebakin.finpulse.feature.settings.api.SettingsWriter
 import java.nio.file.Files
 import kotlin.test.Test
 import org.koin.dsl.koinApplication
@@ -33,6 +37,10 @@ class LedgerGraphTest {
             koin.get<OnboardingEntry>()
             koin.get<InsightsEntry>()
             koin.get<ScannerEntry>()
+            koin.get<ConsentPreferences>()
+            koin.get<SettingsReader>()
+            koin.get<SettingsWriter>()
+            koin.get<SettingsEntry>()
             koin.get<RootNavigator>()
         } finally {
             System.clearProperty("finpulse.database.file")

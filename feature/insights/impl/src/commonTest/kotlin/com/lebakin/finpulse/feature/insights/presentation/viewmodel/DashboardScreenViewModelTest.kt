@@ -13,6 +13,7 @@ import com.lebakin.finpulse.feature.ledger.api.RecordOrigin
 import com.lebakin.finpulse.feature.ledger.api.Transaction
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
 import com.lebakin.finpulse.feature.scanner.api.ScannerEntry
+import com.lebakin.finpulse.feature.settings.api.SettingsEntry
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -49,6 +50,7 @@ class DashboardScreenViewModelTest {
             ledgerWriter = writer,
             entry = RecordingOnboardingEntry(),
             scanner = RecordingScannerEntry(),
+            settings = RecordingSettingsEntry(),
             clock = FixedClock,
         )
         val before = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
@@ -69,12 +71,29 @@ class DashboardScreenViewModelTest {
             ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
             entry = entry,
             scanner = RecordingScannerEntry(),
+            settings = RecordingSettingsEntry(),
             clock = FixedClock,
         )
         val ready = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
         assertEquals(DashboardContent.Empty, ready.value)
         model.onAction(DashboardAction.ShowOnboardingAgain)
         assertEquals(1, entry.calls)
+    }
+
+    @Test
+    fun openConsentCallsSettings() {
+        val settings = RecordingSettingsEntry()
+        val model = DashboardScreenViewModel(
+            showcase = FakeShowcasePreferences(false),
+            ledgerReader = EmptyLedgerReader(),
+            ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
+            entry = RecordingOnboardingEntry(),
+            scanner = RecordingScannerEntry(),
+            settings = settings,
+            clock = FixedClock,
+        )
+        model.onAction(DashboardAction.OpenConsent)
+        assertEquals(1, settings.calls)
     }
 
     @Test
@@ -140,6 +159,14 @@ private class RecordingLedgerWriter(
     }
 
     override suspend fun addUserTransaction(category: Category, transaction: Transaction): Boolean = false
+}
+
+private class RecordingSettingsEntry : SettingsEntry {
+    var calls: Int = 0
+
+    override fun openConsent() {
+        calls += 1
+    }
 }
 
 private class RecordingScannerEntry : ScannerEntry {

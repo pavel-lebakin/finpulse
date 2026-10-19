@@ -26,6 +26,7 @@ kotlin {
             implementation(projects.feature.onboarding.impl)
             implementation(projects.feature.insights.impl)
             implementation(projects.feature.scanner.impl)
+            implementation(projects.feature.settings.impl)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.serialization.json)

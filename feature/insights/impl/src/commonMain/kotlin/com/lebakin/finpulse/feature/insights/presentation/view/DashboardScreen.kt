@@ -53,6 +53,9 @@ internal fun DashboardScreen(
         TextButton(onClick = { onAction(DashboardAction.ShowOnboardingAgain) }) {
             Text(text = "Show onboarding again")
         }
+        TextButton(onClick = { onAction(DashboardAction.OpenConsent) }) {
+            Text(text = "Allow sending to Gemini")
+        }
         MessageText(message = state.message, onDismiss = { onAction(DashboardAction.DismissMessage) })
         if (state.sheet != null) {
             TextButton(onClick = { onAction(DashboardAction.DismissSheet) }) {

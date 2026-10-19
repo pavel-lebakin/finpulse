@@ -7,6 +7,7 @@ import com.lebakin.finpulse.core.database.openFinPulseDatabase
 import com.lebakin.finpulse.core.navigation.ComposeRootNavigator
 import com.lebakin.finpulse.core.navigation.RootNavigator
 import com.lebakin.finpulse.core.preferences.AppPreferences
+import com.lebakin.finpulse.core.preferences.ConsentPreferences
 import com.lebakin.finpulse.core.preferences.OnboardingPreferences
 import com.lebakin.finpulse.core.preferences.ShowcasePreferences
 import com.lebakin.finpulse.core.preferences.openAppPreferences
@@ -17,6 +18,7 @@ import com.lebakin.finpulse.feature.insights.di.insightsModule
 import com.lebakin.finpulse.feature.ledger.di.ledgerModule
 import com.lebakin.finpulse.feature.onboarding.di.onboardingModule
 import com.lebakin.finpulse.feature.scanner.di.scannerModule
+import com.lebakin.finpulse.feature.settings.di.settingsModule
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -35,10 +37,12 @@ val appModule = module {
     single { openHttpsClient() }
     single<ShowcasePreferences> { get<AppPreferences>().showcase }
     single<OnboardingPreferences> { get<AppPreferences>().onboarding }
+    single<ConsentPreferences> { get<AppPreferences>().consent }
     includes(ledgerModule)
     includes(onboardingModule)
     includes(insightsModule)
     includes(scannerModule)
+    includes(settingsModule)
     single<ErrorReporter> { NoOpErrorReporter() }
     single { ComposeRootNavigator() }
     single<RootNavigator> { get<ComposeRootNavigator>() }

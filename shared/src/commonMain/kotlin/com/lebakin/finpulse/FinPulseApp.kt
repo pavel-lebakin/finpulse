@@ -16,6 +16,8 @@ import com.lebakin.finpulse.feature.onboarding.presentation.navigation.Onboardin
 import com.lebakin.finpulse.feature.onboarding.presentation.navigation.onboardingGraph
 import com.lebakin.finpulse.feature.scanner.presentation.navigation.ScannerDestination
 import com.lebakin.finpulse.feature.scanner.presentation.navigation.scannerGraph
+import com.lebakin.finpulse.feature.settings.presentation.navigation.SettingsDestination
+import com.lebakin.finpulse.feature.settings.presentation.navigation.settingsGraph
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
@@ -29,6 +31,7 @@ private val navSavedState = SavedStateConfiguration {
             subclass(InsightsDestination.Dashboard::class, InsightsDestination.Dashboard.serializer())
             subclass(ScannerDestination.Capture::class, ScannerDestination.Capture.serializer())
             subclass(ScannerDestination.Review::class, ScannerDestination.Review.serializer())
+            subclass(SettingsDestination.Consent::class, SettingsDestination.Consent.serializer())
         }
     }
 }
@@ -60,6 +63,7 @@ fun FinPulseApp() {
                 onboardingGraph()
                 insightsGraph()
                 scannerGraph()
+                settingsGraph()
             },
         )
     }

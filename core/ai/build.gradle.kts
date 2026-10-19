@@ -9,6 +9,7 @@ kotlin {
         dependencies {
             api(projects.core.network)
             api(projects.core.security)
+            api(projects.core.preferences)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
         }

@@ -1,6 +1,7 @@
 package com.lebakin.finpulse.core.ai
 
 import com.lebakin.finpulse.core.network.HttpsClient
+import com.lebakin.finpulse.core.preferences.ConsentPreferences
 import com.lebakin.finpulse.core.security.SecretStore
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -34,9 +35,14 @@ private val parser = Json
 
 @OptIn(ExperimentalObjCRefinement::class)
 @HiddenFromObjC
-suspend fun openByokModel(store: SecretStore, client: HttpsClient): ByokModel? {
+suspend fun openByokModel(
+    store: SecretStore,
+    client: HttpsClient,
+    consent: ConsentPreferences,
+): ByokModel? {
+    if (!consent.isGranted()) return null
     val key = store.read()?.takeIf(::acceptedByokKey)
-    return if (key == null) null else GeminiByokModel(store, client)
+    return if (key == null) null else GeminiByokModel(store, client, consent)
 }
 
 private fun acceptedByokKey(key: String): Boolean {
@@ -47,10 +53,11 @@ private fun acceptedByokKey(key: String): Boolean {
 private class GeminiByokModel(
     private val store: SecretStore,
     private val client: HttpsClient,
+    private val consent: ConsentPreferences,
 ) : ByokModel {
     override suspend fun complete(prompt: String): String {
         require(prompt.isNotBlank()) { "Prompt is empty." }
-        val key = currentKey() ?: throw ByokFailed()
+        val key = currentKey()?.takeIf { consent.isGranted() } ?: throw ByokFailed()
         val reply = client.post(
             url = GEMINI_GENERATE_URL,
             body = geminiRequestBody(prompt),

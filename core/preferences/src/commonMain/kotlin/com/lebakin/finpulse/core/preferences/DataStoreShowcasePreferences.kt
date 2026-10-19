@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import okio.Path.Companion.toPath
 
@@ -27,6 +28,7 @@ fun openAppPreferences(
     return AppPreferences(
         showcase = DataStoreShowcasePreferences(store),
         onboarding = DataStoreOnboardingPreferences(store),
+        consent = DataStoreConsentPreferences(store),
     )
 }
 
@@ -68,5 +70,25 @@ private class DataStoreOnboardingPreferences(
 
     private companion object {
         val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
+    }
+}
+
+private class DataStoreConsentPreferences(
+    private val store: DataStore<Preferences>,
+) : ConsentPreferences {
+    override fun observeGranted(): Flow<Boolean> = store.data.map { preferences ->
+        preferences[SENDING_GRANTED] ?: false
+    }
+
+    override suspend fun isGranted(): Boolean = observeGranted().first()
+
+    override suspend fun setGranted(granted: Boolean) {
+        store.edit { preferences ->
+            preferences[SENDING_GRANTED] = granted
+        }
+    }
+
+    private companion object {
+        val SENDING_GRANTED = booleanPreferencesKey("sending_granted")
     }
 }
