@@ -10,6 +10,7 @@ kotlin {
             implementation(projects.core.navigation)
             implementation(projects.core.uikit)
             implementation(projects.core.preferences)
+            implementation(projects.core.security)
             implementation(libs.koin.core)
             implementation(libs.koin.core.viewmodel)
             implementation(libs.koin.compose.viewmodel)

@@ -4,4 +4,8 @@ interface SettingsWriter {
     suspend fun grantConsent()
 
     suspend fun declineConsent()
+
+    suspend fun saveKey(key: String): KeySave
+
+    suspend fun deleteKey()
 }

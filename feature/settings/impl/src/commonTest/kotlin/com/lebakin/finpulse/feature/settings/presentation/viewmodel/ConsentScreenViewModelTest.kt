@@ -1,6 +1,7 @@
 package com.lebakin.finpulse.feature.settings.presentation.viewmodel
 
 import com.lebakin.finpulse.core.common.Loadable
+import com.lebakin.finpulse.feature.settings.api.KeySave
 import com.lebakin.finpulse.feature.settings.api.SettingsReader
 import com.lebakin.finpulse.feature.settings.api.SettingsWriter
 import com.lebakin.finpulse.feature.settings.presentation.model.mvi.ConsentAction
@@ -65,6 +66,8 @@ private class MemorySettingsReader(initial: Boolean) : SettingsReader {
     private val granted = MutableStateFlow(initial)
 
     override fun observeConsent(): Flow<Boolean> = granted
+
+    override fun observeKeySaved(): Flow<Boolean> = MutableStateFlow(false)
 }
 
 private class RecordingSettingsWriter : SettingsWriter {
@@ -77,6 +80,10 @@ private class RecordingSettingsWriter : SettingsWriter {
     override suspend fun declineConsent() {
         calls += "decline"
     }
+
+    override suspend fun saveKey(key: String): KeySave = KeySave.Rejected
+
+    override suspend fun deleteKey() = Unit
 }
 
 private class RecordingSettingsNavigator : SettingsNavigator {
@@ -84,6 +91,10 @@ private class RecordingSettingsNavigator : SettingsNavigator {
 
     override fun openConsent() {
         calls += "open"
+    }
+
+    override fun openKey() {
+        calls += "key"
     }
 
     override fun back() {

@@ -8,14 +8,16 @@ import com.lebakin.finpulse.feature.settings.presentation.navigation.SettingsEnt
 import com.lebakin.finpulse.feature.settings.presentation.navigation.SettingsNavigator
 import com.lebakin.finpulse.feature.settings.presentation.navigation.SettingsNavigatorImpl
 import com.lebakin.finpulse.feature.settings.presentation.viewmodel.ConsentScreenViewModel
+import com.lebakin.finpulse.feature.settings.presentation.viewmodel.KeyScreenViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val settingsModule = module {
-    single { SettingsRepository(get()) }
+    single { SettingsRepository(get(), get()) }
     single<SettingsReader> { get<SettingsRepository>() }
     single<SettingsWriter> { get<SettingsRepository>() }
     single<SettingsNavigator> { SettingsNavigatorImpl(get()) }
     single<SettingsEntry> { SettingsEntryImpl(get()) }
     viewModelOf(::ConsentScreenViewModel)
+    viewModelOf(::KeyScreenViewModel)
 }

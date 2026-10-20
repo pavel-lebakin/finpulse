@@ -6,6 +6,8 @@ import com.lebakin.finpulse.feature.settings.api.SettingsEntry
 internal interface SettingsNavigator {
     fun openConsent()
 
+    fun openKey()
+
     fun back()
 }
 
@@ -14,6 +16,10 @@ internal class SettingsNavigatorImpl(
 ) : SettingsNavigator {
     override fun openConsent() {
         root.navigate(SettingsDestination.Consent)
+    }
+
+    override fun openKey() {
+        root.navigate(SettingsDestination.Key)
     }
 
     override fun back() {
@@ -26,5 +32,9 @@ internal class SettingsEntryImpl(
 ) : SettingsEntry {
     override fun openConsent() {
         navigator.openConsent()
+    }
+
+    override fun openKey() {
+        navigator.openKey()
     }
 }

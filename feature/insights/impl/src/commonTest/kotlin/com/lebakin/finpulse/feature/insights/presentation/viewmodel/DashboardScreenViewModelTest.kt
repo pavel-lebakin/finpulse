@@ -93,7 +93,23 @@ class DashboardScreenViewModelTest {
             clock = FixedClock,
         )
         model.onAction(DashboardAction.OpenConsent)
-        assertEquals(1, settings.calls)
+        assertEquals(listOf("consent"), settings.calls)
+    }
+
+    @Test
+    fun openKeyCallsSettings() {
+        val settings = RecordingSettingsEntry()
+        val model = DashboardScreenViewModel(
+            showcase = FakeShowcasePreferences(false),
+            ledgerReader = EmptyLedgerReader(),
+            ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
+            entry = RecordingOnboardingEntry(),
+            scanner = RecordingScannerEntry(),
+            settings = settings,
+            clock = FixedClock,
+        )
+        model.onAction(DashboardAction.OpenKey)
+        assertEquals(listOf("key"), settings.calls)
     }
 
     @Test
@@ -162,10 +178,14 @@ private class RecordingLedgerWriter(
 }
 
 private class RecordingSettingsEntry : SettingsEntry {
-    var calls: Int = 0
+    val calls = mutableListOf<String>()
 
     override fun openConsent() {
-        calls += 1
+        calls += "consent"
+    }
+
+    override fun openKey() {
+        calls += "key"
     }
 }
 

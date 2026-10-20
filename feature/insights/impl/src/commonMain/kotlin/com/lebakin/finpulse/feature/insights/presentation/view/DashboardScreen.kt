@@ -56,6 +56,9 @@ internal fun DashboardScreen(
         TextButton(onClick = { onAction(DashboardAction.OpenConsent) }) {
             Text(text = "Allow sending to Gemini")
         }
+        TextButton(onClick = { onAction(DashboardAction.OpenKey) }) {
+            Text(text = "Gemini key")
+        }
         MessageText(message = state.message, onDismiss = { onAction(DashboardAction.DismissMessage) })
         if (state.sheet != null) {
             TextButton(onClick = { onAction(DashboardAction.DismissSheet) }) {

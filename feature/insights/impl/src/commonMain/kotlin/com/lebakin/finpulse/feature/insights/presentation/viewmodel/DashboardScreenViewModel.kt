@@ -43,6 +43,7 @@ internal class DashboardScreenViewModel(
             DashboardAction.ScanReceipt -> scanner.openCapture()
             DashboardAction.ShowOnboardingAgain -> showAgain()
             DashboardAction.OpenConsent -> settings.openConsent()
+            DashboardAction.OpenKey -> settings.openKey()
             DashboardAction.Retry -> observe()
             DashboardAction.DismissMessage -> reduce { DashboardReducer.run { withMessage(null) } }
             DashboardAction.DismissSheet -> reduce { DashboardReducer.run { withSheet(null) } }

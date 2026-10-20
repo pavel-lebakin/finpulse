@@ -4,4 +4,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface SettingsReader {
     fun observeConsent(): Flow<Boolean>
+
+    fun observeKeySaved(): Flow<Boolean>
 }

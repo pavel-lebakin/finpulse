@@ -103,3 +103,9 @@ Still open: the consent and settings screens that collect the key, and receipt s
 `:core:preferences` stores one boolean, `sending_granted`, in the same preferences file. It stays false until the user agrees. `:feature:settings` shows that choice before a Gemini key can be saved. The screen says receipt text would be sent to Google Gemini and would leave the device. Agree sets the flag. Decline clears it. Neither action reads or writes the secret store, and neither calls the network. `openByokModel` returns null when the flag is false, before it reads a key. `complete` checks the flag again and throws `ByokFailed` without a post when the user has declined. The key field is still absent. The dashboard opens this screen.
 
 Still open: the settings screen that collects the key, and receipt storage in the cloud. The secret store is not called from a screen yet. The on-device model is not called from a screen yet. The BYOK model is not called from a screen yet.
+
+## Revision 2026-10-29 — Stage 4.5 settings
+
+`:feature:settings` collects a Gemini key after consent. The field is shown only when `sending_granted` is true. Save writes the key through `SecretStore` when it is one printable ASCII token of at most 512 characters. The key is not placed in screen State, a message, or a log. The screen then shows that a key is saved and offers Delete. Delete clears the secret. Without consent, or with a blank, spaced, or over-long key, `save` is not called. The screen does not call the network and does not read the secret back. The dashboard opens this screen.
+
+Still open: receipt storage in the cloud, and the licenses screen. The on-device model is not called from a screen yet. The BYOK model is not called from a screen yet. The HTTPS client is not called from a screen yet.
