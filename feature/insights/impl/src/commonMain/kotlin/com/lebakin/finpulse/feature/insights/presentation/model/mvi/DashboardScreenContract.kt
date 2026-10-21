@@ -34,6 +34,8 @@ sealed interface DashboardAction : ScreenAction {
 
     data object OpenKey : DashboardAction
 
+    data object OpenLicenses : DashboardAction
+
     data object Retry : DashboardAction
 
     data object DismissMessage : DashboardAction

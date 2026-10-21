@@ -16,6 +16,8 @@ Room 2.8.5 (`androidx.room:room-runtime`, `room-compiler`, plugin `androidx.room
 
 Ktor client 3.6.0 (`io.ktor:ktor-client-core`, `ktor-client-okhttp`, `ktor-client-darwin`). Checked against maven-metadata.xml on 2026-10-29. Release 3.6.1 has no iOS artifacts. The server build stays at Stage 6.
 
+AboutLibraries 15.3.0 (`com.mikepenz:aboutlibraries-core`, `aboutlibraries-compose-m3`, plugin `com.mikepenz.aboutlibraries.plugin`). Checked against maven-metadata.xml on 2026-10-29. The license is Apache-2.0. `:shared` exports the notices. The settings screen draws them.
+
 ML Kit GenAI Prompt API `com.google.mlkit:genai-prompt` 1.0.0-beta5. Checked against maven-metadata.xml on 2026-10-29. The license is ML Kit Terms of Service, a reviewed Licensee exception.
 
 Koin screen binding is `io.insert-koin:koin-core-viewmodel` and `io.insert-koin:koin-compose-viewmodel` 4.2.2. State collection is `org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose` 2.11.0. Checked against maven-metadata.xml on 2026-10-29.

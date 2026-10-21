@@ -8,6 +8,8 @@ internal interface SettingsNavigator {
 
     fun openKey()
 
+    fun openLicenses()
+
     fun back()
 }
 
@@ -20,6 +22,10 @@ internal class SettingsNavigatorImpl(
 
     override fun openKey() {
         root.navigate(SettingsDestination.Key)
+    }
+
+    override fun openLicenses() {
+        root.navigate(SettingsDestination.Licenses)
     }
 
     override fun back() {
@@ -36,5 +42,9 @@ internal class SettingsEntryImpl(
 
     override fun openKey() {
         navigator.openKey()
+    }
+
+    override fun openLicenses() {
+        navigator.openLicenses()
     }
 }

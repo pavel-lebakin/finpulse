@@ -9,6 +9,7 @@ import com.lebakin.finpulse.feature.settings.presentation.navigation.SettingsNav
 import com.lebakin.finpulse.feature.settings.presentation.navigation.SettingsNavigatorImpl
 import com.lebakin.finpulse.feature.settings.presentation.viewmodel.ConsentScreenViewModel
 import com.lebakin.finpulse.feature.settings.presentation.viewmodel.KeyScreenViewModel
+import com.lebakin.finpulse.feature.settings.presentation.viewmodel.LicensesScreenViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -20,4 +21,5 @@ val settingsModule = module {
     single<SettingsEntry> { SettingsEntryImpl(get()) }
     viewModelOf(::ConsentScreenViewModel)
     viewModelOf(::KeyScreenViewModel)
+    viewModelOf(::LicensesScreenViewModel)
 }

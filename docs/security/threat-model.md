@@ -108,4 +108,10 @@ Still open: the settings screen that collects the key, and receipt storage in th
 
 `:feature:settings` collects a Gemini key after consent. The field is shown only when `sending_granted` is true. Save writes the key through `SecretStore` when it is one printable ASCII token of at most 512 characters. The key is not placed in screen State, a message, or a log. The screen then shows that a key is saved and offers Delete. Delete clears the secret. Without consent, or with a blank, spaced, or over-long key, `save` is not called. The screen does not call the network and does not read the secret back. The dashboard opens this screen.
 
-Still open: receipt storage in the cloud, and the licenses screen. The on-device model is not called from a screen yet. The BYOK model is not called from a screen yet. The HTTPS client is not called from a screen yet.
+Still open: receipt storage in the cloud. The on-device model is not called from a screen yet. The BYOK model is not called from a screen yet. The HTTPS client is not called from a screen yet.
+
+## Revision 2026-10-29 — Stage 4.5 licenses
+
+`:shared` exports one AboutLibraries file from the app classpath. The plugin runs offline and does not fetch license text. `:feature:settings` reads that file through `LicenseReader` and draws it with AboutLibraries. The screen does not collect a key, does not read the secret store, and does not call the network. The dashboard opens it.
+
+Still open: receipt storage in the cloud. The on-device model is not called from a screen yet. The BYOK model is not called from a screen yet. The HTTPS client is not called from a screen yet.

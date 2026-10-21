@@ -14,8 +14,8 @@ The server is last.
 | 4.2 Onboarding | done | Four screens, showcase banner, clear, show again |
 | 4.3 Insights | done | Dashboard and charts |
 | 4.4 Scanner | done | Camera, gallery, samples, OCR, rule-based parser, review screen |
-| 4.5 AI platform | in progress | security, network, ai, on-device, Swift bridge, BYOK, consent, settings, licenses |
-| 4.6 Receipt parsing by a model | pending | Engine chain in the scanner |
+| 4.5 AI platform | done | security, network, ai, on-device, Swift bridge, BYOK, consent, settings, licenses |
+| 4.6 Receipt parsing by a model | next | Engine chain in the scanner |
 | 4.7 Assistant | pending | Drafts from a phrase and answers through a read-only use case |
 | 5. Stores | pending | R8, signing, policy, Data safety, App Privacy, xcprivacy, assets, release workflow, final README |
 | 6. Cloud | pending | Ktor services, Postgres, Redis, Kafka, R2, Cloudflare, sync behind a flag, threat model |
@@ -86,3 +86,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 4.5, BYOK. `openByokModel` returns a model only when the secret store holds one acceptable Gemini key. `complete` posts the prompt to `gemini-3.8-flash:generateContent` with the key in the `x-goog-api-key` header. A missing key does not call the network. The reply text is not a transaction. The model is not bound in Koin. No feature calls it yet. The next item is consent.
 - Stage 4.5, consent. `:feature:settings` shows a consent screen before a Gemini key can be saved. Agree stores that receipt text may be sent to Google Gemini. Decline clears that flag. `openByokModel` returns null without consent and does not call the network. The screen does not collect or save a key. The dashboard opens it. The next item is settings.
 - Stage 4.5, settings. `:feature:settings` shows a key screen after consent. Save stores one acceptable Gemini key in the secret store. The key is not in State. The screen shows that a key is saved and can delete it. A missing consent or a rejected key does not save. The screen does not call the network. The dashboard opens it. The next item is licenses.
+- Stage 4.5, licenses. `:shared` exports AboutLibraries 15.3.0 from the app classpath, offline. `:feature:settings` draws that list. JVM-only and hot-reload artifacts are left out. The screen does not collect a key and does not call the network. The dashboard opens it. Stage 4.5 is closed. Stage 4.6 is next.

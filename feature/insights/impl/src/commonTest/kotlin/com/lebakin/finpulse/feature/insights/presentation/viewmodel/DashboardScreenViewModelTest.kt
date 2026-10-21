@@ -113,6 +113,22 @@ class DashboardScreenViewModelTest {
     }
 
     @Test
+    fun openLicensesCallsSettings() {
+        val settings = RecordingSettingsEntry()
+        val model = DashboardScreenViewModel(
+            showcase = FakeShowcasePreferences(false),
+            ledgerReader = EmptyLedgerReader(),
+            ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
+            entry = RecordingOnboardingEntry(),
+            scanner = RecordingScannerEntry(),
+            settings = settings,
+            clock = FixedClock,
+        )
+        model.onAction(DashboardAction.OpenLicenses)
+        assertEquals(listOf("licenses"), settings.calls)
+    }
+
+    @Test
     fun userExpenseIsReady() {
         val content = dashboardContent(
             showcaseOn = false,
@@ -186,6 +202,10 @@ private class RecordingSettingsEntry : SettingsEntry {
 
     override fun openKey() {
         calls += "key"
+    }
+
+    override fun openLicenses() {
+        calls += "licenses"
     }
 }
 

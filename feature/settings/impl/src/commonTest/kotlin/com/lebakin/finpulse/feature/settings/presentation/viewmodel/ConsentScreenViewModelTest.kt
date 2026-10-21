@@ -97,6 +97,10 @@ private class RecordingSettingsNavigator : SettingsNavigator {
         calls += "key"
     }
 
+    override fun openLicenses() {
+        calls += "licenses"
+    }
+
     override fun back() {
         calls += "back"
     }

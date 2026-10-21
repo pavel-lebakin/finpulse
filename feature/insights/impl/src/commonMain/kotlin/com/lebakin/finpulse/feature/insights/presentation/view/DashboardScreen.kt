@@ -59,6 +59,9 @@ internal fun DashboardScreen(
         TextButton(onClick = { onAction(DashboardAction.OpenKey) }) {
             Text(text = "Gemini key")
         }
+        TextButton(onClick = { onAction(DashboardAction.OpenLicenses) }) {
+            Text(text = "Open source licenses")
+        }
         MessageText(message = state.message, onDismiss = { onAction(DashboardAction.DismissMessage) })
         if (state.sheet != null) {
             TextButton(onClick = { onAction(DashboardAction.DismissSheet) }) {

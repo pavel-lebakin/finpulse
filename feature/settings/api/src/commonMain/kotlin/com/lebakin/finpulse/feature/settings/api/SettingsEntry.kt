@@ -4,4 +4,6 @@ interface SettingsEntry {
     fun openConsent()
 
     fun openKey()
+
+    fun openLicenses()
 }

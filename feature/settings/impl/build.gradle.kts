@@ -17,6 +17,8 @@ kotlin {
             implementation(libs.lifecycle.viewmodel)
             implementation(libs.lifecycle.runtime.compose)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.aboutlibraries.core)
+            implementation(libs.aboutlibraries.compose.m3)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
