@@ -8,6 +8,7 @@ kotlin {
             api(projects.feature.scanner.api)
             implementation(projects.feature.ledger.api)
             implementation(projects.feature.insights.api)
+            implementation(projects.core.ai)
             implementation(projects.core.mvi)
             implementation(projects.core.navigation)
             implementation(projects.core.uikit)

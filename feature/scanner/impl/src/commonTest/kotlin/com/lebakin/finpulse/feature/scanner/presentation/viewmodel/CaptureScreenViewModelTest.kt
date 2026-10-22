@@ -3,7 +3,9 @@ package com.lebakin.finpulse.feature.scanner.presentation.viewmodel
 import com.lebakin.finpulse.feature.scanner.domain.CaptureOutcome
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptCapture
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptClock
+import com.lebakin.finpulse.feature.scanner.domain.ReceiptEngines
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptImage
+import com.lebakin.finpulse.feature.scanner.domain.ReceiptModel
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptOcr
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptParser
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptSamples
@@ -83,17 +85,48 @@ class CaptureScreenViewModelTest {
         assertEquals("North Cafe", session.current()?.merchant)
         assertEquals(listOf("review"), navigator.calls)
     }
+
+    @Test
+    fun recognizedPhotoUsesAnAcceptedOnDeviceReply() {
+        val session = ReceiptSession()
+        val navigator = RecordingNavigator()
+        val image = ReceiptImage(byteArrayOf(1))
+        val engines = ReceiptEngines(
+            rules = ReceiptParser(CaptureClock),
+            onDevice = { ReceiptModel { ACCEPTED_REPLY } },
+            byok = { null },
+        )
+        val model = model(
+            session,
+            navigator,
+            FakeReceiptCapture(CaptureOutcome.Image(image)),
+            FakeReceiptOcr(ReceiptSamples.text("cafe").orEmpty()),
+            engines,
+        )
+        model.onAction(CaptureAction.PickFromGallery)
+        assertEquals("Model Shop", session.current()?.merchant)
+        assertEquals(listOf("review"), navigator.calls)
+    }
 }
+
+private const val ACCEPTED_REPLY =
+    """{"merchant":"Model Shop","amountMinor":999,"currencyCode":"GBP","occurredOn":"2026-03-04","categoryName":"Transport"}"""
 
 private fun model(
     session: ReceiptSession,
     navigator: ScannerNavigator,
     capture: ReceiptCapture,
     ocr: ReceiptOcr,
+    engines: ReceiptEngines = ReceiptEngines(
+        rules = ReceiptParser(CaptureClock),
+        onDevice = { null },
+        byok = { null },
+    ),
 ) = CaptureScreenViewModel(
     capture = capture,
     ocr = ocr,
     parser = ReceiptParser(CaptureClock),
+    engines = engines,
     session = session,
     navigator = navigator,
 )

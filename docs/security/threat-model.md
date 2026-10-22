@@ -115,3 +115,9 @@ Still open: receipt storage in the cloud. The on-device model is not called from
 `:shared` exports one AboutLibraries file from the app classpath. The plugin runs offline and does not fetch license text. `:feature:settings` reads that file through `LicenseReader` and draws it with AboutLibraries. The screen does not collect a key, does not read the secret store, and does not call the network. The dashboard opens it.
 
 Still open: receipt storage in the cloud. The on-device model is not called from a screen yet. The BYOK model is not called from a screen yet. The HTTPS client is not called from a screen yet.
+
+## Revision 2026-10-29 — Stage 4.6
+
+`:feature:scanner` parses camera and gallery text through an engine chain. A ready on-device model is asked first. The prompt is `receiptPrompt`. The reply is accepted only by `checkReceiptReply`. An accepted `ReceiptReply` is a draft on the review screen, not a transaction. A missing engine, a model failure, or a rejected reply falls through to the rule-based parser. Samples stay on that parser and do not call a model. BYOK is opened only when the rules cannot read the text. `openByokModel` still returns null without consent or an acceptable key, and then no request is made. A successful local parse does not read the key and does not call the network. Connection and HTTP status errors from a BYOK call propagate. The prompt, the reply, and the key are not logged. Confirm still writes through `LedgerWriter`.
+
+Still open: the assistant, and receipt storage in the cloud.

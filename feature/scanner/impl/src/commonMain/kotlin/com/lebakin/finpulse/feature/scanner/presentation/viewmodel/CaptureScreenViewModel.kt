@@ -7,6 +7,7 @@ import com.lebakin.finpulse.feature.scanner.domain.MAX_RECEIPT_BYTES
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptCapture
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptDraft
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptImage
+import com.lebakin.finpulse.feature.scanner.domain.ReceiptEngines
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptOcr
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptParser
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptSamples
@@ -23,6 +24,7 @@ internal class CaptureScreenViewModel(
     private val capture: ReceiptCapture,
     private val ocr: ReceiptOcr,
     private val parser: ReceiptParser,
+    private val engines: ReceiptEngines,
     private val session: ReceiptSession,
     private val navigator: ScannerNavigator,
 ) : ScreenViewModel<CaptureState, CaptureAction>() {
@@ -74,7 +76,7 @@ internal class CaptureScreenViewModel(
         if (image.bytes.isEmpty() || image.bytes.size > MAX_RECEIPT_BYTES) {
             throw ReceiptUnreadable(ReceiptUnreadable.UNREADABLE)
         }
-        openDraft(parser.parse(ocr.read(image)))
+        openDraft(engines.parse(ocr.read(image)))
     }
 
     private fun openDraft(draft: ReceiptDraft) {
