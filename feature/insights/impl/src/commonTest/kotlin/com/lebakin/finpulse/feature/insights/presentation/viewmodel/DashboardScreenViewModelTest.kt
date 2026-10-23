@@ -11,6 +11,7 @@ import com.lebakin.finpulse.feature.ledger.api.LedgerWriter
 import com.lebakin.finpulse.feature.ledger.api.MoneyDirection
 import com.lebakin.finpulse.feature.ledger.api.RecordOrigin
 import com.lebakin.finpulse.feature.ledger.api.Transaction
+import com.lebakin.finpulse.feature.assistant.api.AssistantEntry
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
 import com.lebakin.finpulse.feature.scanner.api.ScannerEntry
 import com.lebakin.finpulse.feature.settings.api.SettingsEntry
@@ -50,6 +51,7 @@ class DashboardScreenViewModelTest {
             ledgerWriter = writer,
             entry = RecordingOnboardingEntry(),
             scanner = RecordingScannerEntry(),
+            assistant = RecordingAssistantEntry(),
             settings = RecordingSettingsEntry(),
             clock = FixedClock,
         )
@@ -71,6 +73,7 @@ class DashboardScreenViewModelTest {
             ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
             entry = entry,
             scanner = RecordingScannerEntry(),
+            assistant = RecordingAssistantEntry(),
             settings = RecordingSettingsEntry(),
             clock = FixedClock,
         )
@@ -89,6 +92,7 @@ class DashboardScreenViewModelTest {
             ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
             entry = RecordingOnboardingEntry(),
             scanner = RecordingScannerEntry(),
+            assistant = RecordingAssistantEntry(),
             settings = settings,
             clock = FixedClock,
         )
@@ -105,6 +109,7 @@ class DashboardScreenViewModelTest {
             ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
             entry = RecordingOnboardingEntry(),
             scanner = RecordingScannerEntry(),
+            assistant = RecordingAssistantEntry(),
             settings = settings,
             clock = FixedClock,
         )
@@ -121,11 +126,29 @@ class DashboardScreenViewModelTest {
             ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
             entry = RecordingOnboardingEntry(),
             scanner = RecordingScannerEntry(),
+            assistant = RecordingAssistantEntry(),
             settings = settings,
             clock = FixedClock,
         )
         model.onAction(DashboardAction.OpenLicenses)
         assertEquals(listOf("licenses"), settings.calls)
+    }
+
+    @Test
+    fun askPhraseCallsTheAssistant() {
+        val assistant = RecordingAssistantEntry()
+        val model = DashboardScreenViewModel(
+            showcase = FakeShowcasePreferences(false),
+            ledgerReader = EmptyLedgerReader(),
+            ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
+            entry = RecordingOnboardingEntry(),
+            scanner = RecordingScannerEntry(),
+            assistant = assistant,
+            settings = RecordingSettingsEntry(),
+            clock = FixedClock,
+        )
+        model.onAction(DashboardAction.AskPhrase)
+        assertEquals(1, assistant.calls)
     }
 
     @Test
@@ -206,6 +229,14 @@ private class RecordingSettingsEntry : SettingsEntry {
 
     override fun openLicenses() {
         calls += "licenses"
+    }
+}
+
+private class RecordingAssistantEntry : AssistantEntry {
+    var calls: Int = 0
+
+    override fun openAsk() {
+        calls += 1
     }
 }
 

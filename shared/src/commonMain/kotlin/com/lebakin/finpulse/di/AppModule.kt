@@ -14,6 +14,7 @@ import com.lebakin.finpulse.core.preferences.openAppPreferences
 import com.lebakin.finpulse.core.preferences.preferencesFilePath
 import com.lebakin.finpulse.core.network.openHttpsClient
 import com.lebakin.finpulse.core.security.openSecretStore
+import com.lebakin.finpulse.feature.assistant.di.assistantModule
 import com.lebakin.finpulse.feature.insights.di.insightsModule
 import com.lebakin.finpulse.feature.ledger.di.ledgerModule
 import com.lebakin.finpulse.feature.onboarding.di.onboardingModule
@@ -43,6 +44,7 @@ val appModule = module {
     includes(onboardingModule)
     includes(insightsModule)
     includes(scannerModule)
+    includes(assistantModule)
     includes(settingsModule)
     single<LicenseReader> { GeneratedLicenseReader() }
     single<ErrorReporter> { NoOpErrorReporter() }

@@ -121,3 +121,9 @@ Still open: receipt storage in the cloud. The on-device model is not called from
 `:feature:scanner` parses camera and gallery text through an engine chain. A ready on-device model is asked first. The prompt is `receiptPrompt`. The reply is accepted only by `checkReceiptReply`. An accepted `ReceiptReply` is a draft on the review screen, not a transaction. A missing engine, a model failure, or a rejected reply falls through to the rule-based parser. Samples stay on that parser and do not call a model. BYOK is opened only when the rules cannot read the text. `openByokModel` still returns null without consent or an acceptable key, and then no request is made. A successful local parse does not read the key and does not call the network. Connection and HTTP status errors from a BYOK call propagate. The prompt, the reply, and the key are not logged. Confirm still writes through `LedgerWriter`.
 
 Still open: the assistant, and receipt storage in the cloud.
+
+## Revision 2026-10-29 — Stage 4.7
+
+`:feature:assistant` turns a phrase into a draft or into one read-only answer. The month-spend question is the intent `MonthSpend` in our code. It calls `LedgerReader.observeTransactions` and sums this month's expenses in the currency of the newest transaction. The prompt does not name that intent, a query, or any other question. Any other question gets a fixed reply and does not open a model. A phrase the rules can read becomes a draft and does not open BYOK. A phrase with a digit that the rules cannot read goes through `phrasePrompt`: on-device first, then BYOK. The reply is accepted only by `checkReceiptReply`. An accepted reply is a draft on the confirm screen, not a transaction. Confirm writes through `LedgerWriter`. A missing consent or key does not call the network. The phrase, the reply, and the key are not logged.
+
+Still open: receipt storage in the cloud.

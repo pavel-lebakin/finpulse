@@ -4,6 +4,7 @@ import com.lebakin.finpulse.core.navigation.RootNavigator
 import com.lebakin.finpulse.core.preferences.ConsentPreferences
 import com.lebakin.finpulse.core.preferences.OnboardingPreferences
 import com.lebakin.finpulse.core.preferences.ShowcasePreferences
+import com.lebakin.finpulse.feature.assistant.api.AssistantEntry
 import com.lebakin.finpulse.feature.insights.api.InsightsEntry
 import com.lebakin.finpulse.feature.ledger.api.LedgerReader
 import com.lebakin.finpulse.feature.ledger.api.LedgerWriter
@@ -38,6 +39,7 @@ class LedgerGraphTest {
             koin.get<OnboardingEntry>()
             koin.get<InsightsEntry>()
             koin.get<ScannerEntry>()
+            koin.get<AssistantEntry>()
             koin.get<ConsentPreferences>()
             koin.get<SettingsReader>()
             koin.get<SettingsWriter>()

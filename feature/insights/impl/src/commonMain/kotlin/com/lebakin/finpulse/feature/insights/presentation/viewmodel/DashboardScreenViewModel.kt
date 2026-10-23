@@ -15,6 +15,7 @@ import com.lebakin.finpulse.feature.ledger.api.Category
 import com.lebakin.finpulse.feature.ledger.api.LedgerReader
 import com.lebakin.finpulse.feature.ledger.api.LedgerWriter
 import com.lebakin.finpulse.feature.ledger.api.Transaction
+import com.lebakin.finpulse.feature.assistant.api.AssistantEntry
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
 import com.lebakin.finpulse.feature.scanner.api.ScannerEntry
 import com.lebakin.finpulse.feature.settings.api.SettingsEntry
@@ -28,6 +29,7 @@ internal class DashboardScreenViewModel(
     private val ledgerWriter: LedgerWriter,
     private val entry: OnboardingEntry,
     private val scanner: ScannerEntry,
+    private val assistant: AssistantEntry,
     private val settings: SettingsEntry,
     private val clock: InsightsClock,
 ) : ScreenViewModel<DashboardState, DashboardAction>() {
@@ -41,6 +43,7 @@ internal class DashboardScreenViewModel(
         when (action) {
             DashboardAction.ClearSample -> clearSample()
             DashboardAction.ScanReceipt -> scanner.openCapture()
+            DashboardAction.AskPhrase -> assistant.openAsk()
             DashboardAction.ShowOnboardingAgain -> showAgain()
             DashboardAction.OpenConsent -> settings.openConsent()
             DashboardAction.OpenKey -> settings.openKey()

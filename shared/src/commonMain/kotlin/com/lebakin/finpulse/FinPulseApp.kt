@@ -10,6 +10,8 @@ import androidx.savedstate.serialization.SavedStateConfiguration
 import com.lebakin.finpulse.core.navigation.ComposeRootNavigator
 import com.lebakin.finpulse.core.navigation.RootCommand
 import com.lebakin.finpulse.core.uikit.FinPulseTheme
+import com.lebakin.finpulse.feature.assistant.presentation.navigation.AssistantDestination
+import com.lebakin.finpulse.feature.assistant.presentation.navigation.assistantGraph
 import com.lebakin.finpulse.feature.insights.presentation.navigation.InsightsDestination
 import com.lebakin.finpulse.feature.insights.presentation.navigation.insightsGraph
 import com.lebakin.finpulse.feature.onboarding.presentation.navigation.OnboardingDestination
@@ -31,6 +33,8 @@ private val navSavedState = SavedStateConfiguration {
             subclass(InsightsDestination.Dashboard::class, InsightsDestination.Dashboard.serializer())
             subclass(ScannerDestination.Capture::class, ScannerDestination.Capture.serializer())
             subclass(ScannerDestination.Review::class, ScannerDestination.Review.serializer())
+            subclass(AssistantDestination.Ask::class, AssistantDestination.Ask.serializer())
+            subclass(AssistantDestination.Confirm::class, AssistantDestination.Confirm.serializer())
             subclass(SettingsDestination.Consent::class, SettingsDestination.Consent.serializer())
         }
     }
@@ -63,6 +67,7 @@ fun FinPulseApp() {
                 onboardingGraph()
                 insightsGraph()
                 scannerGraph()
+                assistantGraph()
                 settingsGraph()
             },
         )

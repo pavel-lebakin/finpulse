@@ -28,6 +28,8 @@ sealed interface DashboardAction : ScreenAction {
 
     data object ScanReceipt : DashboardAction
 
+    data object AskPhrase : DashboardAction
+
     data object ShowOnboardingAgain : DashboardAction
 
     data object OpenConsent : DashboardAction
