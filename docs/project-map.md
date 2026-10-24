@@ -123,7 +123,9 @@ Package and applicationId `com.lebakin.finpulse`. Depends only on `:shared`.
 
 `FinPulseApplication` calls `prepareAndroidStorage`, then `initKoin()`. `MainActivity` attaches receipt capture, then shows `FinPulseApp`. The camera permission is optional. `INTERNET` is declared. Cleartext is off in every build through `usesCleartextTraffic` and `network_security_config`. There is no debug exception.
 
-Check: `scripts/check.sh :androidApp:assembleDebug`.
+The release build type runs R8 and shrinks resources. Signing reads gitignored `keystore.properties` when that file exists. Without it the release bundle is unsigned. The launcher is the adaptive icon `mipmap/ic_launcher`.
+
+Check: `scripts/check.sh :androidApp:assembleDebug`. The release bundle is `:androidApp:bundleRelease`.
 
 ### `catalog/AGENTS.md`
 
@@ -367,6 +369,6 @@ Check: `scripts/check.sh :tooling:architecture-tests:test :tooling:architecture-
 
 Xcode project `iosApp/iosApp.xcodeproj`, bundle id `com.lebakin.finpulse`, iOS 16. Signing is off.
 
-Startup: `registerFoundationOnDeviceEngine()`, then `KoinKt.doInitKoin()`, then `MainViewControllerKt.MainViewController()`. On iOS 26 and later that registration passes Apple Foundation Models through `OnDeviceEngine`. An unavailable model stays unready, and the app does not download it. The prompt and the reply are not logged. The framework is looked up in `shared/build/xcode-frameworks`. Camera and photo library usage strings are in `Info.plist`. The photo stays on the device. App Transport Security sets `NSAllowsArbitraryLoads` to false, so cleartext is off.
+Startup: `registerFoundationOnDeviceEngine()`, then `KoinKt.doInitKoin()`, then `MainViewControllerKt.MainViewController()`. On iOS 26 and later that registration passes Apple Foundation Models through `OnDeviceEngine`. An unavailable model stays unready, and the app does not download it. The prompt and the reply are not logged. The framework is looked up in `shared/build/xcode-frameworks`. Camera and photo library usage strings are in `Info.plist`. The photo stays on the device. App Transport Security sets `NSAllowsArbitraryLoads` to false, so cleartext is off. `PrivacyInfo.xcprivacy` is in the app bundle. `ITSAppUsesNonExemptEncryption` is false: this target uses HTTPS and the Keychain, not a custom cipher. The app icon is `AppIcon` in `Assets.xcassets`.
 
 The simulator build command is in `finpulse-workflow/references/build.md`. Do not run it on every commit.

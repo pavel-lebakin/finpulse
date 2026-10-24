@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FinPulse privacy policy</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; color: #1a1a1a; }
+    h1 { font-size: 1.6rem; }
+    h2 { font-size: 1.15rem; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>FinPulse privacy policy</h1>
+  <p>Effective 29 October 2026. Publisher: Pavel Lebakin. This page describes the store build of FinPulse, version 0.1.0.</p>
+  <p>FinPulse is a money tracker that works without an account. The store build does not send your transactions to a FinPulse server. There is no advertising and no analytics kit. FinPulse does not sell data.</p>
+
+  <h2>What stays on the device</h2>
+  <ul>
+    <li>Transactions and categories, in a database in the app's private files.</li>
+    <li>Sample history, until you add your own transaction or tap Clear now. Those rows are not your records.</li>
+    <li>Onboarding and consent choices, in a preferences file on the device.</li>
+    <li>A receipt photo, in memory only while the app reads it. The photo is not written into the database.</li>
+    <li>A Gemini API key, if you save one. On Android the ciphertext is in the no-backup directory and the wrapping key is in Android Keystore. On iOS the key is in the Keychain and is available only when this device is unlocked.</li>
+  </ul>
+
+  <h2>What can leave the device</h2>
+  <p>Nothing is sent until you agree on the consent screen and then save a Gemini key.</p>
+  <p>After that, receipt text — or a phrase the on-device rules could not read — may be sent to Google Gemini at <code>generativelanguage.googleapis.com</code> so the app can propose a draft. The key travels only in the <code>x-goog-api-key</code> header of that request. The connection is HTTPS. FinPulse does not keep a copy of the request on a server of its own.</p>
+  <p>If you decline, the key is not saved and that request is not sent. Deleting the key in settings stops later requests. Camera samples bundled with the app are parsed on the device and are not sent.</p>
+  <p>On-device reading does not upload the photo or the text. Android may use ML Kit on the device. iOS may use Vision, and on iOS 26 or later Apple Foundation Models, when that model is already available. The app does not download a model for you.</p>
+
+  <h2>Backup</h2>
+  <p>Android Auto Backup can include the local ledger and the preferences file, because those files live in the app files directory. It does not include the Gemini key file. iOS device backup follows Apple's rules for files in the app container and for Keychain items marked for this device only.</p>
+
+  <h2>Children</h2>
+  <p>FinPulse is not directed at children, and it does not offer an account a child could create.</p>
+
+  <h2>Changes</h2>
+  <p>A change to this policy is published on this page. The date at the top is the date of the current text.</p>
+</body>
+</html>

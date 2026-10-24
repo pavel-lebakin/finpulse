@@ -13,8 +13,12 @@ to an app store. See [LICENSE](LICENSE).
 
 ## Status
 
-Stage 2 builds. Android debug APKs, the desktop catalog, and the iOS simulator
-Kotlin framework compile. Current status: [docs/roadmap.md](docs/roadmap.md).
+The store build is offline. Android release bundles are minified with R8.
+Signing stays in gitignored `keystore.properties` and in GitHub Actions
+secrets. Current status: [docs/roadmap.md](docs/roadmap.md).
+
+- [Privacy policy](docs/legal/index.html), published from `docs/legal` by GitHub Pages
+- [Data safety, App Privacy, and signing](docs/release/README.md)
 
 Local JDK is JBR 21 from Android Studio, via `JAVA_HOME`. `sdk.dir` goes in
 gitignored `local.properties`. See [docs/conventions.md](docs/conventions.md).

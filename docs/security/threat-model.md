@@ -127,3 +127,9 @@ Still open: the assistant, and receipt storage in the cloud.
 `:feature:assistant` turns a phrase into a draft or into one read-only answer. The month-spend question is the intent `MonthSpend` in our code. It calls `LedgerReader.observeTransactions` and sums this month's expenses in the currency of the newest transaction. The prompt does not name that intent, a query, or any other question. Any other question gets a fixed reply and does not open a model. A phrase the rules can read becomes a draft and does not open BYOK. A phrase with a digit that the rules cannot read goes through `phrasePrompt`: on-device first, then BYOK. The reply is accepted only by `checkReceiptReply`. An accepted reply is a draft on the confirm screen, not a transaction. Confirm writes through `LedgerWriter`. A missing consent or key does not call the network. The phrase, the reply, and the key are not logged.
 
 Still open: receipt storage in the cloud.
+
+## Revision 2026-10-29 — Stage 5
+
+The release row is closed in the table above. `:androidApp` release is minified with R8. The signing material stays out of git: `keystore.properties` is gitignored, and `.github/workflows/release-android.yml` only names `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, and `ANDROID_KEY_PASSWORD`. The privacy policy in `docs/legal/index.html` says the ledger stays on the device, the receipt photo is not stored, and receipt text leaves the device only after consent and a saved Gemini key. The same split is written for Play Data safety and App Privacy. `PrivacyInfo.xcprivacy` records that optional user content. `ITSAppUsesNonExemptEncryption` is false because the iOS app uses HTTPS and the Keychain. Android AES-GCM stays in the Android source set.
+
+Still open: receipt storage in the cloud.

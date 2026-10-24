@@ -17,7 +17,7 @@ The server is last.
 | 4.5 AI platform | done | security, network, ai, on-device, Swift bridge, BYOK, consent, settings, licenses |
 | 4.6 Receipt parsing by a model | done | Engine chain in the scanner |
 | 4.7 Assistant | done | Drafts from a phrase and answers through a read-only use case |
-| 5. Stores | next | R8, signing, policy, Data safety, App Privacy, xcprivacy, assets, release workflow, final README |
+| 5. Stores | done | R8, signing, policy, Data safety, App Privacy, xcprivacy, assets, release workflow, final README |
 | 6. Cloud | pending | Ktor services, Postgres, Redis, Kafka, R2, Cloudflare, sync behind a flag, threat model |
 
 Stage 4 in the original plan is grouped as 4.1–4.7. The table splits the rows so the next chat takes one milestone.
@@ -44,10 +44,9 @@ Take one item at a time. Do not open the whole architecture: module boundaries a
 - CI runs `scripts/check.sh` for the Android and iOS compile. Done: `.github/workflows/mobile.yml` assembles the Android debug apps, compiles `iosSimulatorArm64`, and runs `checkProjectMap`. Done: the stage close is `xcodebuild` of `iosApp` for the iOS simulator (`ARCHS=arm64`, `CODE_SIGNING_ALLOWED=NO`). That workflow does not run `xcodebuild`.
 - Dependabot, CodeQL, and Licensee — configs and a check that they run. Do not change feature code. Done: each has a config and a `scripts/check-*.sh` job in `docs-and-secrets`. Licensee also runs as the `licensee` task on the mobile iOS job.
 
-## Stage 5 — documents that do not exist yet
+## Stage 5 — what landed
 
-The privacy policy is published through GitHub Pages from [docs/legal](legal/README.md).
-Data safety and App Privacy answers will land in [docs/release](release/README.md).
+The privacy policy is [docs/legal/index.html](legal/index.html). GitHub Pages publishes that directory from `.github/workflows/pages.yml`. Data safety, App Privacy, signing, and the screenshot list are in [docs/release](release/README.md). The Android release bundle is minified. `release-android` is manual and reads GitHub Actions secrets. `PrivacyInfo.xcprivacy` is in the iOS bundle. `ITSAppUsesNonExemptEncryption` is false.
 
 ## Stage 6 — a reminder of the boundary
 
@@ -89,3 +88,4 @@ Until this stage the mobile build has no account. The flag `finpulse.cloud.enabl
 - Stage 4.5, licenses. `:shared` exports AboutLibraries 15.3.0 from the app classpath, offline. `:feature:settings` draws that list. JVM-only and hot-reload artifacts are left out. The screen does not collect a key and does not call the network. The dashboard opens it. Stage 4.5 is closed. Stage 4.6 is next.
 - Stage 4.6 closed. `:feature:scanner` parses camera and gallery text through `ReceiptEngines`: a ready on-device model, then the rule-based parser, then BYOK only when the rules cannot read the text. An accepted reply is a review draft. Confirm still writes the expense. Samples stay on the rule-based parser. A missing consent or key does not call the network. Stage 4.7 is next.
 - Stage 4.7 closed. `:feature:assistant` reads a phrase. `MonthSpend` calls `LedgerReader` and answers with this month's expenses. Any other question stays a fixed reply and does not open a model. A rule draft does not open BYOK. A phrase with a digit that the rules cannot read uses `phrasePrompt`, on-device first, then BYOK. `checkReceiptReply` accepts the draft. Confirm writes the expense. A missing consent or key does not call the network. `xcodebuild -project iosApp/iosApp.xcodeproj -target iosApp -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO ARCHS=arm64 ONLY_ACTIVE_ARCH=YES build` succeeded. Stage 5 is next.
+- Stage 5 closed. `:androidApp` release runs R8 and resource shrinking. Signing reads gitignored `keystore.properties`. `.github/workflows/release-android.yml` is `workflow_dispatch` only and references four GitHub Actions secrets. The privacy policy is `docs/legal/index.html`, published by `.github/workflows/pages.yml`. Data safety and App Privacy answers are in `docs/release/README.md`. `PrivacyInfo.xcprivacy` lists other user content for the optional Gemini send. `ITSAppUsesNonExemptEncryption` is false. The launcher is an adaptive icon on Android and a 1024 `AppIcon` on iOS. Store screenshots stay out of git. `scripts/check.sh :androidApp:assembleRelease` succeeded. `xcodebuild -project iosApp/iosApp.xcodeproj -target iosApp -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO ARCHS=arm64 ONLY_ACTIVE_ARCH=YES build` succeeded. Stage 6 is next.
