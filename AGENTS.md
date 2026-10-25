@@ -62,8 +62,7 @@ Phase details: skill `finpulse-workflow`.
 | Threats, secrets, licenses | `security-review` |
 | Diff review | `code-review` |
 | Stores | `release` |
-
-`server-service` arrives at Stage 6.
+| Server process | `server-service` |
 
 ## Do not
 

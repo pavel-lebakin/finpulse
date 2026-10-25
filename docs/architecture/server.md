@@ -4,9 +4,9 @@ The server is the last stage (Stage 6). Until then the app is meant to be fully 
 
 The server is a separate Gradle build in `server/`, not a module of the mobile project. The stack is Ktor.
 
-Services:
+Services, added one at a time:
 
-- `api-gateway`
+- `api-gateway` — `Application.gateway()` answers `GET /health` with status 200 and the text `ok`. `main` binds `127.0.0.1:8080`. No other route. The process stores nothing.
 - `auth-service`
 - `ledger-sync-service`
 - `ai-proxy-service`

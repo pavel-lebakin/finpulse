@@ -133,3 +133,9 @@ Still open: receipt storage in the cloud.
 The release row is closed in the table above. `:androidApp` release is minified with R8. The signing material stays out of git: `keystore.properties` is gitignored, and `.github/workflows/release-android.yml` only names `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, and `ANDROID_KEY_PASSWORD`. The privacy policy in `docs/legal/index.html` says the ledger stays on the device, the receipt photo is not stored, and receipt text leaves the device only after consent and a saved Gemini key. The same split is written for Play Data safety and App Privacy. `PrivacyInfo.xcprivacy` records that optional user content. `ITSAppUsesNonExemptEncryption` is false because the iOS app uses HTTPS and the Keychain. Android AES-GCM stays in the Android source set.
 
 Still open: receipt storage in the cloud.
+
+## Revision 2026-10-29 — Stage 6 gateway
+
+`server/` is a separate Gradle build. `:api-gateway` answers `GET /health` with status 200 and the text `ok`. `main` listens on `127.0.0.1:8080` only. Any other path is 404. The process stores nothing, has no account, and is not linked from the mobile app. `finpulse.cloud.enabled` stays false. The health body is not a ledger and not a receipt.
+
+Still open: auth, PostgreSQL, Redis, Kafka, receipt storage, the tunnel, and the account module in a cloud build. The refresh-token, origin, and receipt-file rows in the table above stay open.

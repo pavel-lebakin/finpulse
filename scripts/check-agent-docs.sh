@@ -56,11 +56,12 @@ expected = {
     "security-review",
     "code-review",
     "release",
+    "server-service",
 }
 if skills_root.is_dir():
     tracked = set()
     listed = subprocess.check_output(
-        ["git", "ls-files", "--", ".agents/skills"],
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "--", ".agents/skills"],
         text=True,
     )
     for listed_path in listed.splitlines():
@@ -73,7 +74,7 @@ if skills_root.is_dir():
     if missing:
         errors.append("missing skills: " + ", ".join(sorted(missing)))
     if extra:
-        errors.append("unexpected skills (server-service arrives at Stage 6): " + ", ".join(sorted(extra)))
+        errors.append("unexpected skills: " + ", ".join(sorted(extra)))
     for name in sorted(found):
         skill = skills_root / name / "SKILL.md"
         if not skill.is_file():

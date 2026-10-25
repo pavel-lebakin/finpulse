@@ -116,3 +116,16 @@ The JDK for a local build is JBR 21 from Android Studio, through `JAVA_HOME`:
 `/Users/glitchmymind/Applications/Android Studio.app/Contents/jbr/Contents/Home`
 
 `sdk.dir` is written in `local.properties`. Both files are local and do not enter git.
+
+## server
+
+The server is a separate Gradle build in `server/`. It is not a mobile module. Package `com.lebakin.finpulse.server.<service>`.
+
+| Piece | Name |
+| --- | --- |
+| Gateway project | `:api-gateway` |
+| Ktor module | `Application.gateway()` |
+| Process entry | `main` in `Gateway.kt` |
+| Health route | `GET /health` returns the text `ok` |
+
+`main` binds `127.0.0.1` and port `8080`. A service that is not in this table is not created ahead of its step.

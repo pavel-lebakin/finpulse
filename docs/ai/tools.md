@@ -12,7 +12,7 @@ Agents read a short entry file and open one skill for the task. Do not load the 
 
 A skill is shorter than 300 lines. Details live in `references/` next to it. `scripts/check-agent-docs.sh` checks frontmatter (`name`, `description`), links, and sizes. The script runs in CI.
 
-`server-service` is added at Stage 6, not earlier.
+`server-service` covers a JVM process in the separate `server/` build. The first process is `api-gateway`.
 
 ## How to save context
 

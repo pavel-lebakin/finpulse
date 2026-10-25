@@ -26,6 +26,7 @@ Read this at the start of a task, before searching the repository.
 | Secret, storage, network, threat model, dependency license | `security-review` |
 | Diff review before a commit | `code-review` |
 | Signing, store, policy | `release` |
+| Server process under `server/` | `server-service` |
 
 Phases: [references/phases.md](references/phases.md). Build and versions already checked: [references/build.md](references/build.md). Open the second file before Gradle, not instead of the roadmap.
 

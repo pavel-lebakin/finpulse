@@ -14,7 +14,7 @@ Licensee 1.14.1 (`app.cash.licensee:licensee-gradle-plugin`) checks runtime lice
 
 Room 2.8.5 (`androidx.room:room-runtime`, `room-compiler`, plugin `androidx.room`) with `androidx.sqlite:sqlite-bundled` 2.6.2. KSP 2.3.12 (`com.google.devtools.ksp`) compiles Kotlin 2.4.21. DataStore preferences core 1.3.0 and Okio 3.17.0. `kotlinx-datetime` 0.7.1. Checked against maven-metadata.xml on 2026-10-29.
 
-Ktor client 3.6.0 (`io.ktor:ktor-client-core`, `ktor-client-okhttp`, `ktor-client-darwin`). Checked against maven-metadata.xml on 2026-10-29. Release 3.6.1 has no iOS artifacts. The server build stays at Stage 6.
+Ktor 3.6.0. The mobile client uses `io.ktor:ktor-client-core`, `ktor-client-okhttp`, and `ktor-client-darwin`. The server build uses `ktor-server-core`, `ktor-server-netty`, and `ktor-server-test-host` on the same line. Checked against maven-metadata.xml on 2026-10-29. Release 3.6.1 has no iOS artifacts.
 
 AboutLibraries 15.3.0 (`com.mikepenz:aboutlibraries-core`, `aboutlibraries-compose-m3`, plugin `com.mikepenz.aboutlibraries.plugin`). Checked against maven-metadata.xml on 2026-10-29. The license is Apache-2.0. `:shared` exports the notices. The settings screen draws them.
 
