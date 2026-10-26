@@ -13,7 +13,7 @@ Services, added one at a time:
 
 Data and infrastructure:
 
-- PostgreSQL: primary and replica, reads and writes split.
+- PostgreSQL: `:database` is a library, not a process. `openPostgres(primary, replica)` opens one JDBC connection for `Postgres.write` and one for `Postgres.read`. The same host, port, and database is rejected before connecting. The password is a connection property and is omitted from `toString`. The module does not start PostgreSQL, does not create tables, and is not called by `:api-gateway`. The driver is `org.postgresql:postgresql` 42.7.14 (BSD-2-Clause). Licensee 1.14.1 does not map its published URL, so that coordinate is a reviewed exception.
 - Redis: rate limit, refresh-token families, cache.
 - Kafka in KRaft mode: events, outbox, DLQ, idempotency.
 - Photo storage: Cloudflare R2, or MinIO locally. The client receives a short-lived signed URL and talks to storage directly. JVM services do not proxy the file.

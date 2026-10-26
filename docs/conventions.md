@@ -127,5 +127,11 @@ The server is a separate Gradle build in `server/`. It is not a mobile module. P
 | Ktor module | `Application.gateway()` |
 | Process entry | `main` in `Gateway.kt` |
 | Health route | `GET /health` returns the text `ok` |
+| Server database project | `:database` in `server/` |
+| Endpoint | `PostgresEndpoint` |
+| Open | `openPostgres(primary, replica)` |
+| Session | `Postgres` |
+| Write | `Postgres.write` on `primary` |
+| Read | `Postgres.read` on `replica` |
 
-`main` binds `127.0.0.1` and port `8080`. A service that is not in this table is not created ahead of its step.
+`main` binds `127.0.0.1` and port `8080`. Package for `:database` is `com.lebakin.finpulse.server.database`. A service or database project that is not in this table is not created ahead of its step.

@@ -34,6 +34,8 @@ mlkit-genai-prompt = "1.0.0-beta5"
 ktor = "3.6.0"
 # Open source notices. Checked against maven-metadata.xml on 2026-10-29.
 aboutlibraries = "15.3.0"
+# JDBC driver. Checked against maven-metadata.xml on 2026-10-30. License BSD-2-Clause.
+postgres = "42.7.14"
 
 [libraries]
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -73,6 +75,7 @@ ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor"
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 aboutlibraries-core = { module = "com.mikepenz:aboutlibraries-core", version.ref = "aboutlibraries" }
 aboutlibraries-compose-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutlibraries" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

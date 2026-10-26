@@ -139,3 +139,11 @@ Still open: receipt storage in the cloud.
 `server/` is a separate Gradle build. `:api-gateway` answers `GET /health` with status 200 and the text `ok`. `main` listens on `127.0.0.1:8080` only. Any other path is 404. The process stores nothing, has no account, and is not linked from the mobile app. `finpulse.cloud.enabled` stays false. The health body is not a ledger and not a receipt.
 
 Still open: auth, PostgreSQL, Redis, Kafka, receipt storage, the tunnel, and the account module in a cloud build. The refresh-token, origin, and receipt-file rows in the table above stay open.
+
+## Revision 2026-10-30 — Stage 6 PostgreSQL
+
+`:database` in the server build opens two JDBC connections. `write` uses the primary. `read` uses the replica. The same host, port, and database is rejected before a connection. The password is not placed in the JDBC URL or in `toString`. The module creates no tables and stores no account, ledger, or receipt. `:api-gateway` does not call it. The mobile app does not link it. `finpulse.cloud.enabled` stays false. A test starts a local primary and a streaming replica on `127.0.0.1` and checks that a primary write is visible through `read`, and that `read` is in recovery. This step does not force TLS to PostgreSQL.
+
+`org.postgresql:postgresql:42.7.14` is BSD-2-Clause. Licensee 1.14.1 does not map `https://jdbc.postgresql.org/about/license.html`, so that coordinate is a reviewed exception.
+
+Still open: auth, Redis, Kafka, receipt storage, the tunnel, TLS to PostgreSQL, and the account module in a cloud build. The refresh-token, origin, and receipt-file rows in the table above stay open.

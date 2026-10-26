@@ -82,6 +82,7 @@ if plugin_text:
         ("com.google.android.gms", "play-services-basement", "18.9.0"),
         ("org.reactivestreams", "reactive-streams", "1.0.3"),
         ("org.slf4j", "slf4j-api", "2.0.19"),
+        ("org.postgresql", "postgresql", "42.7.14"),
     }
     dependencies = re.findall(
         r'allowDependency\(\s*"([^"]+)"\s*,\s*"([^"]+)"\s*,\s*"([^"]+)"',
@@ -128,5 +129,5 @@ if errors:
         print(f"  - {error}")
     sys.exit(1)
 
-print("licensee check passed (Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, plus reviewed ML Kit OCR and GenAI artifacts, org.reactivestreams:reactive-streams:1.0.3, and org.slf4j:slf4j-api:2.0.19)")
+print("licensee check passed (Apache-2.0, MIT, BSD-2-Clause, BSD-3-Clause, plus reviewed ML Kit OCR and GenAI artifacts, org.reactivestreams:reactive-streams:1.0.3, org.slf4j:slf4j-api:2.0.19, and org.postgresql:postgresql:42.7.14)")
 PY

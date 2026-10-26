@@ -67,4 +67,9 @@ extensions.configure<LicenseeExtension>("licensee") {
     allowDependency("org.slf4j", "slf4j-api", "2.0.19") {
         because("MIT logging API pulled by the Ktor OkHttp engine. The published URL is not mapped to SPDX MIT.")
     }
+    // Reviewed exception: the server JDBC driver. The license is BSD-2-Clause.
+    // Licensee 1.14.1 does not map https://jdbc.postgresql.org/about/license.html to that SPDX id.
+    allowDependency("org.postgresql", "postgresql", "42.7.14") {
+        because("BSD-2-Clause JDBC driver for the server database. The published URL is not mapped to SPDX BSD-2-Clause.")
+    }
 }
