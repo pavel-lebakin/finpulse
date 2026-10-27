@@ -14,7 +14,7 @@ Services, added one at a time:
 Data and infrastructure:
 
 - PostgreSQL: `:database` is a library, not a process. `openPostgres(primary, replica)` opens one JDBC connection for `Postgres.write` and one for `Postgres.read`. The same host, port, and database is rejected before connecting. The password is a connection property and is omitted from `toString`. The module does not start PostgreSQL, does not create tables, and is not called by `:api-gateway`. The driver is `org.postgresql:postgresql` 42.7.14 (BSD-2-Clause). Licensee 1.14.1 does not map its published URL, so that coordinate is a reviewed exception.
-- Redis: rate limit, refresh-token families, cache.
+- Redis: `:cache` is a library, not a process. `openRedis(endpoint)` opens one connection. `Redis.set` writes one value and `Redis.get` reads it. A missing key returns null. The password is omitted from `toString` and from exception text. The module does not start Redis, does not store a refresh token, does not apply a rate limit, and is not called by `:api-gateway`. No Redis client library is on the classpath.
 - Kafka in KRaft mode: events, outbox, DLQ, idempotency.
 - Photo storage: Cloudflare R2, or MinIO locally. The client receives a short-lived signed URL and talks to storage directly. JVM services do not proxy the file.
 - Public static files are cached at the edge. Private receipts are served with `Cache-Control: private, no-store`.

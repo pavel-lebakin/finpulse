@@ -133,5 +133,11 @@ The server is a separate Gradle build in `server/`. It is not a mobile module. P
 | Session | `Postgres` |
 | Write | `Postgres.write` on `primary` |
 | Read | `Postgres.read` on `replica` |
+| Server cache project | `:cache` in `server/` |
+| Cache endpoint | `RedisEndpoint` |
+| Open cache | `openRedis(endpoint)` |
+| Cache session | `Redis` |
+| Cache write | `Redis.set` |
+| Cache read | `Redis.get` |
 
-`main` binds `127.0.0.1` and port `8080`. Package for `:database` is `com.lebakin.finpulse.server.database`. A service or database project that is not in this table is not created ahead of its step.
+`main` binds `127.0.0.1` and port `8080`. Package for `:database` is `com.lebakin.finpulse.server.database`. Package for `:cache` is `com.lebakin.finpulse.server.cache`. A service, database, or cache project that is not in this table is not created ahead of its step.

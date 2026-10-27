@@ -32,3 +32,13 @@ Package `com.lebakin.finpulse.server.database`. This is a library, not a process
 Check: `scripts/check.sh -p server :database:test :database:detekt :database:licensee`.
 
 The replica test needs a local `postgres` binary. `FINPULSE_POSTGRES` points at that executable. The fallbacks are `PATH`, `/Library/PostgreSQL/17/bin/postgres`, Homebrew `postgresql@17`, and `/usr/lib/postgresql/17/bin/postgres`.
+
+## cache
+
+Package `com.lebakin.finpulse.server.cache`. This is a library, not a process. Do not apply the application plugin.
+
+`openRedis(endpoint)` returns `Redis`. `set` writes one value. `get` reads it, and a missing key returns null. The password stays out of `toString` and out of exception text. The module does not start Redis, does not store a refresh token, and does not apply a rate limit. `:api-gateway` does not depend on it.
+
+Check: `scripts/check.sh -p server :cache:test :cache:detekt :cache:licensee`.
+
+The test needs a local `redis-server` binary. `FINPULSE_REDIS` points at that executable. The fallbacks are `PATH`, `/opt/homebrew/bin/redis-server`, `/opt/homebrew/opt/redis/bin/redis-server`, `/usr/local/bin/redis-server`, and `/usr/bin/redis-server`.

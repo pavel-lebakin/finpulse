@@ -147,3 +147,9 @@ Still open: auth, PostgreSQL, Redis, Kafka, receipt storage, the tunnel, and the
 `org.postgresql:postgresql:42.7.14` is BSD-2-Clause. Licensee 1.14.1 does not map `https://jdbc.postgresql.org/about/license.html`, so that coordinate is a reviewed exception.
 
 Still open: auth, Redis, Kafka, receipt storage, the tunnel, TLS to PostgreSQL, and the account module in a cloud build. The refresh-token, origin, and receipt-file rows in the table above stay open.
+
+## Revision 2026-10-30 — Stage 6 Redis
+
+`:cache` in the server build opens one Redis connection. `set` writes a value and `get` reads it. A missing key returns null. The password is not placed in `toString` or in an exception message. The module does not start Redis, does not store a refresh token or a rate-limit counter, and does not store an account, ledger, or receipt. `:api-gateway` does not call it. The mobile app does not link it. `finpulse.cloud.enabled` stays false. A test starts `redis-server` on `127.0.0.1` with the password in a temporary config file, not on the process command line. This step does not force TLS to Redis. No Redis client library is on the classpath.
+
+Still open: auth, Kafka, receipt storage, the tunnel, TLS to PostgreSQL, TLS to Redis, and the account module in a cloud build. The refresh-token, origin, and receipt-file rows in the table above stay open.

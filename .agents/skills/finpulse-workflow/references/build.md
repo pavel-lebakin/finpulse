@@ -18,6 +18,8 @@ Ktor 3.6.0. The mobile client uses `io.ktor:ktor-client-core`, `ktor-client-okht
 
 PostgreSQL JDBC `org.postgresql:postgresql` 42.7.14. Checked against maven-metadata.xml on 2026-10-30. The license is BSD-2-Clause. Licensee 1.14.1 does not map `https://jdbc.postgresql.org/about/license.html`, so the coordinate is a reviewed exception. The server library `:database` uses it. The mobile graph does not.
 
+`:cache` speaks RESP itself. No Redis client is in the catalog. Jedis 8.0.2 was checked against maven-metadata.xml on 2026-10-30 and not added: its runtime graph pulls `org.json:json`, whose license is outside the allowlist.
+
 AboutLibraries 15.3.0 (`com.mikepenz:aboutlibraries-core`, `aboutlibraries-compose-m3`, plugin `com.mikepenz.aboutlibraries.plugin`). Checked against maven-metadata.xml on 2026-10-29. The license is Apache-2.0. `:shared` exports the notices. The settings screen draws them.
 
 ML Kit GenAI Prompt API `com.google.mlkit:genai-prompt` 1.0.0-beta5. Checked against maven-metadata.xml on 2026-10-29. The license is ML Kit Terms of Service, a reviewed Licensee exception.
