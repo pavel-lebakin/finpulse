@@ -139,5 +139,11 @@ The server is a separate Gradle build in `server/`. It is not a mobile module. P
 | Cache session | `Redis` |
 | Cache write | `Redis.set` |
 | Cache read | `Redis.get` |
+| Server queue project | `:queue` in `server/` |
+| Queue endpoint | `KafkaEndpoint` |
+| Open queue | `openKafka(endpoint)` |
+| Queue session | `Kafka` |
+| Publish | `Kafka.publish` |
+| Read | `Kafka.take` |
 
-`main` binds `127.0.0.1` and port `8080`. Package for `:database` is `com.lebakin.finpulse.server.database`. Package for `:cache` is `com.lebakin.finpulse.server.cache`. A service, database, or cache project that is not in this table is not created ahead of its step.
+`main` binds `127.0.0.1` and port `8080`. Package for `:database` is `com.lebakin.finpulse.server.database`. Package for `:cache` is `com.lebakin.finpulse.server.cache`. Package for `:queue` is `com.lebakin.finpulse.server.queue`. A service, database, cache, or queue project that is not in this table is not created ahead of its step.

@@ -42,3 +42,13 @@ Package `com.lebakin.finpulse.server.cache`. This is a library, not a process. D
 Check: `scripts/check.sh -p server :cache:test :cache:detekt :cache:licensee`.
 
 The test needs a local `redis-server` binary. `FINPULSE_REDIS` points at that executable. The fallbacks are `PATH`, `/opt/homebrew/bin/redis-server`, `/opt/homebrew/opt/redis/bin/redis-server`, `/usr/local/bin/redis-server`, and `/usr/bin/redis-server`.
+
+## queue
+
+Package `com.lebakin.finpulse.server.queue`. This is a library, not a process. Do not apply the application plugin.
+
+`openKafka(endpoint)` returns `Kafka`. `publish` writes one record. `take` reads the latest record, and an empty topic returns null. The password stays out of `toString` and out of exception text. The module does not start Kafka, does not write an outbox, a dead-letter record, or an idempotency key. `:api-gateway` does not depend on it.
+
+Check: `scripts/check.sh -p server :queue:test :queue:detekt :queue:licensee`.
+
+The test needs a local `kafka-server-start` binary and a sibling `kafka-storage`. `FINPULSE_KAFKA` points at `kafka-server-start`. The fallbacks are `PATH`, `/opt/homebrew/bin/kafka-server-start`, Homebrew `kafka` under `opt/kafka`, `/usr/local/bin/kafka-server-start`, and `/usr/bin/kafka-server-start`. The broker the test starts is KRaft.

@@ -24,3 +24,4 @@ rootProject.name = "finpulse-server"
 include(":api-gateway")
 include(":database")
 include(":cache")
+include(":queue")

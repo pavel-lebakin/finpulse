@@ -153,3 +153,9 @@ Still open: auth, Redis, Kafka, receipt storage, the tunnel, TLS to PostgreSQL, 
 `:cache` in the server build opens one Redis connection. `set` writes a value and `get` reads it. A missing key returns null. The password is not placed in `toString` or in an exception message. The module does not start Redis, does not store a refresh token or a rate-limit counter, and does not store an account, ledger, or receipt. `:api-gateway` does not call it. The mobile app does not link it. `finpulse.cloud.enabled` stays false. A test starts `redis-server` on `127.0.0.1` with the password in a temporary config file, not on the process command line. This step does not force TLS to Redis. No Redis client library is on the classpath.
 
 Still open: auth, Kafka, receipt storage, the tunnel, TLS to PostgreSQL, TLS to Redis, and the account module in a cloud build. The refresh-token, origin, and receipt-file rows in the table above stay open.
+
+## Revision 2026-10-30 — Stage 6 Kafka
+
+`:queue` in the server build opens one Kafka client. `publish` writes one record and `take` reads the latest record. An empty topic returns null. The password is not placed in `toString` or in an exception message. The module does not start Kafka, does not write an outbox, a dead-letter record, or an idempotency key, and does not store an account, ledger, or receipt. `:api-gateway` does not call it. The mobile app does not link it. `finpulse.cloud.enabled` stays false. A test starts one KRaft broker on `127.0.0.1` with SASL/PLAIN. The password is in a temporary config file, not on the process command line. This step does not force TLS to Kafka. The client is `org.apache.kafka:kafka-clients` 4.4.0, Apache-2.0.
+
+Still open: auth, receipt storage, the tunnel, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, and the account module in a cloud build. The refresh-token, origin, and receipt-file rows in the table above stay open.
