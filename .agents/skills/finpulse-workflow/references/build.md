@@ -22,6 +22,8 @@ PostgreSQL JDBC `org.postgresql:postgresql` 42.7.14. Checked against maven-metad
 
 Kafka clients `org.apache.kafka:kafka-clients` 4.4.0. Checked against maven-metadata.xml on 2026-10-30. The license is Apache-2.0. The server library `:queue` uses it. The mobile graph does not. Runtime dependencies are `zstd-jni` 1.5.7-17 (BSD-2-Clause), `at.yawk.lz4:lz4-java` 1.11.2 (Apache-2.0), `snappy-java` 1.1.10.7 (Apache-2.0), and `slf4j-api` 1.7.36 (MIT).
 
+`:storage` speaks S3 SigV4 itself. No AWS SDK and no MinIO SDK are in the catalog. The MinIO Java SDK is AGPL. The test starts the community `minio` binary. Community release `RELEASE.2025-09-07T16-13-09Z` serves S3 without a license. An AIStor build that denies S3 without a license does not satisfy the test.
+
 AboutLibraries 15.3.0 (`com.mikepenz:aboutlibraries-core`, `aboutlibraries-compose-m3`, plugin `com.mikepenz.aboutlibraries.plugin`). Checked against maven-metadata.xml on 2026-10-29. The license is Apache-2.0. `:shared` exports the notices. The settings screen draws them.
 
 ML Kit GenAI Prompt API `com.google.mlkit:genai-prompt` 1.0.0-beta5. Checked against maven-metadata.xml on 2026-10-29. The license is ML Kit Terms of Service, a reviewed Licensee exception.

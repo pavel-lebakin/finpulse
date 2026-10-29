@@ -145,5 +145,11 @@ The server is a separate Gradle build in `server/`. It is not a mobile module. P
 | Queue session | `Kafka` |
 | Publish | `Kafka.publish` |
 | Read | `Kafka.take` |
+| Server storage project | `:storage` in `server/` |
+| Storage endpoint | `R2Endpoint` |
+| Open storage | `openR2(endpoint)` |
+| Storage session | `R2` |
+| Store object | `R2.put` |
+| Signed URL | `R2.sign` |
 
-`main` binds `127.0.0.1` and port `8080`. Package for `:database` is `com.lebakin.finpulse.server.database`. Package for `:cache` is `com.lebakin.finpulse.server.cache`. Package for `:queue` is `com.lebakin.finpulse.server.queue`. A service, database, cache, or queue project that is not in this table is not created ahead of its step.
+`main` binds `127.0.0.1` and port `8080`. Package for `:database` is `com.lebakin.finpulse.server.database`. Package for `:cache` is `com.lebakin.finpulse.server.cache`. Package for `:queue` is `com.lebakin.finpulse.server.queue`. Package for `:storage` is `com.lebakin.finpulse.server.storage`. A service, database, cache, queue, or storage project that is not in this table is not created ahead of its step.

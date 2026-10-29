@@ -159,3 +159,11 @@ Still open: auth, Kafka, receipt storage, the tunnel, TLS to PostgreSQL, TLS to 
 `:queue` in the server build opens one Kafka client. `publish` writes one record and `take` reads the latest record. An empty topic returns null. The password is not placed in `toString` or in an exception message. The module does not start Kafka, does not write an outbox, a dead-letter record, or an idempotency key, and does not store an account, ledger, or receipt. `:api-gateway` does not call it. The mobile app does not link it. `finpulse.cloud.enabled` stays false. A test starts one KRaft broker on `127.0.0.1` with SASL/PLAIN. The password is in a temporary config file, not on the process command line. This step does not force TLS to Kafka. The client is `org.apache.kafka:kafka-clients` 4.4.0, Apache-2.0.
 
 Still open: auth, receipt storage, the tunnel, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, and the account module in a cloud build. The refresh-token, origin, and receipt-file rows in the table above stay open.
+
+## Revision 2026-10-30 — Stage 6 R2
+
+`:storage` in the server build opens one S3 client. `put` writes one object with `Cache-Control: private, no-store`. `sign` returns a GET URL that expires in 60 seconds. The library does not return object bytes. The password is not placed in `toString` or in an exception message. The module does not start MinIO, does not store a receipt, and does not store an account or a ledger. `:api-gateway` does not call it. The mobile app does not link it. `finpulse.cloud.enabled` stays false. A test starts MinIO on `127.0.0.1`. The password is in a temporary env file, not on the process command line. This step does not force TLS to storage. No S3 client library is on the classpath.
+
+The receipt-file row is met by this library. No service uploads a receipt yet.
+
+Still open: auth, a receipt upload, the tunnel, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, TLS to storage, and the account module in a cloud build. The refresh-token and origin rows in the table above stay open.

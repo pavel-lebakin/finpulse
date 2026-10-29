@@ -8,7 +8,7 @@ catalog/{shared,android,desktop}
 core/{common,mvi,navigation,uikit,database,preferences,security,network,ai,testing}
 feature/{onboarding,ledger,insights,scanner,assistant,settings}/{api,impl}
 tooling/architecture-tests
-server/              # separate Gradle build: :api-gateway, :database, :cache, and :queue
+server/              # separate Gradle build: :api-gateway, :database, :cache, :queue, and :storage
 ```
 
 Stage 1–5 features: `onboarding`, `ledger`, `insights`, `scanner`, `assistant`, `settings`. The cloud stage adds `account`.

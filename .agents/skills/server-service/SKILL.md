@@ -52,3 +52,13 @@ Package `com.lebakin.finpulse.server.queue`. This is a library, not a process. D
 Check: `scripts/check.sh -p server :queue:test :queue:detekt :queue:licensee`.
 
 The test needs a local `kafka-server-start` binary and a sibling `kafka-storage`. `FINPULSE_KAFKA` points at `kafka-server-start`. The fallbacks are `PATH`, `/opt/homebrew/bin/kafka-server-start`, Homebrew `kafka` under `opt/kafka`, `/usr/local/bin/kafka-server-start`, and `/usr/bin/kafka-server-start`. The broker the test starts is KRaft.
+
+## storage
+
+Package `com.lebakin.finpulse.server.storage`. This is a library, not a process. Do not apply the application plugin.
+
+`openR2(endpoint)` returns `R2`. `put` writes one object with `Cache-Control: private, no-store`. `sign` returns a GET URL that expires in 60 seconds. The library does not return object bytes. The password stays out of `toString` and out of exception text. The module does not start MinIO and does not store a receipt. `:api-gateway` does not depend on it.
+
+Check: `scripts/check.sh -p server :storage:test :storage:detekt :storage:licensee`.
+
+The test needs a local `minio` binary. `FINPULSE_MINIO` points at that executable. The fallbacks are `PATH`, `/opt/homebrew/bin/minio`, `/usr/local/bin/minio`, and `/usr/bin/minio`. The binary is the community server. An AIStor build that denies S3 without a license does not satisfy the test. Community release `RELEASE.2025-09-07T16-13-09Z` does.
