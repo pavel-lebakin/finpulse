@@ -240,7 +240,7 @@ Package `com.lebakin.finpulse.core.security`. Depends on DataStore and coroutine
 
 Public types: `SecretStore`, `openSecretStore`. Android calls `bindAndroidSecretDirectory` before the first open.
 
-`SecretStore` saves one secret, reads it back, deletes it, and exposes `observeSaved` as a boolean. The value is not part of that flow. Android keeps an AES-GCM key in Android Keystore and the ciphertext in DataStore under `noBackupFilesDir`. iOS writes the secret to the Keychain with `WhenUnlockedThisDeviceOnly`. The JVM store is in memory for tests and is not a product store. `security-crypto` is not used.
+`SecretStore` saves one secret, reads it back, deletes it, and exposes `observeSaved` as a boolean. The value is not part of that flow. Android keeps an AES-GCM key in Android Keystore and the ciphertext in DataStore under `noBackupFilesDir`. iOS writes the secret to the Keychain with `WhenUnlockedThisDeviceOnly`. A read that is not a success is no secret, so a missing entitlement does not crash the process. `save` and `delete` still fail when the Keychain rejects them. The JVM store is in memory for tests and is not a product store. `security-crypto` is not used.
 
 Check: `scripts/check.sh :core:security:jvmTest :core:security:compileKotlinIosSimulatorArm64 :core:security:detekt`.
 
@@ -384,8 +384,8 @@ Check: `scripts/check.sh :tooling:architecture-tests:test :tooling:architecture-
 
 # iosApp
 
-Xcode project `iosApp/iosApp.xcodeproj`, bundle id `com.lebakin.finpulse`, iOS 16. Signing is off.
+Xcode project `iosApp/iosApp.xcodeproj`, bundle id `com.lebakin.finpulse`, iOS 16. A device build signs when `TEAM_ID` is set in `Config.xcconfig`. That value stays empty in git. A simulator build is ad-hoc signed so the Keychain is available. CI still passes `CODE_SIGNING_ALLOWED=NO`.
 
-Startup: `registerFoundationOnDeviceEngine()`, then `KoinKt.doInitKoin()`, then `MainViewControllerKt.MainViewController()`. On iOS 26 and later that registration passes Apple Foundation Models through `OnDeviceEngine`. An unavailable model stays unready, and the app does not download it. The prompt and the reply are not logged. The framework is looked up in `shared/build/xcode-frameworks`. Camera and photo library usage strings are in `Info.plist`. The photo stays on the device. App Transport Security sets `NSAllowsArbitraryLoads` to false, so cleartext is off. `PrivacyInfo.xcprivacy` is in the app bundle. `ITSAppUsesNonExemptEncryption` is false: this target uses HTTPS and the Keychain, not a custom cipher. The app icon is `AppIcon` in `Assets.xcassets`.
+Startup: `registerFoundationOnDeviceEngine()`, then `KoinKt.doInitKoin()`, then `MainViewControllerKt.MainViewController()`. On iOS 26 and later that registration passes Apple Foundation Models through `OnDeviceEngine`. An unavailable model stays unready, and the app does not download it. The prompt and the reply are not logged. The framework is looked up in `shared/build/xcode-frameworks`. The Xcode script still runs Gradle when `Shared.framework` for the current SDK is missing, including when the IDE sets `OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED`. Camera and photo library usage strings are in `Info.plist`. The photo stays on the device. App Transport Security sets `NSAllowsArbitraryLoads` to false, so cleartext is off. `PrivacyInfo.xcprivacy` is in the app bundle. `ITSAppUsesNonExemptEncryption` is false: this target uses HTTPS and the Keychain, not a custom cipher. The app icon is `AppIcon` in `Assets.xcassets`.
 
 The simulator build command is in `finpulse-workflow/references/build.md`. Do not run it on every commit.

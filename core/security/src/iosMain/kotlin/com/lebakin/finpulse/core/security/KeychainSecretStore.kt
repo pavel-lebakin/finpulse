@@ -109,11 +109,7 @@ private fun readItem(): String? {
         memScoped {
             val result = alloc<CFTypeRefVar>()
             val status = SecItemCopyMatching(query, result.ptr)
-            when (status) {
-                errSecItemNotFound -> null
-                errSecSuccess -> copySecret(result.value)
-                else -> error("Keychain read failed ($status).")
-            }
+            if (status == errSecSuccess) copySecret(result.value) else null
         }
     } finally {
         release(query)

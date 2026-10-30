@@ -14,7 +14,7 @@ Android and iOS share one offline ledger. The default build has `finpulse.cloud.
 | --- | --- | --- |
 | Transactions and categories | Room on the device | Present since Stage 4.1. Not uploaded |
 | Receipt photos | Memory during capture and recognition. Not stored in Room | Present since Stage 4.4. `:storage` can write one private object. No service stores a receipt |
-| BYOK key | Android: AES-GCM in Keystore, ciphertext in DataStore under `noBackupFilesDir`. iOS: Keychain `WhenUnlockedThisDeviceOnly` | Present since Stage 4.5 |
+| BYOK key | Android: AES-GCM in Keystore, ciphertext in DataStore under `noBackupFilesDir`. iOS: Keychain `WhenUnlockedThisDeviceOnly` | Present since Stage 4.5. A Keychain read that is not a success counts as no key |
 | Showcase history | Room, `origin = SHOWCASE` | Present since Stage 4.1. `enqueue` refuses it |
 | Release signing | Gitignored `keystore.properties` and GitHub Actions secrets | Present since Stage 5 |
 | Cloud session | A refresh family held by the caller of `:auth-service` | The route does not issue a token. The token and its hash stay out of `toString`. Nothing is written to Redis, Keystore, or the Keychain |
@@ -213,3 +213,7 @@ Still open: a stored account, a client sign-in screen, refresh-token rotation, T
 `rotate` in `:auth-service` returns `Rotated` only when the SHA-256 of the presented token matches the current hash of that `RefreshFamily`. The family id stays the same. The presented hash joins a remembered list of at most 8, and the result carries a new 32-byte token. Presenting a remembered token returns `Reused` and the family is revoked, so the current token then fails too. A revoked family, a mismatch, or an unknown token is `Rejected`. `rotate` clears the presented array. `refreshFamily` stores the hash, not the token. The token and the hashes are not placed in `toString` or in an exception message. `POST /sessions` does not call `rotate`. `main` creates no family. The process does not call Redis or PostgreSQL, does not store an account, and is not called by `:api-gateway`. The mobile app does not link it. `finpulse.cloud.enabled` stays false.
 
 Still open: a stored account, a client sign-in screen, a refresh family stored in Redis, a session issued by the route, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, TLS to storage, a running tunnel, a receipt upload, and `ledger-sync-service` and `ai-proxy-service`. The refresh-token row is a check in memory. Redis still holds no family.
+
+## Revision 2026-10-30 — iOS Keychain on an unsigned process
+
+`KeychainSecretStore` treats a `SecItemCopyMatching` status other than success as no secret. `observeSaved` stays false, and BYOK does not open. `save` and `delete` still fail when the Keychain rejects them. The simulator target is ad-hoc signed so a local run can use the Keychain. A device build signs only when `TEAM_ID` is set outside git. CI still passes `CODE_SIGNING_ALLOWED=NO`, and that process has no key. The secret is still not logged.
