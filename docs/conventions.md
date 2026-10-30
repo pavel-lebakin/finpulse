@@ -151,5 +151,12 @@ The server is a separate Gradle build in `server/`. It is not a mobile module. P
 | Storage session | `R2` |
 | Store object | `R2.put` |
 | Signed URL | `R2.sign` |
+| Server edge project | `:edge` in `server/` |
+| Tunnel policy | `EdgeTunnel` |
+| Shield policy | `EdgeShield` |
+| Open edge | `openEdge(tunnel, shield)` |
+| Edge session | `Edge` |
+| Cached object | `EdgeObject` |
+| Cache directive | `Edge.cacheControl` |
 
-`main` binds `127.0.0.1` and port `8080`. Package for `:database` is `com.lebakin.finpulse.server.database`. Package for `:cache` is `com.lebakin.finpulse.server.cache`. Package for `:queue` is `com.lebakin.finpulse.server.queue`. Package for `:storage` is `com.lebakin.finpulse.server.storage`. A service, database, cache, queue, or storage project that is not in this table is not created ahead of its step.
+`main` binds `127.0.0.1` and port `8080`. Package for `:database` is `com.lebakin.finpulse.server.database`. Package for `:cache` is `com.lebakin.finpulse.server.cache`. Package for `:queue` is `com.lebakin.finpulse.server.queue`. Package for `:storage` is `com.lebakin.finpulse.server.storage`. Package for `:edge` is `com.lebakin.finpulse.server.edge`. A service, database, cache, queue, storage, or edge project that is not in this table is not created ahead of its step.

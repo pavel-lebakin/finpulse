@@ -12,7 +12,7 @@ Agents read a short entry file and open one skill for the task. Do not load the 
 
 A skill is shorter than 300 lines. Details live in `references/` next to it. `scripts/check-agent-docs.sh` checks frontmatter (`name`, `description`), links, and sizes. The script runs in CI.
 
-`server-service` covers a JVM process in the separate `server/` build. The first process is `api-gateway`. `:database` opens the primary and the replica. `:cache` opens Redis. `:queue` opens Kafka. `:storage` opens R2. None of those libraries is a process.
+`server-service` covers a JVM process in the separate `server/` build. The first process is `api-gateway`. `:database` opens the primary and the replica. `:cache` opens Redis. `:queue` opens Kafka. `:storage` opens R2. `:edge` checks the Cloudflare policy. None of those libraries is a process.
 
 ## How to save context
 

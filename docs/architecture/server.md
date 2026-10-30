@@ -18,13 +18,7 @@ Data and infrastructure:
 - Kafka: `:queue` is a library, not a process. `openKafka(endpoint)` opens one client. `Kafka.publish` writes one record and `Kafka.take` reads the latest record. An empty topic returns null. The password is omitted from `toString` and from exception text. The module does not start Kafka, does not write an outbox, a dead-letter record, or an idempotency key, and is not called by `:api-gateway`. The client is `org.apache.kafka:kafka-clients` 4.4.0 (Apache-2.0). A test starts one KRaft broker.
 - Photo storage: `:storage` is a library, not a process. `openR2(endpoint)` opens one S3 client for Cloudflare R2, or MinIO locally. `R2.put` writes one object with `Cache-Control: private, no-store`. `R2.sign` returns a GET URL that expires in 60 seconds. The library does not return object bytes, so a JVM service does not proxy the file. The password is omitted from `toString` and from exception text. The module does not start MinIO, does not store a receipt, and is not called by `:api-gateway`. No S3 client library is on the classpath. A test starts MinIO.
 - Public static files are cached at the edge. Private receipts are served with `Cache-Control: private, no-store`.
-
-Cloudflare, described later in `docs/server/cloudflare.md` at Stage 6:
-
-- DNS is proxied, the origin is closed with a Tunnel, no open ports.
-- TLS Full (strict), Origin CA, HSTS.
-- WAF, rate limiting, bot protection.
-- R2 and CDN.
+- Edge: `:edge` is a library, not a process. `openEdge(tunnel, shield)` accepts only a proxied hostname, origin `127.0.0.1:8080`, TLS `full-strict`, HSTS, WAF, bot protection, and a rate limit of 100 requests in 60 seconds. `Edge.cacheControl(PublicFile)` returns `public, max-age=86400`. `Edge.cacheControl(Receipt)` returns `private, no-store`. The tunnel token and the Origin CA are omitted from `toString` and from exception text, and `Edge` does not keep them. The module does not start cloudflared, does not call Cloudflare, does not store a receipt, and is not called by `:api-gateway`. The layout is [docs/server/cloudflare.md](../server/cloudflare.md).
 
 The client does not pin the leaf certificate: Cloudflare rotates it. Network is HTTPS only. Cleartext is forbidden.
 

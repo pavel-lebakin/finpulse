@@ -62,3 +62,11 @@ Package `com.lebakin.finpulse.server.storage`. This is a library, not a process.
 Check: `scripts/check.sh -p server :storage:test :storage:detekt :storage:licensee`.
 
 The test needs a local `minio` binary. `FINPULSE_MINIO` points at that executable. The fallbacks are `PATH`, `/opt/homebrew/bin/minio`, `/usr/local/bin/minio`, and `/usr/bin/minio`. The binary is the community server. An AIStor build that denies S3 without a license does not satisfy the test. Community release `RELEASE.2025-09-07T16-13-09Z` does.
+
+## edge
+
+Package `com.lebakin.finpulse.server.edge`. This is a library, not a process. Do not apply the application plugin.
+
+`openEdge(tunnel, shield)` returns `Edge` only for a proxied hostname, origin `127.0.0.1:8080`, TLS `full-strict`, HSTS, WAF, bot protection, and a rate limit of 100 requests in 60 seconds. `cacheControl(PublicFile)` is `public, max-age=86400`. `cacheControl(Receipt)` is `private, no-store`. The tunnel token and the Origin CA stay out of `toString` and out of exception text. `Edge` does not keep them. The module does not start cloudflared, does not call Cloudflare, and does not store a receipt. `:api-gateway` does not depend on it. The layout is [docs/server/cloudflare.md](../../../docs/server/cloudflare.md).
+
+Check: `scripts/check.sh -p server :edge:test :edge:detekt :edge:licensee`.

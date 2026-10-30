@@ -167,3 +167,11 @@ Still open: auth, receipt storage, the tunnel, TLS to PostgreSQL, TLS to Redis, 
 The receipt-file row is met by this library. No service uploads a receipt yet.
 
 Still open: auth, a receipt upload, the tunnel, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, TLS to storage, and the account module in a cloud build. The refresh-token and origin rows in the table above stay open.
+
+## Revision 2026-10-30 — Stage 6 Cloudflare
+
+`:edge` in the server build accepts a policy only when DNS is proxied, the origin is `127.0.0.1:8080`, TLS is `full-strict`, and HSTS, WAF, and bot protection are on. The rate limit is 100 requests in 60 seconds. `cacheControl(PublicFile)` is `public, max-age=86400`. `cacheControl(Receipt)` is `private, no-store`. The tunnel token and the Origin CA are not placed in `toString` or in an exception message, and `Edge` does not keep them. The module does not start cloudflared, does not call Cloudflare, does not store a receipt, and does not store an account or a ledger. `:api-gateway` does not call it. The mobile app does not link it. `finpulse.cloud.enabled` stays false. The leaf certificate stays unpinned.
+
+The origin row is met by this library. No tunnel process is started.
+
+Still open: auth, a receipt upload, a running tunnel, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, TLS to storage, and the account module in a cloud build. The refresh-token row in the table above stays open.
