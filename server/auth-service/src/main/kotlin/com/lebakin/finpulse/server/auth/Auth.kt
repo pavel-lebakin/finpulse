@@ -1,6 +1,8 @@
 package com.lebakin.finpulse.server.auth
 
+import com.lebakin.finpulse.server.cache.Redis
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.charset
 import io.ktor.server.application.Application
@@ -9,7 +11,6 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.request.contentType
 import io.ktor.server.request.receiveText
-import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
@@ -22,6 +23,7 @@ internal const val MIN_EMAIL_LENGTH = 5
 internal const val MAX_EMAIL_LENGTH = 254
 internal const val MAX_ID_LENGTH = 64
 private const val MAX_BODY_LENGTH = 1024
+private const val SESSION_CACHE = "private, no-store"
 
 sealed interface SignIn {
     data object Accepted : SignIn
@@ -64,12 +66,12 @@ fun main() {
     ).start(wait = true)
 }
 
-fun Application.auth(accounts: List<AuthAccount>) {
+fun Application.auth(accounts: List<AuthAccount>, redis: Redis? = null) {
     require(distinctEmails(accounts)) { "Auth accounts repeat an email." }
     accounts.forEach(::validateAccount)
     routing {
         post("/sessions") {
-            call.answer(call.statusFor(accounts))
+            call.answer(call.issued(accounts, redis))
         }
     }
 }
@@ -86,20 +88,27 @@ fun signIn(email: String, password: CharArray, account: AuthAccount): SignIn {
     }
 }
 
-private suspend fun ApplicationCall.answer(status: HttpStatusCode) {
-    if (status == HttpStatusCode.NoContent) {
-        respond(status)
-    } else {
-        respondText(text = "", status = status)
-    }
+private suspend fun ApplicationCall.answer(body: String?) {
+    response.headers.append(HttpHeaders.CacheControl, SESSION_CACHE)
+    val status = if (body == null) HttpStatusCode.Unauthorized else HttpStatusCode.OK
+    respondText(text = body.orEmpty(), status = status)
 }
 
-private suspend fun ApplicationCall.statusFor(accounts: List<AuthAccount>): HttpStatusCode {
+private suspend fun ApplicationCall.issued(accounts: List<AuthAccount>, redis: Redis?): String? {
     val request = readSignIn()
     val account = request?.let { parsed -> accounts.firstOrNull { sameEmail(it.email, parsed.email) } }
     val result = request?.let { parsed -> signIn(parsed.email, parsed.password, account ?: placeholderAccount) }
-    val accepted = account != null && result == SignIn.Accepted
-    return if (accepted) HttpStatusCode.NoContent else HttpStatusCode.Unauthorized
+    return if (account != null && redis != null && result == SignIn.Accepted) storedSession(account, redis) else null
+}
+
+private fun storedSession(account: AuthAccount, redis: Redis): String {
+    val session = issueSession(account.id)
+    try {
+        saveFamily(redis, session.family)
+        return sessionBody(session)
+    } finally {
+        session.token.fill(0)
+    }
 }
 
 private suspend fun ApplicationCall.readSignIn(): ParsedSignIn? {

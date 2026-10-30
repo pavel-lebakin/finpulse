@@ -114,7 +114,7 @@ private fun unhex(text: String): ByteArray? {
     return if (ok) bytes else null
 }
 
-private fun hex(bytes: ByteArray): String = buildString(HASH_HEX) {
+internal fun hex(bytes: ByteArray): String = buildString(HASH_HEX) {
     bytes.forEach { byte ->
         val value = byte.toInt() and BYTE_MASK
         append(HEX[value ushr NIBBLE])

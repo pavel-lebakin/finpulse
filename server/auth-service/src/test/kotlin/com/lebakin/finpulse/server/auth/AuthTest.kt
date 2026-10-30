@@ -5,6 +5,7 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.server.testing.testApplication
@@ -86,14 +87,15 @@ class AuthTest {
     }
 
     @Test
-    fun matchingPostAnswersNoContent() = testApplication {
+    fun matchingPostWithoutStoreAnswersUnauthorized() = testApplication {
         application { auth(listOf(account())) }
         val response = client.post("/sessions") {
             contentType(ContentType.Application.Json)
             setBody("""{"email":"ada@finpulse.test","password":"password12"}""")
         }
-        assertEquals(HttpStatusCode.NoContent, response.status)
+        assertEquals(HttpStatusCode.Unauthorized, response.status)
         assertEquals("", response.bodyAsText())
+        assertEquals("private, no-store", response.headers[HttpHeaders.CacheControl])
     }
 
     @Test
