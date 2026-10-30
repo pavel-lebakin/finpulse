@@ -23,6 +23,14 @@ Package `com.lebakin.finpulse.server.gateway`.
 
 Names: [docs/conventions.md](../../../docs/conventions.md). Add a row there before creating the next service. Do not add an empty service for later.
 
+## auth-service
+
+Package `com.lebakin.finpulse.server.auth`. Apply the application plugin.
+
+`Application.auth(accounts)` answers `POST /sessions`. `signIn` returns `SignIn.Accepted` only when the email matches one supplied account and the password matches its `PasswordVerifier`. `passwordVerifier` uses PBKDF2-HMAC-SHA256, 600000 iterations, a 16-byte salt, and a 32-byte hash, then clears the password array. Anything else is `SignIn.Rejected`. The email and the password are printable ASCII without spaces, quotes, or backslashes, and the password is 8 to 128 characters. The route returns 204 or 401 with an empty body. `main` binds `127.0.0.1:8081` and passes an empty account list. The password, the email, the salt, and the hash stay out of `toString` and out of exception text. The process does not issue a refresh token, does not call Redis or PostgreSQL, and does not store an account. `:api-gateway` does not depend on it.
+
+Check: `scripts/check.sh -p server :auth-service:test :auth-service:detekt :auth-service:licensee`.
+
 ## database
 
 Package `com.lebakin.finpulse.server.database`. This is a library, not a process. Do not apply the application plugin.

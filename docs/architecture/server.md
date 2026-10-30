@@ -7,7 +7,7 @@ The server is a separate Gradle build in `server/`, not a module of the mobile p
 Services, added one at a time:
 
 - `api-gateway` — `Application.gateway()` answers `GET /health` with status 200 and the text `ok`. `main` binds `127.0.0.1:8080`. No other route. The process stores nothing.
-- `auth-service`
+- `auth-service` — `:auth-service` is a process. `Application.auth(accounts)` answers `POST /sessions`. `signIn` returns `SignIn.Accepted` only when the email matches one supplied account and the password matches its `PasswordVerifier`. `passwordVerifier` builds that verifier with PBKDF2-HMAC-SHA256, 600000 iterations, a 16-byte salt, and a 32-byte hash, then clears the password array. A mismatch, an unknown email, or a body that is not a JSON object with `email` and `password` is `SignIn.Rejected`. Both fields are printable ASCII without spaces, quotes, or backslashes. The password is 8 to 128 characters. The route returns 204 or 401 with an empty body. `main` binds `127.0.0.1:8081` and passes an empty account list, so it accepts no sign-in. The password, the email, the salt, and the hash are omitted from `toString` and from exception text. The process does not issue a refresh token, does not call Redis or PostgreSQL, does not store an account, and is not called by `:api-gateway`.
 - `ledger-sync-service`
 - `ai-proxy-service`
 

@@ -1,12 +1,12 @@
 # Threat model
 
-Revision: Stage 6, 2026-10-30. The tables say what code already does and what is still only a library or a plan. This file is updated at every stage. A revision is appended. The tables are not replaced by a paragraph.
+Revision: Stage 6.1, 2026-10-30. The tables say what code already does and what is still only a library or a plan. This file is updated at every stage. A revision is appended. The tables are not replaced by a paragraph.
 
 ## The system in this revision
 
 Android and iOS share one offline ledger. The default build has `finpulse.cloud.enabled=false`, so `:feature:account` is not linked. Receipt photos stay in memory. Receipt text leaves the device only after consent and a saved Gemini key. The user confirms a transaction before it is written.
 
-`server/` is a separate Gradle build. `:api-gateway` answers `GET /health` on `127.0.0.1:8080` and stores nothing. `:database`, `:cache`, `:queue`, `:storage`, and `:edge` are libraries. The gateway does not call them. The mobile graph does not include them. There is no sign-in, no refresh token, and no receipt upload.
+`server/` is a separate Gradle build. `:api-gateway` answers `GET /health` on `127.0.0.1:8080` and stores nothing. `:auth-service` answers `POST /sessions` on `127.0.0.1:8081`. A matching password returns 204 and no token. `main` registers no account. `:database`, `:cache`, `:queue`, `:storage`, and `:edge` are libraries. The gateway does not call them. The mobile graph does not include them. There is no refresh token and no receipt upload.
 
 ## Assets
 
@@ -27,7 +27,7 @@ Showcase is not the user's financial data and is not synced.
 
 - The repository is public to read. Treat everything in git as available to an outsider.
 - Receipt text and the model reply are untrusted, even when OCR ran locally.
-- The server does not trust the client. The client does not trust model text. No route checks a caller yet: the gateway has no data route.
+- The server does not trust the client. The client does not trust model text. `:auth-service` accepts or rejects one password and does not issue a credential. The gateway has no data route.
 - Cloudflare terminates TLS for the client. The leaf certificate is not pinned.
 - The offline source set does not link the account module. The server build is not in the mobile graph.
 - A replica that repeats the primary, a hostname that is not proxied, and an origin other than `127.0.0.1:8080` are rejected before a connection or a policy object is returned.
@@ -50,13 +50,13 @@ Showcase is not the user's financial data and is not synced.
 | Prompt injection through receipt text | Untrusted input, a schema, no execution of free text | Stage 4 and Stage 6 | Yes on the device. There is no server model |
 | A showcase row enters sync | `enqueue` returns false and does not insert | Stage 6 | Yes in the cloud build. The offline build has no outbox |
 | The account module in the offline binary | `accountModule` only from `cloudMain` | Stage 6 | Yes. The default flag is false |
-| A server secret in a log or an exception | Omitted from `toString` and from exception text | Stage 6 | Yes for the library types |
+| A server secret in a log or an exception | Omitted from `toString` and from exception text | Stage 6 | Yes for the library types and for `:auth-service` |
 
 ## What code does not protect yet
 
 The device ledger, the BYOK secret, and on-device receipt parsing are in the app. The server libraries and the local outbox are not an account. This document is not a MASVS or ASVS audit of a deployed system. Nothing here is deployed.
 
-Still open: sign-in, refresh-token rotation, TLS from the libraries to PostgreSQL, Redis, Kafka, and object storage, a running tunnel, a receipt upload, and `auth-service`, `ledger-sync-service`, and `ai-proxy-service`. Sync does not call the network. No route authenticates a client.
+Still open: a stored account, a client sign-in screen, refresh-token rotation, TLS from the libraries to PostgreSQL, Redis, Kafka, and object storage, a running tunnel, a receipt upload, and `ledger-sync-service` and `ai-proxy-service`. Sync does not call the network. `:auth-service` can check a password. It does not issue a session, and no other route authenticates a client.
 
 ## How to update
 
@@ -199,3 +199,11 @@ Still open: auth, a receipt upload, a running tunnel, TLS to PostgreSQL, TLS to 
 The tables at the top now match this revision. Rows closed by code are the secret-in-git check, Licensee and the pinned actions, database import rules, the BYOK store, confirmed writes, mobile cleartext, the store privacy answers, showcase refusal, the offline build, and server secrets kept out of `toString` and exception text. The origin row and the receipt-file row are checks inside `:edge` and `:storage`. No tunnel runs, and no receipt is uploaded. The refresh-token row stays open. Prompt injection is closed on the device. There is no server model.
 
 `finpulse.cloud.enabled` stays false. Stage 6 stops at this record. Sign-in, token rotation, datastore TLS, a running tunnel, a receipt upload, and the auth, ledger-sync, and ai-proxy services are not in this revision.
+
+## Revision 2026-10-30 — Stage 6.1 sign-in
+
+`:auth-service` answers `POST /sessions` on `127.0.0.1:8081`. `signIn` returns `Accepted` only when the email matches one account passed to `auth` and the password matches a PBKDF2-HMAC-SHA256 verifier: 600000 iterations, a 16-byte salt, and a 32-byte hash. The route returns 204 or 401 with an empty body. `main` passes an empty account list, so that process accepts no sign-in. `passwordVerifier` clears the password array. The password, the email, the salt, and the hash are not placed in `toString` or in an exception message. The process does not issue a refresh token, does not call Redis or PostgreSQL, does not store an account, and is not called by `:api-gateway`. The mobile app does not link it. `finpulse.cloud.enabled` stays false.
+
+A body that is not the JSON object returns 401 without hashing. An unknown email still runs the hash against a placeholder verifier and stays 401. A short password returns 401 without hashing.
+
+Still open: a stored account, a client sign-in screen, refresh-token rotation, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, TLS to storage, a running tunnel, a receipt upload, and `ledger-sync-service` and `ai-proxy-service`. The refresh-token row stays open.

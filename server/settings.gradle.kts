@@ -22,6 +22,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "finpulse-server"
 include(":api-gateway")
+include(":auth-service")
 include(":database")
 include(":cache")
 include(":queue")

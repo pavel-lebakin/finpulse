@@ -143,6 +143,15 @@ The server is a separate Gradle build in `server/`. It is not a mobile module. P
 | Ktor module | `Application.gateway()` |
 | Process entry | `main` in `Gateway.kt` |
 | Health route | `GET /health` returns the text `ok` |
+| Auth project | `:auth-service` in `server/` |
+| Auth module | `Application.auth(accounts)` |
+| Auth entry | `main` in `Auth.kt` |
+| Sign-in route | `POST /sessions` |
+| Account | `AuthAccount` |
+| Verifier | `PasswordVerifier` |
+| Build verifier | `passwordVerifier` |
+| Check | `signIn` |
+| Check result | `SignIn` (`Accepted`, `Rejected`) |
 | Server database project | `:database` in `server/` |
 | Endpoint | `PostgresEndpoint` |
 | Open | `openPostgres(primary, replica)` |
@@ -175,4 +184,4 @@ The server is a separate Gradle build in `server/`. It is not a mobile module. P
 | Cached object | `EdgeObject` |
 | Cache directive | `Edge.cacheControl` |
 
-`main` binds `127.0.0.1` and port `8080`. Package for `:database` is `com.lebakin.finpulse.server.database`. Package for `:cache` is `com.lebakin.finpulse.server.cache`. Package for `:queue` is `com.lebakin.finpulse.server.queue`. Package for `:storage` is `com.lebakin.finpulse.server.storage`. Package for `:edge` is `com.lebakin.finpulse.server.edge`. A service, database, cache, queue, storage, or edge project that is not in this table is not created ahead of its step.
+`main` in `Gateway.kt` binds `127.0.0.1` and port `8080`. `main` in `Auth.kt` binds `127.0.0.1` and port `8081`. Package for `:auth-service` is `com.lebakin.finpulse.server.auth`. Package for `:database` is `com.lebakin.finpulse.server.database`. Package for `:cache` is `com.lebakin.finpulse.server.cache`. Package for `:queue` is `com.lebakin.finpulse.server.queue`. Package for `:storage` is `com.lebakin.finpulse.server.storage`. Package for `:edge` is `com.lebakin.finpulse.server.edge`. A service, database, cache, queue, storage, or edge project that is not in this table is not created ahead of its step.
