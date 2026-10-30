@@ -8,6 +8,7 @@ application {
 }
 
 dependencies {
+    implementation(project(":cache"))
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
     testImplementation(libs.ktor.server.test.host)

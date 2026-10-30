@@ -157,6 +157,8 @@ The server is a separate Gradle build in `server/`. It is not a mobile module. P
 | Refresh family | `RefreshFamily` |
 | Rotate | `rotate` |
 | Rotate result | `Refresh` (`Rotated`, `Reused`, `Rejected`) |
+| Save refresh family | `saveFamily` |
+| Load refresh family | `loadFamily` |
 | Server database project | `:database` in `server/` |
 | Endpoint | `PostgresEndpoint` |
 | Open | `openPostgres(primary, replica)` |

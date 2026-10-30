@@ -105,7 +105,7 @@ private fun remembered(family: RefreshFamily): List<ByteArray> = buildList {
 private fun matches(hash: ByteArray, spent: List<ByteArray>): Boolean =
     spent.fold(false) { found, candidate -> MessageDigest.isEqual(hash, candidate) || found }
 
-private fun validFamily(family: RefreshFamily): Boolean {
+internal fun validFamily(family: RefreshFamily): Boolean {
     val idsOk = validId(family.id) && validId(family.accountId)
     val currentOk = family.current.size == REFRESH_BYTES
     val spentOk = family.spent.size <= REFRESH_HISTORY && family.spent.all { it.size == REFRESH_BYTES }
