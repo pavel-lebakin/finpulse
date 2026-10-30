@@ -2,6 +2,7 @@ package com.lebakin.finpulse.core.preferences
 
 import java.nio.file.Files
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
@@ -70,6 +71,27 @@ class DataStoreShowcasePreferencesTest {
             preferences.consent.setGranted(false)
             assertFalse(preferences.consent.isGranted())
             assertTrue(preferences.onboarding.observeCompleted().first())
+        } finally {
+            scope.cancel()
+        }
+    }
+
+    @Test
+    fun themeStartsAsSystemAndCanBeStored() = runTest {
+        val directory = Files.createTempDirectory("finpulse-preferences-theme")
+        val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+        val preferences = openAppPreferences(
+            path = directory.resolve("finpulse.preferences_pb").toString(),
+            scope = scope,
+        )
+        try {
+            assertEquals(ThemeMode.System, preferences.theme.observe().first())
+            preferences.theme.set(ThemeMode.Dark)
+            assertEquals(ThemeMode.Dark, preferences.theme.observe().first())
+            preferences.theme.set(ThemeMode.Light)
+            assertEquals(ThemeMode.Light, preferences.theme.observe().first())
+            assertEquals(ThemeMode.Light, ThemeMode.fromStored("light"))
+            assertEquals(ThemeMode.System, ThemeMode.fromStored("other"))
         } finally {
             scope.cancel()
         }

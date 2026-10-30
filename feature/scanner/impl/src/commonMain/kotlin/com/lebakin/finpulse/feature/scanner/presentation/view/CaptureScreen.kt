@@ -34,16 +34,13 @@ internal fun CaptureScreen(
     ) {
         Text(text = "Scan a receipt", style = MaterialTheme.typography.headlineSmall)
         Text(
-            text = "Take a photo, choose one from the gallery, or open a sample. Nothing is saved until you confirm.",
+            text = "Take a photo or choose one from the gallery. Nothing is saved until you confirm.",
             style = MaterialTheme.typography.bodyLarge,
         )
         when (val content = state.content) {
             Loadable.Loading -> Text(text = "Loading")
             is Loadable.Failed -> Text(text = content.error.toUserMessage().text)
             is Loadable.Ready -> CaptureBody(content = content.value, onAction = onAction)
-        }
-        TextButton(onClick = { onAction(CaptureAction.Back) }) {
-            Text(text = "Back")
         }
         MessageText(message = state.message, onDismiss = { onAction(CaptureAction.DismissMessage) })
         if (state.sheet != null) {
@@ -67,14 +64,5 @@ private fun CaptureBody(
     }
     Button(onClick = { onAction(CaptureAction.PickFromGallery) }, enabled = !content.reading) {
         Text(text = "Choose from gallery")
-    }
-    Text(text = "Samples", style = MaterialTheme.typography.titleMedium)
-    content.samples.forEach { sample ->
-        Button(
-            onClick = { onAction(CaptureAction.ChooseSample(sample.id)) },
-            enabled = !content.reading,
-        ) {
-            Text(text = sample.title)
-        }
     }
 }

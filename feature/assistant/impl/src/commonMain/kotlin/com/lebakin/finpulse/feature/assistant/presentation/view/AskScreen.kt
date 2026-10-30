@@ -44,9 +44,6 @@ internal fun AskScreen(
             is Loadable.Failed -> FailedContent(message = content.error.toUserMessage().text, onAction = onAction)
             is Loadable.Ready -> AskBody(content = content.value, onAction = onAction)
         }
-        TextButton(onClick = { onAction(AskAction.Back) }) {
-            Text(text = "Back")
-        }
         MessageText(message = state.message, onDismiss = { onAction(AskAction.DismissMessage) })
         if (state.sheet != null) {
             TextButton(onClick = { onAction(AskAction.DismissSheet) }) {

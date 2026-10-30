@@ -6,6 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 sealed interface SettingsDestination : Destination {
     @Serializable
+    data object Home : SettingsDestination
+
+    @Serializable
     data object Consent : SettingsDestination
 
     @Serializable

@@ -13,6 +13,8 @@ Read the whole diff. For each new call, name which project file the shape came f
 - State changes only through reducer functions inside `reduce {}`.
 - DTOs and entities did not leak into `domain`, `presentation`, or `api`.
 - A Composable has no navigation and no data loading.
+- A screen does not add a second safe-drawing inset, a bottom "Back" label, or settings rows that belong on the settings screen.
+- `NavDisplay` does not fade or veil a screen that is also sliding. Section changes slide in the frame pager, not in a second `NavDisplay` of the same root.
 - Names match the glossary.
 - No secrets and no generated build directories.
 

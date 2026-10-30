@@ -15,10 +15,6 @@ import com.lebakin.finpulse.feature.ledger.api.Category
 import com.lebakin.finpulse.feature.ledger.api.LedgerReader
 import com.lebakin.finpulse.feature.ledger.api.LedgerWriter
 import com.lebakin.finpulse.feature.ledger.api.Transaction
-import com.lebakin.finpulse.feature.assistant.api.AssistantEntry
-import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
-import com.lebakin.finpulse.feature.scanner.api.ScannerEntry
-import com.lebakin.finpulse.feature.settings.api.SettingsEntry
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.yield
 import kotlinx.datetime.LocalDate
@@ -27,10 +23,6 @@ internal class DashboardScreenViewModel(
     private val showcase: ShowcasePreferences,
     private val ledgerReader: LedgerReader,
     private val ledgerWriter: LedgerWriter,
-    private val entry: OnboardingEntry,
-    private val scanner: ScannerEntry,
-    private val assistant: AssistantEntry,
-    private val settings: SettingsEntry,
     private val clock: InsightsClock,
 ) : ScreenViewModel<DashboardState, DashboardAction>() {
     init {
@@ -42,12 +34,6 @@ internal class DashboardScreenViewModel(
     override fun onAction(action: DashboardAction) {
         when (action) {
             DashboardAction.ClearSample -> clearSample()
-            DashboardAction.ScanReceipt -> scanner.openCapture()
-            DashboardAction.AskPhrase -> assistant.openAsk()
-            DashboardAction.ShowOnboardingAgain -> showAgain()
-            DashboardAction.OpenConsent -> settings.openConsent()
-            DashboardAction.OpenKey -> settings.openKey()
-            DashboardAction.OpenLicenses -> settings.openLicenses()
             DashboardAction.Retry -> observe()
             DashboardAction.DismissMessage -> reduce { DashboardReducer.run { withMessage(null) } }
             DashboardAction.DismissSheet -> reduce { DashboardReducer.run { withSheet(null) } }
@@ -75,14 +61,6 @@ internal class DashboardScreenViewModel(
         }) {
             ledgerWriter.clearShowcase()
             reduce { DashboardReducer.run { withMessage(UserMessage(SAMPLE_REMOVED)) } }
-        }
-    }
-
-    private fun showAgain() {
-        launchCatching(onError = { error ->
-            reduce { DashboardReducer.run { withMessage(error.toUserMessage()) } }
-        }) {
-            entry.showAgain()
         }
     }
 

@@ -11,10 +11,6 @@ import com.lebakin.finpulse.feature.ledger.api.LedgerWriter
 import com.lebakin.finpulse.feature.ledger.api.MoneyDirection
 import com.lebakin.finpulse.feature.ledger.api.RecordOrigin
 import com.lebakin.finpulse.feature.ledger.api.Transaction
-import com.lebakin.finpulse.feature.assistant.api.AssistantEntry
-import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
-import com.lebakin.finpulse.feature.scanner.api.ScannerEntry
-import com.lebakin.finpulse.feature.settings.api.SettingsEntry
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -49,10 +45,6 @@ class DashboardScreenViewModelTest {
             showcase = showcase,
             ledgerReader = EmptyLedgerReader(),
             ledgerWriter = writer,
-            entry = RecordingOnboardingEntry(),
-            scanner = RecordingScannerEntry(),
-            assistant = RecordingAssistantEntry(),
-            settings = RecordingSettingsEntry(),
             clock = FixedClock,
         )
         val before = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
@@ -62,93 +54,6 @@ class DashboardScreenViewModelTest {
         val after = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
         assertEquals(DashboardContent.Empty, after.value)
         assertEquals("The sample was removed.", model.state.value.message?.text)
-    }
-
-    @Test
-    fun showAgainCallsTheEntry() {
-        val entry = RecordingOnboardingEntry()
-        val model = DashboardScreenViewModel(
-            showcase = FakeShowcasePreferences(false),
-            ledgerReader = EmptyLedgerReader(),
-            ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
-            entry = entry,
-            scanner = RecordingScannerEntry(),
-            assistant = RecordingAssistantEntry(),
-            settings = RecordingSettingsEntry(),
-            clock = FixedClock,
-        )
-        val ready = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
-        assertEquals(DashboardContent.Empty, ready.value)
-        model.onAction(DashboardAction.ShowOnboardingAgain)
-        assertEquals(1, entry.calls)
-    }
-
-    @Test
-    fun openConsentCallsSettings() {
-        val settings = RecordingSettingsEntry()
-        val model = DashboardScreenViewModel(
-            showcase = FakeShowcasePreferences(false),
-            ledgerReader = EmptyLedgerReader(),
-            ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
-            entry = RecordingOnboardingEntry(),
-            scanner = RecordingScannerEntry(),
-            assistant = RecordingAssistantEntry(),
-            settings = settings,
-            clock = FixedClock,
-        )
-        model.onAction(DashboardAction.OpenConsent)
-        assertEquals(listOf("consent"), settings.calls)
-    }
-
-    @Test
-    fun openKeyCallsSettings() {
-        val settings = RecordingSettingsEntry()
-        val model = DashboardScreenViewModel(
-            showcase = FakeShowcasePreferences(false),
-            ledgerReader = EmptyLedgerReader(),
-            ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
-            entry = RecordingOnboardingEntry(),
-            scanner = RecordingScannerEntry(),
-            assistant = RecordingAssistantEntry(),
-            settings = settings,
-            clock = FixedClock,
-        )
-        model.onAction(DashboardAction.OpenKey)
-        assertEquals(listOf("key"), settings.calls)
-    }
-
-    @Test
-    fun openLicensesCallsSettings() {
-        val settings = RecordingSettingsEntry()
-        val model = DashboardScreenViewModel(
-            showcase = FakeShowcasePreferences(false),
-            ledgerReader = EmptyLedgerReader(),
-            ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
-            entry = RecordingOnboardingEntry(),
-            scanner = RecordingScannerEntry(),
-            assistant = RecordingAssistantEntry(),
-            settings = settings,
-            clock = FixedClock,
-        )
-        model.onAction(DashboardAction.OpenLicenses)
-        assertEquals(listOf("licenses"), settings.calls)
-    }
-
-    @Test
-    fun askPhraseCallsTheAssistant() {
-        val assistant = RecordingAssistantEntry()
-        val model = DashboardScreenViewModel(
-            showcase = FakeShowcasePreferences(false),
-            ledgerReader = EmptyLedgerReader(),
-            ledgerWriter = RecordingLedgerWriter(FakeShowcasePreferences(false)),
-            entry = RecordingOnboardingEntry(),
-            scanner = RecordingScannerEntry(),
-            assistant = assistant,
-            settings = RecordingSettingsEntry(),
-            clock = FixedClock,
-        )
-        model.onAction(DashboardAction.AskPhrase)
-        assertEquals(1, assistant.calls)
     }
 
     @Test
@@ -214,44 +119,4 @@ private class RecordingLedgerWriter(
     }
 
     override suspend fun addUserTransaction(category: Category, transaction: Transaction): Boolean = false
-}
-
-private class RecordingSettingsEntry : SettingsEntry {
-    val calls = mutableListOf<String>()
-
-    override fun openConsent() {
-        calls += "consent"
-    }
-
-    override fun openKey() {
-        calls += "key"
-    }
-
-    override fun openLicenses() {
-        calls += "licenses"
-    }
-}
-
-private class RecordingAssistantEntry : AssistantEntry {
-    var calls: Int = 0
-
-    override fun openAsk() {
-        calls += 1
-    }
-}
-
-private class RecordingScannerEntry : ScannerEntry {
-    var calls: Int = 0
-
-    override fun openCapture() {
-        calls += 1
-    }
-}
-
-private class RecordingOnboardingEntry : OnboardingEntry {
-    var calls: Int = 0
-
-    override suspend fun showAgain() {
-        calls += 1
-    }
 }

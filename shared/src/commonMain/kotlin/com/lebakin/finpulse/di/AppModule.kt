@@ -10,6 +10,7 @@ import com.lebakin.finpulse.core.preferences.AppPreferences
 import com.lebakin.finpulse.core.preferences.ConsentPreferences
 import com.lebakin.finpulse.core.preferences.OnboardingPreferences
 import com.lebakin.finpulse.core.preferences.ShowcasePreferences
+import com.lebakin.finpulse.core.preferences.ThemePreferences
 import com.lebakin.finpulse.core.preferences.openAppPreferences
 import com.lebakin.finpulse.core.preferences.preferencesFilePath
 import com.lebakin.finpulse.core.network.openHttpsClient
@@ -40,6 +41,7 @@ val appModule = module {
     single<ShowcasePreferences> { get<AppPreferences>().showcase }
     single<OnboardingPreferences> { get<AppPreferences>().onboarding }
     single<ConsentPreferences> { get<AppPreferences>().consent }
+    single<ThemePreferences> { get<AppPreferences>().theme }
     includes(ledgerModule)
     includes(onboardingModule)
     includes(insightsModule)

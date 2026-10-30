@@ -48,11 +48,6 @@ internal fun ReviewScreen(
                 Text(text = "Confirm")
             }
         }
-        if (!state.saved) {
-            TextButton(onClick = { onAction(ReviewAction.Back) }) {
-                Text(text = "Back")
-            }
-        }
         MessageText(message = state.message, onDismiss = { onAction(ReviewAction.DismissMessage) })
         if (state.sheet != null) {
             TextButton(onClick = { onAction(ReviewAction.DismissSheet) }) {

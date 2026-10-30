@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -29,6 +30,7 @@ fun openAppPreferences(
         showcase = DataStoreShowcasePreferences(store),
         onboarding = DataStoreOnboardingPreferences(store),
         consent = DataStoreConsentPreferences(store),
+        theme = DataStoreThemePreferences(store),
     )
 }
 
@@ -90,5 +92,23 @@ private class DataStoreConsentPreferences(
 
     private companion object {
         val SENDING_GRANTED = booleanPreferencesKey("sending_granted")
+    }
+}
+
+private class DataStoreThemePreferences(
+    private val store: DataStore<Preferences>,
+) : ThemePreferences {
+    override fun observe(): Flow<ThemeMode> = store.data.map { preferences ->
+        ThemeMode.fromStored(preferences[THEME])
+    }
+
+    override suspend fun set(mode: ThemeMode) {
+        store.edit { preferences ->
+            preferences[THEME] = mode.stored()
+        }
+    }
+
+    private companion object {
+        val THEME = stringPreferencesKey("theme_mode")
     }
 }

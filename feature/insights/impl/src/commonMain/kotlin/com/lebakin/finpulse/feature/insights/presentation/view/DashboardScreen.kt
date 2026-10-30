@@ -42,28 +42,10 @@ internal fun DashboardScreen(
         verticalArrangement = Arrangement.spacedBy(spacing.m),
     ) {
         Text(text = "Dashboard", style = MaterialTheme.typography.headlineSmall)
-        Button(onClick = { onAction(DashboardAction.ScanReceipt) }) {
-            Text(text = "Scan a receipt")
-        }
-        Button(onClick = { onAction(DashboardAction.AskPhrase) }) {
-            Text(text = "Write a phrase")
-        }
         when (val content = state.content) {
             Loadable.Loading -> Text(text = "Loading")
             is Loadable.Failed -> FailedContent(message = content.error.toUserMessage().text, onAction = onAction)
             is Loadable.Ready -> DashboardBody(content = content.value, onAction = onAction)
-        }
-        TextButton(onClick = { onAction(DashboardAction.ShowOnboardingAgain) }) {
-            Text(text = "Show onboarding again")
-        }
-        TextButton(onClick = { onAction(DashboardAction.OpenConsent) }) {
-            Text(text = "Allow sending to Gemini")
-        }
-        TextButton(onClick = { onAction(DashboardAction.OpenKey) }) {
-            Text(text = "Gemini key")
-        }
-        TextButton(onClick = { onAction(DashboardAction.OpenLicenses) }) {
-            Text(text = "Open source licenses")
         }
         MessageText(message = state.message, onDismiss = { onAction(DashboardAction.DismissMessage) })
         if (state.sheet != null) {

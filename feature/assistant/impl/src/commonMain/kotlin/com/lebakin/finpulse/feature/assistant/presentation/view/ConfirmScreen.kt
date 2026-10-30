@@ -48,11 +48,6 @@ internal fun ConfirmScreen(
                 Text(text = "Confirm")
             }
         }
-        if (!state.saved) {
-            TextButton(onClick = { onAction(ConfirmAction.Back) }) {
-                Text(text = "Back")
-            }
-        }
         MessageText(message = state.message, onDismiss = { onAction(ConfirmAction.DismissMessage) })
         if (state.sheet != null) {
             TextButton(onClick = { onAction(ConfirmAction.DismissSheet) }) {

@@ -26,18 +26,6 @@ data class DashboardState(
 sealed interface DashboardAction : ScreenAction {
     data object ClearSample : DashboardAction
 
-    data object ScanReceipt : DashboardAction
-
-    data object AskPhrase : DashboardAction
-
-    data object ShowOnboardingAgain : DashboardAction
-
-    data object OpenConsent : DashboardAction
-
-    data object OpenKey : DashboardAction
-
-    data object OpenLicenses : DashboardAction
-
     data object Retry : DashboardAction
 
     data object DismissMessage : DashboardAction

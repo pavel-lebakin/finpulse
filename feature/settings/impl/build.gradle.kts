@@ -6,6 +6,7 @@ kotlin {
     sourceSets.named("commonMain") {
         dependencies {
             api(projects.feature.settings.api)
+            implementation(projects.feature.onboarding.api)
             implementation(projects.core.mvi)
             implementation(projects.core.navigation)
             implementation(projects.core.uikit)

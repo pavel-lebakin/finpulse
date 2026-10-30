@@ -22,6 +22,8 @@ Stage 2 chose Navigation 3: `org.jetbrains.androidx.navigation3:navigation3-ui` 
 
 `Destination` inside `:core:navigation` extends the Navigation 3 key. A feature does not choose that: the ViewModel calls `RootNavigator`. `ComposeRootNavigator` holds a command queue until the Compose host is attached. Route registration in `NavDisplay` lives in `:shared`.
 
+The frame applies `WindowInsets.safeDrawing` and paints `colorScheme.background`. Compact width uses `BottomNavBar` for Home, Scan, Assistant, and Settings. Those roots are a `HorizontalPager`, so the slide follows the menu index. Wide width uses a menu for the same sections and the same pager. A section choice replaces the back stack with that root after the pager settles. A pushed screen slides over the pager and shows `BackArrow`. Onboarding stays on `NavDisplay`. That transition is an opaque horizontal slide of 250 ms. It does not fade, veil, or scale the outgoing screen. Theme mode is stored in preferences and applied by `FinPulseApp`.
+
 ## Errors
 
 `AppError` distinguishes three cases: no connection, a server error, and an unexpected error. The original `cause` is always kept so `ErrorReporter` can take it. `CancellationException` is not swallowed.
