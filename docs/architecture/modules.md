@@ -6,7 +6,7 @@ Repository directories:
 androidApp/          iosApp/           shared/
 catalog/{shared,android,desktop}
 core/{common,mvi,navigation,uikit,database,preferences,security,network,ai,testing}
-feature/{onboarding,ledger,insights,scanner,assistant,settings}/{api,impl}
+feature/{onboarding,ledger,insights,scanner,assistant,settings,account}/{api,impl}
 tooling/architecture-tests
 server/              # separate Gradle build: :api-gateway, :database, :cache, :queue, :storage, and :edge
 ```

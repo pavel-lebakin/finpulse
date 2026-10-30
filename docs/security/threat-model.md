@@ -175,3 +175,9 @@ Still open: auth, a receipt upload, the tunnel, TLS to PostgreSQL, TLS to Redis,
 The origin row is met by this library. No tunnel process is started.
 
 Still open: auth, a receipt upload, a running tunnel, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, TLS to storage, and the account module in a cloud build. The refresh-token row in the table above stays open.
+
+## Revision 2026-10-30 — Stage 6 sync
+
+`:feature:account` keeps a Room outbox in `finpulse-outbox.db`, separate from the ledger database. `enqueue` returns false for `SHOWCASE` and does not insert that change. `merge` keeps the higher category revision. A transaction whose revision or body differs stays local and is a `SyncConflict`. `:shared` compiles `offlineMain` while `finpulse.cloud.enabled` is false, and that source set does not link `accountModule`. `cloudMain` includes it only when the flag is true. The default stays false. The outbox classes are not in `:core:database`. No screen calls sync, and sync does not call the network. There is still no account sign-in.
+
+Still open: auth, a receipt upload, a running tunnel, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, TLS to storage, and sign-in. The refresh-token row in the table above stays open.

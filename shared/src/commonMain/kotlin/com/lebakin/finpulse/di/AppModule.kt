@@ -46,6 +46,7 @@ val appModule = module {
     includes(scannerModule)
     includes(assistantModule)
     includes(settingsModule)
+    cloudModules().forEach { cloud -> includes(cloud) }
     single<LicenseReader> { GeneratedLicenseReader() }
     single<ErrorReporter> { NoOpErrorReporter() }
     single { ComposeRootNavigator() }

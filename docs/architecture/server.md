@@ -22,6 +22,6 @@ Data and infrastructure:
 
 The client does not pin the leaf certificate: Cloudflare rotates it. Network is HTTPS only. Cleartext is forbidden.
 
-On the client, the flag `finpulse.cloud.enabled` switches a source set in `:shared`. When the flag is off, `account` and sync are not linked. The API contract between client and server (OpenAPI or a shared KMP module) is chosen at Stage 6, not earlier.
+On the client, the flag `finpulse.cloud.enabled` switches a source set in `:shared`. The default is false, so `offlineMain` is compiled and `:feature:account` is not linked. `cloudMain` includes `accountModule`. The API contract between client and server (OpenAPI or a shared KMP module) is chosen at Stage 6, not earlier.
 
 Cloud references: ASVS, OWASP API Top 10, OWASP LLM Top 10. The threat model is updated at that stage, not once at the end.

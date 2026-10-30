@@ -22,4 +22,4 @@ A platform implementation (OCR, Keystore, Keychain, the on-device model, Swift F
 
 ## Cloud outbox
 
-Sync through a Room outbox, with conflict policies per data type, arrives at Stage 6 and only in a build with `finpulse.cloud.enabled=true`. Those classes are not in the offline binary. Do not add an empty outbox "for later" before that stage.
+`:feature:account` stores a Room outbox in `finpulse-outbox.db`. `:shared` links it from `cloudMain` only when `finpulse.cloud.enabled=true`. The default is false, so those classes are not in the offline binary. `enqueue` refuses a showcase change. Categories keep the higher revision. A transaction that differs stays local and is a conflict. The outbox is not in `:core:database`.

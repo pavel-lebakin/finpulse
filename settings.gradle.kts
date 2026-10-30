@@ -43,6 +43,8 @@ include(
     ":feature:assistant:impl",
     ":feature:settings:api",
     ":feature:settings:impl",
+    ":feature:account:api",
+    ":feature:account:impl",
     ":catalog:shared",
     ":catalog:android",
     ":catalog:desktop",

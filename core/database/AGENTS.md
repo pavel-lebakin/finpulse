@@ -2,7 +2,7 @@
 
 Package `com.lebakin.finpulse.core.database`. Room on the bundled SQLite driver. Depends on `:core` only through the app graph; this module has no feature dependency.
 
-Public types: `FinPulseDatabase`, `TransactionEntity`, `CategoryEntity`, `LedgerDao`, `openFinPulseDatabase`, `databaseFilePath`. Android calls `bindAndroidDatabase` before the first open.
+Public types: `FinPulseDatabase`, `TransactionEntity`, `CategoryEntity`, `LedgerDao`, `openFinPulseDatabase`, `databaseFilePath`. Android calls `bindAndroidDatabase` before the first open. `androidDatabaseContext` returns that context for the cloud outbox.
 
 Entities stay in this package. A feature imports them only from a `data` package. Schema version 1 is exported under `schemas/`. There is no sync outbox.
 

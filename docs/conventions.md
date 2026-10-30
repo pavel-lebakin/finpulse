@@ -117,6 +117,22 @@ The JDK for a local build is JBR 21 from Android Studio, through `JAVA_HOME`:
 
 `sdk.dir` is written in `local.properties`. Both files are local and do not enter git.
 
+## account
+
+Cloud build only. `:shared` links it from `cloudMain` when `finpulse.cloud.enabled=true`.
+
+| Piece | Name |
+| --- | --- |
+| Feature | `:feature:account` |
+| Sync | `LedgerSync` |
+| Change | `SyncChange` |
+| Kind | `SyncKind` (`CATEGORY`, `TRANSACTION`) |
+| Origin | `SyncOrigin` (`USER`, `SHOWCASE`) |
+| Result | `SyncMerge`, `SyncConflict` |
+| Outbox database | `OutboxDatabase` |
+| Open outbox | `openOutboxDatabase` |
+| Koin module | `accountModule` |
+
 ## server
 
 The server is a separate Gradle build in `server/`. It is not a mobile module. Package `com.lebakin.finpulse.server.<service>`.

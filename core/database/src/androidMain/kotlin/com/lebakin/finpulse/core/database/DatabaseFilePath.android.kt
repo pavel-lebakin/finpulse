@@ -14,18 +14,17 @@ fun bindAndroidDatabase(context: Context) {
     applicationContext = context.applicationContext
 }
 
+fun androidDatabaseContext(): Context = checkNotNull(applicationContext) {
+    "Call bindAndroidDatabase before opening the database."
+}
+
 actual fun databaseFilePath(): String {
-    val directory = checkNotNull(applicationContext) {
-        "Call bindAndroidDatabase before opening the database."
-    }.filesDir.absolutePath
+    val directory = androidDatabaseContext().filesDir.absolutePath
     return "$directory/finpulse.db"
 }
 
 actual fun openFinPulseDatabase(path: String): FinPulseDatabase {
-    val context = checkNotNull(applicationContext) {
-        "Call bindAndroidDatabase before opening the database."
-    }
-    return Room.databaseBuilder<FinPulseDatabase>(context = context, name = path)
+    return Room.databaseBuilder<FinPulseDatabase>(context = androidDatabaseContext(), name = path)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(queryDispatcher)
         .build()

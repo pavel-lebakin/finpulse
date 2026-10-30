@@ -93,4 +93,19 @@ kotlin {
             implementation(compose.desktop.currentOs)
         }
     }
+    // The default hierarchy is applied after this script, so iosMain does not exist yet.
+    applyDefaultHierarchyTemplate()
+    // The flag selects the source set. offlineMain does not link :feature:account.
+    val cloudEnabled = providers.gradleProperty("finpulse.cloud.enabled").get().toBoolean()
+    val selectedName = if (cloudEnabled) "cloudMain" else "offlineMain"
+    val selected = sourceSets.create(selectedName)
+    selected.dependsOn(sourceSets.getByName("commonMain"))
+    if (cloudEnabled) {
+        selected.dependencies {
+            implementation(projects.feature.account.impl)
+        }
+    }
+    listOf("androidMain", "iosMain", "jvmMain").forEach { name ->
+        sourceSets.getByName(name).dependsOn(selected)
+    }
 }
