@@ -28,7 +28,7 @@ private fun validVerifier(verifier: PasswordVerifier): Boolean {
     return iterationsOk && saltOk && verifier.hash.size == HASH_BYTES
 }
 
-private fun validId(id: String): Boolean = id.length in 1..MAX_ID_LENGTH && id.all(::isIdChar)
+internal fun validId(id: String): Boolean = id.length in 1..MAX_ID_LENGTH && id.all(::isIdChar)
 
 private fun validDomain(domain: String): Boolean {
     val dotted = domain.contains('.') && !domain.startsWith('.') && !domain.endsWith('.')

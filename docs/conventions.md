@@ -152,6 +152,11 @@ The server is a separate Gradle build in `server/`. It is not a mobile module. P
 | Build verifier | `passwordVerifier` |
 | Check | `signIn` |
 | Check result | `SignIn` (`Accepted`, `Rejected`) |
+| Issue refresh token | `refreshToken` |
+| Open refresh family | `refreshFamily` |
+| Refresh family | `RefreshFamily` |
+| Rotate | `rotate` |
+| Rotate result | `Refresh` (`Rotated`, `Reused`, `Rejected`) |
 | Server database project | `:database` in `server/` |
 | Endpoint | `PostgresEndpoint` |
 | Open | `openPostgres(primary, replica)` |

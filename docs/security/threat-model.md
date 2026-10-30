@@ -1,12 +1,12 @@
 # Threat model
 
-Revision: Stage 6.1, 2026-10-30. The tables say what code already does and what is still only a library or a plan. This file is updated at every stage. A revision is appended. The tables are not replaced by a paragraph.
+Revision: Stage 6.2, 2026-10-30. The tables say what code already does and what is still only a library or a plan. This file is updated at every stage. A revision is appended. The tables are not replaced by a paragraph.
 
 ## The system in this revision
 
 Android and iOS share one offline ledger. The default build has `finpulse.cloud.enabled=false`, so `:feature:account` is not linked. Receipt photos stay in memory. Receipt text leaves the device only after consent and a saved Gemini key. The user confirms a transaction before it is written.
 
-`server/` is a separate Gradle build. `:api-gateway` answers `GET /health` on `127.0.0.1:8080` and stores nothing. `:auth-service` answers `POST /sessions` on `127.0.0.1:8081`. A matching password returns 204 and no token. `main` registers no account. `:database`, `:cache`, `:queue`, `:storage`, and `:edge` are libraries. The gateway does not call them. The mobile graph does not include them. There is no refresh token and no receipt upload.
+`server/` is a separate Gradle build. `:api-gateway` answers `GET /health` on `127.0.0.1:8080` and stores nothing. `:auth-service` answers `POST /sessions` on `127.0.0.1:8081`. A matching password returns 204 and no token. `rotate` replaces one refresh family in memory and revokes it when a remembered token is presented again. `main` registers no account and creates no family. `:database`, `:cache`, `:queue`, `:storage`, and `:edge` are libraries. The gateway does not call them. The mobile graph does not include them. No receipt is uploaded.
 
 ## Assets
 
@@ -17,7 +17,7 @@ Android and iOS share one offline ledger. The default build has `finpulse.cloud.
 | BYOK key | Android: AES-GCM in Keystore, ciphertext in DataStore under `noBackupFilesDir`. iOS: Keychain `WhenUnlockedThisDeviceOnly` | Present since Stage 4.5 |
 | Showcase history | Room, `origin = SHOWCASE` | Present since Stage 4.1. `enqueue` refuses it |
 | Release signing | Gitignored `keystore.properties` and GitHub Actions secrets | Present since Stage 5 |
-| Cloud session | Not stored. Redis can hold one value | Still planned. No refresh family, and nothing is written to Keystore or the Keychain for a session |
+| Cloud session | A refresh family held by the caller of `:auth-service` | The route does not issue a token. The token and its hash stay out of `toString`. Nothing is written to Redis, Keystore, or the Keychain |
 | Sync outbox | `finpulse-outbox.db` in `:feature:account` | Present only when `finpulse.cloud.enabled=true`. Not sent |
 | Server credentials | Caller arguments to Postgres, Redis, Kafka, R2, and Edge | Present in the libraries. Omitted from `toString` and from exception text. Not in git |
 
@@ -27,7 +27,7 @@ Showcase is not the user's financial data and is not synced.
 
 - The repository is public to read. Treat everything in git as available to an outsider.
 - Receipt text and the model reply are untrusted, even when OCR ran locally.
-- The server does not trust the client. The client does not trust model text. `:auth-service` accepts or rejects one password and does not issue a credential. The gateway has no data route.
+- The server does not trust the client. The client does not trust model text. `:auth-service` accepts or rejects one password. `rotate` replaces the current refresh token and revokes that family when a remembered token is presented again. The route does not issue a credential. The gateway has no data route.
 - Cloudflare terminates TLS for the client. The leaf certificate is not pinned.
 - The offline source set does not link the account module. The server build is not in the mobile graph.
 - A replica that repeats the primary, a hostname that is not proxied, and an origin other than `127.0.0.1:8080` are rejected before a connection or a policy object is returned.
@@ -44,7 +44,7 @@ Showcase is not the user's financial data and is not synced.
 | A transaction replaced by model text or OCR | Reply schema, the user confirms the write | Stage 4 | Yes |
 | Cleartext and extra data in logs | Cleartext forbidden, log redaction | Stage 4 | Yes on the device. The server libraries do not require TLS to PostgreSQL, Redis, Kafka, or object storage |
 | Publishing without describing data collection | Policy, Data safety, App Privacy, `PrivacyInfo.xcprivacy` | Stage 5 | Yes for the offline app and the optional Gemini send. The policy does not describe an account |
-| Refresh-token theft, reuse | Rotation and token families in Redis | Stage 6 | No. `:cache` can store one value. It does not store or rotate a refresh token |
+| Refresh-token theft, reuse | Rotation and token families in Redis | Stage 6 | The check only. `:auth-service` replaces a matching current token and revokes the family when a remembered token is presented again. The family is not written to Redis. `POST /sessions` still returns no token |
 | Direct access to the origin and API brute force | Tunnel, WAF, rate limit | Stage 6 | The check only. `:edge` accepts that policy and rejects any other shape. No tunnel process runs |
 | A receipt file swapped through the server | A short-lived signed URL, `Cache-Control: private, no-store` for private objects | Stage 6 | The library only. `:storage` sets that header and a GET URL that expires in 60 seconds. Nothing uploads a receipt |
 | Prompt injection through receipt text | Untrusted input, a schema, no execution of free text | Stage 4 and Stage 6 | Yes on the device. There is no server model |
@@ -56,7 +56,7 @@ Showcase is not the user's financial data and is not synced.
 
 The device ledger, the BYOK secret, and on-device receipt parsing are in the app. The server libraries and the local outbox are not an account. This document is not a MASVS or ASVS audit of a deployed system. Nothing here is deployed.
 
-Still open: a stored account, a client sign-in screen, refresh-token rotation, TLS from the libraries to PostgreSQL, Redis, Kafka, and object storage, a running tunnel, a receipt upload, and `ledger-sync-service` and `ai-proxy-service`. Sync does not call the network. `:auth-service` can check a password. It does not issue a session, and no other route authenticates a client.
+Still open: a stored account, a client sign-in screen, a refresh family stored in Redis, a session issued by the route, TLS from the libraries to PostgreSQL, Redis, Kafka, and object storage, a running tunnel, a receipt upload, and `ledger-sync-service` and `ai-proxy-service`. Sync does not call the network. `:auth-service` can check a password and rotate a family in memory. It does not issue a session from `POST /sessions`, and no other route authenticates a client.
 
 ## How to update
 
@@ -207,3 +207,9 @@ The tables at the top now match this revision. Rows closed by code are the secre
 A body that is not the JSON object returns 401 without hashing. An unknown email still runs the hash against a placeholder verifier and stays 401. A short password returns 401 without hashing.
 
 Still open: a stored account, a client sign-in screen, refresh-token rotation, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, TLS to storage, a running tunnel, a receipt upload, and `ledger-sync-service` and `ai-proxy-service`. The refresh-token row stays open.
+
+## Revision 2026-10-30 — Stage 6.2 refresh rotation
+
+`rotate` in `:auth-service` returns `Rotated` only when the SHA-256 of the presented token matches the current hash of that `RefreshFamily`. The family id stays the same. The presented hash joins a remembered list of at most 8, and the result carries a new 32-byte token. Presenting a remembered token returns `Reused` and the family is revoked, so the current token then fails too. A revoked family, a mismatch, or an unknown token is `Rejected`. `rotate` clears the presented array. `refreshFamily` stores the hash, not the token. The token and the hashes are not placed in `toString` or in an exception message. `POST /sessions` does not call `rotate`. `main` creates no family. The process does not call Redis or PostgreSQL, does not store an account, and is not called by `:api-gateway`. The mobile app does not link it. `finpulse.cloud.enabled` stays false.
+
+Still open: a stored account, a client sign-in screen, a refresh family stored in Redis, a session issued by the route, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, TLS to storage, a running tunnel, a receipt upload, and `ledger-sync-service` and `ai-proxy-service`. The refresh-token row is a check in memory. Redis still holds no family.
