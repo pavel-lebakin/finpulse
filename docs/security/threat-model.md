@@ -1,21 +1,25 @@
 # Threat model
 
-Revision: Stage 1. There is no executable app yet. Below are the assets and the decisions that code in later stages must follow. This file is updated at every stage: what is already protected, and what is still only planned.
+Revision: Stage 6, 2026-10-30. The tables say what code already does and what is still only a library or a plan. This file is updated at every stage. A revision is appended. The tables are not replaced by a paragraph.
 
 ## The system in this revision
 
-A repository of documentation and rules for agents. The mobile client, the server, and receipt storage are not built yet. The development channel and its token are not in git.
+Android and iOS share one offline ledger. The default build has `finpulse.cloud.enabled=false`, so `:feature:account` is not linked. Receipt photos stay in memory. Receipt text leaves the device only after consent and a saved Gemini key. The user confirms a transaction before it is written.
+
+`server/` is a separate Gradle build. `:api-gateway` answers `GET /health` on `127.0.0.1:8080` and stores nothing. `:database`, `:cache`, `:queue`, `:storage`, and `:edge` are libraries. The gateway does not call them. The mobile graph does not include them. There is no sign-in, no refresh token, and no receipt upload.
 
 ## Assets
 
-| Asset | Where it will live | When it appears |
+| Asset | Where it lives | In this revision |
 | --- | --- | --- |
-| Transactions and categories | Room on the device | Stage 4 |
-| Receipt photos | Memory during capture and recognition. Not stored in Room. Cloud copies are Stage 6 | Stage 4.4, cloud at Stage 6 |
-| BYOK key | Keystore + DataStore / Keychain | Stage 4 |
-| Showcase history | Room, `origin = SHOWCASE` | Stage 4 |
-| Release signing | a gitignored file and GitHub Secrets | Stage 5 |
-| Cloud session | Keystore / Keychain, refresh family in Redis | Stage 6 |
+| Transactions and categories | Room on the device | Present since Stage 4.1. Not uploaded |
+| Receipt photos | Memory during capture and recognition. Not stored in Room | Present since Stage 4.4. `:storage` can write one private object. No service stores a receipt |
+| BYOK key | Android: AES-GCM in Keystore, ciphertext in DataStore under `noBackupFilesDir`. iOS: Keychain `WhenUnlockedThisDeviceOnly` | Present since Stage 4.5 |
+| Showcase history | Room, `origin = SHOWCASE` | Present since Stage 4.1. `enqueue` refuses it |
+| Release signing | Gitignored `keystore.properties` and GitHub Actions secrets | Present since Stage 5 |
+| Cloud session | Not stored. Redis can hold one value | Still planned. No refresh family, and nothing is written to Keystore or the Keychain for a session |
+| Sync outbox | `finpulse-outbox.db` in `:feature:account` | Present only when `finpulse.cloud.enabled=true`. Not sent |
+| Server credentials | Caller arguments to Postgres, Redis, Kafka, R2, and Edge | Present in the libraries. Omitted from `toString` and from exception text. Not in git |
 
 Showcase is not the user's financial data and is not synced.
 
@@ -23,28 +27,36 @@ Showcase is not the user's financial data and is not synced.
 
 - The repository is public to read. Treat everything in git as available to an outsider.
 - Receipt text and the model reply are untrusted, even when OCR ran locally.
-- The server does not trust the client. The client does not trust model text.
+- The server does not trust the client. The client does not trust model text. No route checks a caller yet: the gateway has no data route.
 - Cloudflare terminates TLS for the client. The leaf certificate is not pinned.
+- The offline source set does not link the account module. The server build is not in the mobile graph.
+- A replica that repeats the primary, a hostname that is not proxied, and an origin other than `127.0.0.1:8080` are rejected before a connection or a policy object is returned.
+- Passwords, the tunnel token, and the Origin CA are caller-supplied. `Edge` does not keep the token or the certificate.
 
 ## Threats and where we close them
 
-| Threat | What we do | Stage |
-| --- | --- | --- |
-| A secret in git | gitignore, gitleaks in the hook and in CI, secrets only in the environment | Stage 1, then on every commit |
-| A dependency with a forbidden license, or a swapped action | Licensee, SHA-pinned actions, Dependabot, CodeQL | Stage 3 |
-| Another module reads the database directly | `core.database` imported only from `data` packages, Konsist | Stage 3–4 |
-| The BYOK key in a backup or a log | Keystore / Keychain, no PII in release logs | Stage 4 |
-| A transaction replaced by model text or OCR | Reply schema, the user confirms the write | Stage 4 |
-| Cleartext and extra data in logs | Cleartext forbidden, log redaction | Stage 4 |
-| Publishing without describing data collection | Policy, Data safety, App Privacy, `PrivacyInfo.xcprivacy` | Stage 5 |
-| Refresh-token theft, reuse | Rotation and token families in Redis | Stage 6 |
-| Direct access to the origin and API brute force | Tunnel, WAF, rate limit | Stage 6 |
-| A receipt file swapped through the server | A short-lived signed URL, `Cache-Control: private, no-store` for private objects | Stage 6 |
-| Prompt injection through receipt text | Untrusted input, a schema, no execution of free text | Stage 4 and Stage 6 |
+| Threat | What we do | Stage | Closed by code |
+| --- | --- | --- | --- |
+| A secret in git | gitignore, gitleaks in the hook and in CI, secrets only in the environment | Stage 1, then on every commit | Yes |
+| A dependency with a forbidden license, or a swapped action | Licensee, SHA-pinned actions, Dependabot, CodeQL | Stage 3 | Yes |
+| Another module reads the database directly | `core.database` imported only from `data` packages, Konsist | Stage 3–4 | Yes. The outbox entities stay in `:feature:account` |
+| The BYOK key in a backup or a log | Keystore / Keychain, no PII in release logs | Stage 4 | Yes |
+| A transaction replaced by model text or OCR | Reply schema, the user confirms the write | Stage 4 | Yes |
+| Cleartext and extra data in logs | Cleartext forbidden, log redaction | Stage 4 | Yes on the device. The server libraries do not require TLS to PostgreSQL, Redis, Kafka, or object storage |
+| Publishing without describing data collection | Policy, Data safety, App Privacy, `PrivacyInfo.xcprivacy` | Stage 5 | Yes for the offline app and the optional Gemini send. The policy does not describe an account |
+| Refresh-token theft, reuse | Rotation and token families in Redis | Stage 6 | No. `:cache` can store one value. It does not store or rotate a refresh token |
+| Direct access to the origin and API brute force | Tunnel, WAF, rate limit | Stage 6 | The check only. `:edge` accepts that policy and rejects any other shape. No tunnel process runs |
+| A receipt file swapped through the server | A short-lived signed URL, `Cache-Control: private, no-store` for private objects | Stage 6 | The library only. `:storage` sets that header and a GET URL that expires in 60 seconds. Nothing uploads a receipt |
+| Prompt injection through receipt text | Untrusted input, a schema, no execution of free text | Stage 4 and Stage 6 | Yes on the device. There is no server model |
+| A showcase row enters sync | `enqueue` returns false and does not insert | Stage 6 | Yes in the cloud build. The offline build has no outbox |
+| The account module in the offline binary | `accountModule` only from `cloudMain` | Stage 6 | Yes. The default flag is false |
+| A server secret in a log or an exception | Omitted from `toString` and from exception text | Stage 6 | Yes for the library types |
 
 ## What code does not protect yet
 
-At Stage 1 there is no binary, database, or network. The controls of this revision are the absence of secrets in the tree and the documentation check. That does not replace a MASVS check of a built app.
+The device ledger, the BYOK secret, and on-device receipt parsing are in the app. The server libraries and the local outbox are not an account. This document is not a MASVS or ASVS audit of a deployed system. Nothing here is deployed.
+
+Still open: sign-in, refresh-token rotation, TLS from the libraries to PostgreSQL, Redis, Kafka, and object storage, a running tunnel, a receipt upload, and `auth-service`, `ledger-sync-service`, and `ai-proxy-service`. Sync does not call the network. No route authenticates a client.
 
 ## How to update
 
@@ -181,3 +193,9 @@ Still open: auth, a receipt upload, a running tunnel, TLS to PostgreSQL, TLS to 
 `:feature:account` keeps a Room outbox in `finpulse-outbox.db`, separate from the ledger database. `enqueue` returns false for `SHOWCASE` and does not insert that change. `merge` keeps the higher category revision. A transaction whose revision or body differs stays local and is a `SyncConflict`. `:shared` compiles `offlineMain` while `finpulse.cloud.enabled` is false, and that source set does not link `accountModule`. `cloudMain` includes it only when the flag is true. The default stays false. The outbox classes are not in `:core:database`. No screen calls sync, and sync does not call the network. There is still no account sign-in.
 
 Still open: auth, a receipt upload, a running tunnel, TLS to PostgreSQL, TLS to Redis, TLS to Kafka, TLS to storage, and sign-in. The refresh-token row in the table above stays open.
+
+## Revision 2026-10-30 — Stage 6 threat model
+
+The tables at the top now match this revision. Rows closed by code are the secret-in-git check, Licensee and the pinned actions, database import rules, the BYOK store, confirmed writes, mobile cleartext, the store privacy answers, showcase refusal, the offline build, and server secrets kept out of `toString` and exception text. The origin row and the receipt-file row are checks inside `:edge` and `:storage`. No tunnel runs, and no receipt is uploaded. The refresh-token row stays open. Prompt injection is closed on the device. There is no server model.
+
+`finpulse.cloud.enabled` stays false. Stage 6 stops at this record. Sign-in, token rotation, datastore TLS, a running tunnel, a receipt upload, and the auth, ledger-sync, and ai-proxy services are not in this revision.
