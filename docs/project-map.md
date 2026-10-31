@@ -71,11 +71,7 @@ Production project dependencies. Test configurations are omitted.
 | `:feature:insights:impl` | `commonMainImplementation` | `:core:navigation` |
 | `:feature:insights:impl` | `commonMainImplementation` | `:core:preferences` |
 | `:feature:insights:impl` | `commonMainImplementation` | `:core:uikit` |
-| `:feature:insights:impl` | `commonMainImplementation` | `:feature:assistant:api` |
 | `:feature:insights:impl` | `commonMainImplementation` | `:feature:ledger:api` |
-| `:feature:insights:impl` | `commonMainImplementation` | `:feature:onboarding:api` |
-| `:feature:insights:impl` | `commonMainImplementation` | `:feature:scanner:api` |
-| `:feature:insights:impl` | `commonMainImplementation` | `:feature:settings:api` |
 | `:feature:ledger:api` | `commonMainApi` | `:core:common` |
 | `:feature:ledger:impl` | `commonMainApi` | `:feature:ledger:api` |
 | `:feature:ledger:impl` | `commonMainImplementation` | `:core:database` |
@@ -103,6 +99,7 @@ Production project dependencies. Test configurations are omitted.
 | `:feature:settings:impl` | `commonMainImplementation` | `:core:preferences` |
 | `:feature:settings:impl` | `commonMainImplementation` | `:core:security` |
 | `:feature:settings:impl` | `commonMainImplementation` | `:core:uikit` |
+| `:feature:settings:impl` | `commonMainImplementation` | `:feature:onboarding:api` |
 | `:shared` | `commonMainApi` | `:core:ai` |
 | `:shared` | `commonMainImplementation` | `:core:common` |
 | `:shared` | `commonMainImplementation` | `:core:database` |
@@ -140,7 +137,7 @@ A token showcase, not a product screen. Package `com.lebakin.finpulse.catalog`.
 
 The Gradle path of the shared code is `:catalog:catalogShared` (directory on disk `catalog/shared`). Shells: `:catalog:android`, `:catalog:desktop`.
 
-Screen: `CatalogApp`. The seed is stored as an index, not as a `Color`.
+Screen: `CatalogApp`. A menu opened by `MenuButton` switches Tokens, Buttons, Fields, Selection, Navigation, Surfaces, Feedback, and Bars. Tokens keep the palette index, dark switch, radius, spacing, and font scale. The palette is stored as an index, not as a `Color`. The page is a `Surface` in `colorScheme.background`, so light and dark themes change the whole screen. Android system bars follow that background. Navigation shows `BottomNavBar` with a switch for its container color.
 
 Check: `scripts/check.sh :catalog:catalogShared:compileKotlinIosSimulatorArm64 :catalog:android:assembleDebug :catalog:desktop:compileKotlin`.
 
@@ -226,9 +223,9 @@ Check: `scripts/check.sh :core:network:jvmTest :core:network:compileKotlinIosSim
 
 Package `com.lebakin.finpulse.core.preferences`. DataStore file in the app directory.
 
-Public types: `ShowcasePreferences`, `OnboardingPreferences`, `ConsentPreferences`, `AppPreferences`, `openAppPreferences`, `openShowcasePreferences`, `preferencesFilePath`. Android calls `bindAndroidPreferencesDirectory` before the first open. The app opens one file through `openAppPreferences`.
+Public types: `ShowcasePreferences`, `OnboardingPreferences`, `ConsentPreferences`, `ThemePreferences`, `ThemeMode`, `AppPreferences`, `openAppPreferences`, `openShowcasePreferences`, `preferencesFilePath`. Android calls `bindAndroidPreferencesDirectory` before the first open. The app opens one file through `openAppPreferences`.
 
-`observeShowcaseMode` stays false until the sample ledger is stored. The first user write and a clear both set it to false. `observeCompleted` stays false until onboarding finishes. Showing onboarding again sets it back to false. `observeGranted` and `isGranted` stay false until the user agrees to send receipt text. Decline sets that flag back to false. The flag is not a Gemini key.
+`observeShowcaseMode` stays false until the sample ledger is stored. The first user write and a clear both set it to false. `observeCompleted` stays false until onboarding finishes. Showing onboarding again sets it back to false. `observeGranted` and `isGranted` stay false until the user agrees to send receipt text. Decline sets that flag back to false. The flag is not a Gemini key. `ThemePreferences.observe` starts at `ThemeMode.System`. Light and dark are stored in the same file.
 
 Check: `scripts/check.sh :core:preferences:jvmTest :core:preferences:compileKotlinIosSimulatorArm64 :core:preferences:detekt`.
 
@@ -260,7 +257,11 @@ Check: `scripts/check.sh :core:testing:jvmTest :core:testing:compileKotlinIosSim
 
 Package `com.lebakin.finpulse.core.uikit`. Compose Material 3. Features take colors and spacing from here, not from their own files.
 
-Public types: `FinPulseTheme`, `FinPulseTokens`, `FinPulseSpacing`, `FinPulseRadii`, `MoneyAmount`, `TransactionRow`, `NoticeBanner`, `EmptyState`, `AmountBars`.
+Public types: `FinPulseTheme`, `FinPulseTokens`, `FinPulseSpacing`, `FinPulseRadii`, `FinPulsePalette`, `FinPulsePalettes`, `finPulseColorScheme`, `MoneyAmount`, `TransactionRow`, `NoticeBanner`, `EmptyState`, `AmountBars`, `FinPulseIcons`, `BackArrow`, `MenuButton`, `BottomNavBar`, `BottomNavItem`.
+
+`BottomNavBar` is the compact section bar. Container, selected, unselected, and indicator colors are parameters so the catalog can change them. The app frame passes empty window insets because it already applied safe drawing.
+
+`FinPulseTheme` keeps the product scheme unless `palette` is true. The catalog turns that on so the page background, surface, and accent colors follow the selected palette in light and dark.
 
 Starting values: seed `0xFF1F7A4D`, spacing step `4.dp`, base radius `12.dp`.
 
@@ -288,7 +289,7 @@ Package `com.lebakin.finpulse.feature.assistant`. Modules `:feature:assistant:ap
 
 `api` exposes `AssistantEntry`. It depends on `:core:common`. `openAsk` pushes the ask screen.
 
-`impl` reads a phrase. A month-spend question is the intent `MonthSpend` and calls `LedgerReader.observeTransactions`. The answer is the expense total for this month, in the currency of the newest transaction. Any other question gets a fixed reply and does not call a model. A phrase the rules can read becomes a draft and does not open BYOK. Anything else with a digit goes through `phrasePrompt`: a ready on-device model, then BYOK. The reply is accepted only by `checkReceiptReply`. An accepted reply is a draft. Confirm writes one user category and one expense through `LedgerWriter`. Nothing is written from the phrase or the reply alone. A missing consent or key does not call the network. The phrase and the reply are not logged. The dashboard opens the screen through `AssistantEntry.openAsk`.
+`impl` reads a phrase. A month-spend question is the intent `MonthSpend` and calls `LedgerReader.observeTransactions`. The answer is the expense total for this month, in the currency of the newest transaction. Any other question gets a fixed reply and does not call a model. A phrase the rules can read becomes a draft and does not open BYOK. Anything else with a digit goes through `phrasePrompt`: a ready on-device model, then BYOK. The reply is accepted only by `checkReceiptReply`. An accepted reply is a draft. Confirm writes one user category and one expense through `LedgerWriter`. Nothing is written from the phrase or the reply alone. A missing consent or key does not call the network. The phrase and the reply are not logged. The app frame opens this screen by replacing the back stack. `openAsk` still pushes it.
 
 Check: `scripts/check.sh :feature:assistant:api:jvmTest :feature:assistant:impl:jvmTest :feature:assistant:api:compileKotlinIosSimulatorArm64 :feature:assistant:impl:compileKotlinIosSimulatorArm64 :feature:assistant:api:detekt :feature:assistant:impl:detekt`.
 
@@ -300,7 +301,7 @@ Package `com.lebakin.finpulse.feature.insights`. Modules `:feature:insights:api`
 
 `api` exposes `InsightsEntry`. It depends on `:core:common`. `openDashboard` replaces the back stack with the dashboard.
 
-`impl` reads transactions and categories through `LedgerReader`. `spendingOf` sums expenses for the current month and the two months before it, in the currency of the newest transaction. The screen draws that total, `AmountBars`, category rows, and recent movements. Scan a receipt calls `ScannerEntry`. Write a phrase calls `AssistantEntry`. While showcase mode is on, the dashboard keeps the sample banner and Clear now. An empty ledger shows the hint. Show onboarding again calls `OnboardingEntry`. Allow sending to Gemini calls `SettingsEntry.openConsent`. Gemini key calls `SettingsEntry.openKey`. Open source licenses calls `SettingsEntry.openLicenses`. No network.
+`impl` reads transactions and categories through `LedgerReader`. `spendingOf` sums expenses for the current month and the two months before it, in the currency of the newest transaction. The screen draws that total, `AmountBars`, category rows, and recent movements. While showcase mode is on, the dashboard keeps the sample banner and Clear now. An empty ledger shows the hint. Scan, the assistant, and settings are sections of the app frame, not rows on this screen. No network.
 
 Check: `scripts/check.sh :feature:insights:api:jvmTest :feature:insights:impl:jvmTest :feature:insights:api:compileKotlinIosSimulatorArm64 :feature:insights:impl:compileKotlinIosSimulatorArm64 :feature:insights:api:detekt :feature:insights:impl:detekt`.
 
@@ -326,7 +327,7 @@ Package `com.lebakin.finpulse.feature.onboarding`. Modules `:feature:onboarding:
 
 `api` exposes `OnboardingChoice`, `OnboardingReader`, `OnboardingWriter`, and `OnboardingEntry`. It depends on `:core:common` and kotlinx.
 
-`impl` draws one flow of four promises. `complete(Sample)` seeds the showcase ledger. `complete(Empty)` clears showcase rows. Both then open the dashboard through `InsightsEntry`. `OnboardingEntry.showAgain` clears the completed flag and opens the four promises again. The sample banner lives on the insights dashboard. No network.
+`impl` draws one flow of four promises. The picture and the text are centered, and the button is pinned to the bottom. Page back is `BackArrow`. `complete(Sample)` seeds the showcase ledger. `complete(Empty)` clears showcase rows. Both then open the dashboard through `InsightsEntry`. `OnboardingEntry.showAgain` clears the completed flag and opens the four promises again. The settings screen calls it. The sample banner lives on the insights dashboard. No network.
 
 Check: `scripts/check.sh :feature:onboarding:api:jvmTest :feature:onboarding:impl:jvmTest :feature:onboarding:api:compileKotlinIosSimulatorArm64 :feature:onboarding:impl:compileKotlinIosSimulatorArm64 :feature:onboarding:api:detekt :feature:onboarding:impl:detekt`.
 
@@ -336,9 +337,9 @@ Check: `scripts/check.sh :feature:onboarding:api:jvmTest :feature:onboarding:imp
 
 Package `com.lebakin.finpulse.feature.scanner`. Modules `:feature:scanner:api` and `:feature:scanner:impl`. Group `com.lebakin.finpulse.feature.scanner`.
 
-`api` exposes `ScannerEntry`. It depends on `:core:common`. `openCapture` pushes the capture screen.
+`api` exposes `ScannerEntry`. It depends on `:core:common`. `openCapture` pushes the capture screen. The app frame opens that screen by replacing the back stack.
 
-`impl` reads a receipt from the camera, the gallery, or a bundled sample. Samples skip recognition and go straight to the rule-based parser. The same sample text always produces the same draft. Camera and gallery text go through `ReceiptEngines`. A ready on-device model is tried first. An accepted reply becomes the draft. A missing model, `OnDeviceFailed`, or `ReceiptCheck.Rejected` falls through to the rule-based parser. That parser is used when it can read the text, and then BYOK is not opened. When the rules cannot read the text, `openByokModel` is tried. An accepted reply becomes the draft. A missing consent or key does not call the network. `NoConnectionException` and `ServerStatusException` from BYOK propagate. `CancellationException` is rethrown. An invalid reply is not a transaction: the review screen shows the rule draft, or the capture screen shows that the receipt could not be read. `Confirm` writes one user category and one expense through `LedgerWriter`. Nothing is written from recognition text or model text alone. The prompt, the reply, and the key are not logged. iOS reads image bytes with Vision. Android reads Latin text with ML Kit `text-recognition` 16.0.1. That artifact and the Play Services libraries it pulls are a reviewed Licensee exception. The image stays in memory for the read.
+`impl` reads a receipt from the camera or the gallery. The capture screen does not list bundled samples. Samples stay available to the parser tests: they skip recognition and go straight to the rule-based parser. The same sample text always produces the same draft. Camera and gallery text go through `ReceiptEngines`. A ready on-device model is tried first. An accepted reply becomes the draft. A missing model, `OnDeviceFailed`, or `ReceiptCheck.Rejected` falls through to the rule-based parser. That parser is used when it can read the text, and then BYOK is not opened. When the rules cannot read the text, `openByokModel` is tried. An accepted reply becomes the draft. A missing consent or key does not call the network. `NoConnectionException` and `ServerStatusException` from BYOK propagate. `CancellationException` is rethrown. An invalid reply is not a transaction: the review screen shows the rule draft, or the capture screen shows that the receipt could not be read. `Confirm` writes one user category and one expense through `LedgerWriter`. Nothing is written from recognition text or model text alone. The prompt, the reply, and the key are not logged. iOS reads image bytes with Vision. Android reads Latin text with ML Kit `text-recognition` 16.0.1. That artifact and the Play Services libraries it pulls are a reviewed Licensee exception. The image stays in memory for the read.
 
 Check: `scripts/check.sh :feature:scanner:api:jvmTest :feature:scanner:impl:jvmTest :feature:scanner:api:compileKotlinIosSimulatorArm64 :feature:scanner:impl:compileKotlinIosSimulatorArm64 :feature:scanner:api:detekt :feature:scanner:impl:detekt`.
 
@@ -350,7 +351,7 @@ Package `com.lebakin.finpulse.feature.settings`. Modules `:feature:settings:api`
 
 `api` exposes `SettingsEntry`, `SettingsReader`, `SettingsWriter`, `KeySave`, and `LicenseReader`. It depends on `:core:common` and kotlinx. `openConsent` pushes the consent screen. `openKey` pushes the key screen. `openLicenses` pushes the licenses screen. `LicenseReader.read` returns the AboutLibraries JSON and does not call the network.
 
-`impl` explains that receipt text would leave the device for Google Gemini. Agree stores that decision. Decline clears it. Both then leave the screen. The consent screen does not collect a Gemini key and does not call the network. The key screen shows a field only after consent. Save stores one printable ASCII key of at most 512 characters in `SecretStore`. The key is not a State field and is not logged. A saved key is shown only as saved, with Delete. Delete clears the secret. A missing consent or a rejected key does not call `save`. The screen does not call the network. The licenses screen draws the AboutLibraries list. JVM-only and hot-reload artifacts are left out. They belong to the desktop test target. The screen does not collect a key and does not call the network. The dashboard opens consent through `SettingsEntry.openConsent`, the key screen through `SettingsEntry.openKey`, and the licenses screen through `SettingsEntry.openLicenses`.
+`impl` explains that receipt text would leave the device for Google Gemini. The settings screen lists the theme, consent, the Gemini key, open source licenses, and show onboarding again. Theme choices are System, Light, and Dark. The choice is stored in `ThemePreferences`. The app frame opens that screen. Consent, the key, and licenses are pushed from it. Show onboarding again calls `OnboardingEntry`. Agree stores that decision. Decline clears it. Both then leave the consent screen. The consent screen does not collect a Gemini key and does not call the network. The key screen shows a field only after consent. Save stores one printable ASCII key of at most 512 characters in `SecretStore`. The key is not a State field and is not logged. A saved key is shown only as saved, with Delete. Delete clears the secret. A missing consent or a rejected key does not call `save`. The screen does not call the network. The licenses screen draws the AboutLibraries list. JVM-only and hot-reload artifacts are left out. They belong to the desktop test target. The screen does not collect a key and does not call the network.
 
 Check: `scripts/check.sh :feature:settings:api:jvmTest :feature:settings:impl:jvmTest :feature:settings:api:compileKotlinIosSimulatorArm64 :feature:settings:impl:compileKotlinIosSimulatorArm64 :feature:settings:api:detekt :feature:settings:impl:detekt`.
 
@@ -362,7 +363,7 @@ Package `com.lebakin.finpulse`. Koin root and the application shell. Do not put 
 
 Public entry points: `initKoin`, `appModule`, `FinPulseApp`, `prepareAndroidStorage`, `attachReceiptCapture`. iOS: `MainViewController()` and `doInitKoin()`. Framework `Shared`, static. It exports `:core:ai` so Swift can implement `OnDeviceEngine`.
 
-`appModule` opens the Room database, one preferences file, the secret store, and `HttpsClient`, and includes `ledgerModule`, `onboardingModule`, `insightsModule`, `scannerModule`, `assistantModule`, and `settingsModule`. `finpulse.cloud.enabled` selects `cloudMain` or `offlineMain`. The default is false, so `offlineMain` is compiled and `accountModule` is not linked. `cloudMain` includes `accountModule`. `appModule` binds `LicenseReader` to the AboutLibraries export of this module. The plugin writes `aboutlibraries.json` from the runtime classpath, offline, and Compose resources pack that file. The licenses screen stays in `:feature:settings`. `ComposeRootNavigator` is also bound as `RootNavigator`. `NoOpErrorReporter` is bound here. `platformModule()` is empty on Android and JVM. On iOS it binds `OnDeviceEngine` when Swift registered one before `initKoin`. `NavDisplay` starts at `OnboardingDestination.Launch` and registers the onboarding, insights, scanner, assistant, and settings graphs. Android calls `prepareAndroidStorage` before `initKoin`. That binds the database, preferences, and the secret directory under `noBackupFilesDir`. `attachReceiptCapture` runs from `MainActivity` before the first frame.
+`appModule` opens the Room database, one preferences file, the secret store, and `HttpsClient`, and includes `ledgerModule`, `onboardingModule`, `insightsModule`, `scannerModule`, `assistantModule`, and `settingsModule`. `finpulse.cloud.enabled` selects `cloudMain` or `offlineMain`. The default is false, so `offlineMain` is compiled and `accountModule` is not linked. `cloudMain` includes `accountModule`. `appModule` binds `LicenseReader` to the AboutLibraries export of this module. The plugin writes `aboutlibraries.json` from the runtime classpath, offline, and Compose resources pack that file. The licenses screen stays in `:feature:settings`. `ComposeRootNavigator` is also bound as `RootNavigator`. `NoOpErrorReporter` is bound here. `platformModule()` is empty on Android and JVM. On iOS it binds `OnDeviceEngine` when Swift registered one before `initKoin`. `NavDisplay` starts at `OnboardingDestination.Launch` and registers the onboarding, insights, scanner, assistant, and settings graphs. The frame applies `WindowInsets.safeDrawing` once and paints `colorScheme.background`. `ThemePreferences` selects system, light, or dark for `FinPulseTheme`. A compact width shows Home, Scan, Assistant, and Settings in `BottomNavBar`. Those four roots sit in a `HorizontalPager`, so a tap or a swipe slides toward the chosen index. A width of 600 dp or more shows the same sections in a menu and still slides the pager. Choosing a section replaces the back stack with that section's root after the pager settles. A pushed screen slides in over the pager and shows `BackArrow` at the top. Onboarding stays on `NavDisplay`, which slides both screens while they stay opaque. Android calls `prepareAndroidStorage` before `initKoin`. That binds the database, preferences, and the secret directory under `noBackupFilesDir`. `attachReceiptCapture` runs from `MainActivity` before the first frame.
 
 Check: `scripts/check.sh :shared:jvmTest :shared:compileKotlinIosSimulatorArm64`.
 

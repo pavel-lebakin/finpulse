@@ -24,10 +24,13 @@ fun FinPulseTheme(
     baseRadius: Dp = FinPulseTokens.baseRadius,
     spacingMultiplier: Float = 1f,
     fontScale: Float = 1f,
+    palette: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val density = LocalDensity.current
-    val colors = if (dark) {
+    val colors = if (palette) {
+        finPulseColorScheme(seed, dark)
+    } else if (dark) {
         darkColorScheme(primary = seed, secondary = seed)
     } else {
         lightColorScheme(primary = seed, secondary = seed)

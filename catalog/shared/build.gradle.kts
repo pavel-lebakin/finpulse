@@ -12,6 +12,11 @@ kotlin {
             implementation(compose.ui)
         }
     }
+    sourceSets.named("androidMain") {
+        dependencies {
+            implementation(libs.androidx.activity.compose)
+        }
+    }
     sourceSets.named("jvmMain") {
         dependencies {
             implementation(compose.desktop.currentOs)
