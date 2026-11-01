@@ -26,6 +26,8 @@ sealed interface ReviewAction : ScreenAction {
     data object DismissMessage : ReviewAction
 
     data object DismissSheet : ReviewAction
+
+    data class SelectCurrency(val code: String) : ReviewAction
 }
 
 object ReviewReducer {
@@ -37,7 +39,12 @@ object ReviewReducer {
         sheet = null,
     )
 
-    fun ReviewState.withDraft(draft: ReceiptDraftUiModel): ReviewState = copy(content = Loadable.Ready(draft))
+    fun ReviewState.withDraft(draft: ReceiptDraftUiModel): ReviewState = copy(
+        content = Loadable.Ready(draft),
+        saving = false,
+        saved = false,
+        message = null,
+    )
 
     fun ReviewState.withError(error: AppError): ReviewState = copy(content = Loadable.Failed(error))
 

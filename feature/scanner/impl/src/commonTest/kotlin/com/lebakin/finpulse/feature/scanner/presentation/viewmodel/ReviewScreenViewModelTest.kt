@@ -8,8 +8,8 @@ import com.lebakin.finpulse.feature.ledger.api.MoneyDirection
 import com.lebakin.finpulse.feature.ledger.api.RecordOrigin
 import com.lebakin.finpulse.feature.ledger.api.Transaction
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptClock
-import com.lebakin.finpulse.feature.scanner.domain.ReceiptIds
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptParser
+import com.lebakin.finpulse.feature.scanner.domain.ReceiptIds
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptSamples
 import com.lebakin.finpulse.feature.scanner.domain.ReceiptSession
 import com.lebakin.finpulse.feature.scanner.presentation.model.mvi.ReviewAction
@@ -53,7 +53,9 @@ class ReviewScreenViewModelTest {
         val writer = RecordingWriter(removed = false)
         val insights = RecordingInsights()
         val model = model(session, writer, insights)
-        assertEquals("12.50 USD", (model.state.value.content as Loadable.Ready).value.amount)
+        val ready = (model.state.value.content as Loadable.Ready).value
+        assertEquals("12.50 USD", ready.amount)
+        assertEquals(listOf("Milk", "Bread"), ready.lines.map { it.name })
         model.onAction(ReviewAction.Confirm)
         assertEquals(1, writer.writes)
         assertEquals(MoneyDirection.EXPENSE, writer.direction)
@@ -63,6 +65,22 @@ class ReviewScreenViewModelTest {
         assertNull(session.current())
         model.onAction(ReviewAction.Done)
         assertEquals(1, insights.opens)
+    }
+
+    @Test
+    fun aNewScanReplacesThePreviousDraft() {
+        val session = ReceiptSession()
+        val parser = ReceiptParser(ReviewClock)
+        session.store(parser.parse(ReceiptSamples.text("groceries").orEmpty()))
+        val model = model(session, RecordingWriter(removed = false), RecordingInsights())
+        assertEquals("Market", (model.state.value.content as Loadable.Ready).value.merchant)
+        model.onAction(ReviewAction.Confirm)
+        assertTrue(model.state.value.saved)
+        session.store(parser.parse(ReceiptSamples.text("cafe").orEmpty()))
+        val ready = model.state.value.content as Loadable.Ready
+        assertEquals("North Cafe", ready.value.merchant)
+        assertEquals("4.50 EUR", ready.value.amount)
+        assertEquals(false, model.state.value.saved)
     }
 
     @Test

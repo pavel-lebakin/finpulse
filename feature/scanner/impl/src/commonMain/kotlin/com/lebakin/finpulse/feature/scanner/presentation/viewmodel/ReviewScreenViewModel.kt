@@ -14,6 +14,7 @@ import com.lebakin.finpulse.feature.scanner.presentation.model.mvi.ReviewState
 import com.lebakin.finpulse.feature.scanner.presentation.model.mvi.UserMessage
 import com.lebakin.finpulse.feature.scanner.presentation.model.mvi.toUserMessage
 import com.lebakin.finpulse.feature.scanner.presentation.navigation.ScannerNavigator
+import kotlinx.coroutines.flow.collect
 
 internal class ReviewScreenViewModel(
     private val session: ReceiptSession,
@@ -23,15 +24,24 @@ internal class ReviewScreenViewModel(
     private val ids: ReceiptIds,
 ) : ScreenViewModel<ReviewState, ReviewAction>() {
     init {
-        val draft = session.current()
-        if (draft == null) {
-            reduce {
-                ReviewReducer.run {
-                    withError(AppError.Unexpected(IllegalStateException("Missing receipt draft")))
+        launchCatching(onError = { error ->
+            reduce { ReviewReducer.run { withError(error) } }
+        }) {
+            var shown = false
+            session.observe().collect { draft ->
+                if (draft == null) {
+                    if (!shown) {
+                        reduce {
+                            ReviewReducer.run {
+                                withError(AppError.Unexpected(IllegalStateException("Missing receipt draft")))
+                            }
+                        }
+                    }
+                } else {
+                    shown = true
+                    reduce { ReviewReducer.run { withDraft(draft.toUiModel()) } }
                 }
             }
-        } else {
-            reduce { ReviewReducer.run { withDraft(draft.toUiModel()) } }
         }
     }
 
@@ -44,7 +54,16 @@ internal class ReviewScreenViewModel(
             ReviewAction.Back -> navigator.back()
             ReviewAction.DismissMessage -> reduce { ReviewReducer.run { withMessage(null) } }
             ReviewAction.DismissSheet -> reduce { ReviewReducer.run { withSheet(null) } }
+            is ReviewAction.SelectCurrency -> selectCurrency(action.code)
         }
+    }
+
+    private fun selectCurrency(code: String) {
+        val draft = session.current() ?: return
+        if (currentState.saved || code !in CURRENCIES || code == draft.currencyCode) {
+            return
+        }
+        session.store(draft.copy(currencyCode = code))
     }
 
     private fun confirm() {
@@ -73,5 +92,6 @@ internal class ReviewScreenViewModel(
     private companion object {
         const val SAVED = "Saved."
         const val SAMPLE_REMOVED = "Saved. The sample was removed."
+        val CURRENCIES = setOf("USD", "EUR", "GBP", "RUB")
     }
 }

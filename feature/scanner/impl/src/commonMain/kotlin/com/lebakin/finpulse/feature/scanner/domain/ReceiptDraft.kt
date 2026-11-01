@@ -9,6 +9,14 @@ import kotlinx.datetime.LocalDate
 internal data class MoneyToken(
     val amountMinor: Long,
     val currencyCode: String,
+    val explicit: Boolean = false,
+)
+
+internal data class ReceiptLine(
+    val name: String,
+    val amountMinor: Long,
+    val currencyCode: String,
+    val explicit: Boolean = false,
 )
 
 internal data class ReceiptDraft(
@@ -17,6 +25,7 @@ internal data class ReceiptDraft(
     val currencyCode: String,
     val occurredOn: LocalDate,
     val categoryName: String,
+    val lines: List<ReceiptLine> = emptyList(),
 )
 
 internal data class UserReceipt(

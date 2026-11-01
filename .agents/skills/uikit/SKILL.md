@@ -7,7 +7,7 @@ description: Use when changing FinPulse colors, spacing, type, Material 3 theme,
 
 Components and the theme live in `:core:uikit`. The base is Material 3 Compose Multiplatform, configured with project tokens: light and dark colors, spacing on a 4 dp step, radii from one base value, and typography.
 
-A feature does not set a color as a number and does not copy the theme into itself. If a pattern repeats (amount, transaction row, banner, empty state, chart), the component is added to UIKit. `BackArrow`, `MenuButton`, and `BottomNavBar` live here because the frame and the catalog use the same controls. `BottomNavBar` exposes container, selected, unselected, and indicator colors. One-off screen layout does not move into UIKit.
+A feature does not set a color as a number and does not copy the theme into itself. If a pattern repeats (amount, transaction row, banner, empty state, chart), the component is added to UIKit. `MessageSnackbar` is the short Material confirmation at the bottom of a screen. `BackArrow`, `MenuButton`, and `BottomNavBar` live here because the frame and the catalog use the same controls. `BottomNavBar` exposes container, selected, unselected, and indicator colors. One-off screen layout does not move into UIKit.
 
 The app frame applies `WindowInsets.safeDrawing`. A component does not add that padding again.
 

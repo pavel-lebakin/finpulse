@@ -3,12 +3,19 @@ package com.lebakin.finpulse.feature.assistant.domain
 private const val MERCHANT_LIMIT = 80
 private const val MIN_MERCHANT_LETTERS = 2
 
-private val monthSpend = Regex(
-    "(?i)^(?:how much (?:did i spend|have i spent)(?: this month)?" +
-        "|what did i spend this month|spent this month)[.?!]*$",
+private val englishMonthSpend = Regex(
+    "\\b(?:spend|spent|spending|expense|expenses)\\b.*\\bmonth\\b|" +
+        "\\bmonth\\b.*\\b(?:spend|spent|spending|expense|expenses)\\b",
 )
 
-private val questionWord = Regex("(?i)\\?|\\b(?:how|what|when|why|which|who|did i|have i|do i)\\b")
+private val russianMonthSpend = Regex(
+    "(?:сколько|потратил|потратила|потратили|потрачено|расходы|расход).{0,48}месяц|" +
+        "месяц.{0,48}(?:потратил|потратила|потратили|потрачено|расход)",
+)
+
+private val questionWord = Regex(
+    "\\?|\\b(?:how|what|when|why|which|who|did i|have i|do i)\\b|сколько|когда|почему|зачем",
+)
 
 private val filler = Regex("(?i)\\b(?:spent|paid|at|on|for|a|the)\\b")
 
@@ -27,10 +34,14 @@ internal sealed interface PhraseRead {
 internal class PhraseRules(
     private val clock: PhraseClock,
 ) {
-    fun read(phrase: String): PhraseRead? = when {
-        monthSpend.matches(phrase.trim()) -> PhraseRead.MonthSpend
-        questionWord.containsMatchIn(phrase) -> PhraseRead.UnsupportedQuestion
-        else -> draftOrNull(phrase)
+    fun read(phrase: String): PhraseRead? {
+        val trimmed = phrase.trim()
+        val folded = trimmed.lowercase()
+        return when {
+            findPhraseAmount(trimmed) == null && isMonthSpend(folded) -> PhraseRead.MonthSpend
+            questionWord.containsMatchIn(folded) -> PhraseRead.UnsupportedQuestion
+            else -> draftOrNull(trimmed)
+        }
     }
 
     private fun draftOrNull(phrase: String): PhraseRead.Draft? {
@@ -50,6 +61,14 @@ internal class PhraseRules(
             )
         }
     }
+}
+
+private fun isMonthSpend(folded: String): Boolean {
+    if (englishMonthSpend.containsMatchIn(folded) || russianMonthSpend.containsMatchIn(folded)) {
+        return true
+    }
+    val bare = folded.trimEnd('.', '?', '!', ' ')
+    return bare == "how much did i spend" || bare == "how much have i spent" || bare == "what did i spend"
 }
 
 private fun merchantOf(phrase: String): String? {

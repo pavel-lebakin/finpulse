@@ -2,7 +2,9 @@
 
 Package `com.lebakin.finpulse.core.uikit`. Compose Material 3. Features take colors and spacing from here, not from their own files.
 
-Public types: `FinPulseTheme`, `FinPulseTokens`, `FinPulseSpacing`, `FinPulseRadii`, `FinPulsePalette`, `FinPulsePalettes`, `finPulseColorScheme`, `MoneyAmount`, `TransactionRow`, `NoticeBanner`, `EmptyState`, `AmountBars`, `FinPulseIcons`, `BackArrow`, `MenuButton`, `BottomNavBar`, `BottomNavItem`.
+Public types: `FinPulseTheme`, `FinPulseTokens`, `FinPulseSpacing`, `FinPulseRadii`, `FinPulsePalette`, `FinPulsePalettes`, `finPulseColorScheme`, `MoneyAmount`, `TransactionRow`, `NoticeBanner`, `EmptyState`, `AmountBars`, `MessageSnackbar`, `FinPulseIcons`, `BackArrow`, `MenuButton`, `BottomNavBar`, `BottomNavItem`.
+
+`MessageSnackbar` shows one short Material 3 snackbar on the bottom edge and then calls `onDismiss`. It has no action button.
 
 `BottomNavBar` is the compact section bar. Container, selected, unselected, and indicator colors are parameters so the catalog can change them. The app frame passes empty window insets because it already applied safe drawing.
 

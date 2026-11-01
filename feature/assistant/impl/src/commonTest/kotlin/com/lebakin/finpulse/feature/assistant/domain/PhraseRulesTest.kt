@@ -37,7 +37,10 @@ class PhraseRulesTest {
     @Test
     fun howMuchThisMonthIsTheReadIntent() {
         assertEquals(PhraseRead.MonthSpend, rules.read("How much did I spend this month?"))
+        assertEquals(PhraseRead.MonthSpend, rules.read("How much money did I spend this month?"))
         assertEquals(PhraseRead.MonthSpend, rules.read("spent this month"))
+        assertEquals(PhraseRead.MonthSpend, rules.read("сколько я потратил за месяц"))
+        assertEquals(PhraseRead.MonthSpend, rules.read("Сколько я потратила в этом месяце?"))
     }
 
     @Test

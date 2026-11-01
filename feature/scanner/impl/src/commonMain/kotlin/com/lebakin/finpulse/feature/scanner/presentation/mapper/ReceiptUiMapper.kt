@@ -11,11 +11,18 @@ data class ReceiptSampleUiModel(
     val title: String,
 )
 
+data class ReceiptLineUiModel(
+    val name: String,
+    val amount: String,
+)
+
 data class ReceiptDraftUiModel(
     val merchant: String,
     val amount: String,
+    val currencyCode: String,
     val occurredOn: String,
     val categoryName: String,
+    val lines: List<ReceiptLineUiModel>,
 )
 
 internal fun ReceiptSample.toUiModel(): ReceiptSampleUiModel = ReceiptSampleUiModel(id = id, title = title)
@@ -23,8 +30,15 @@ internal fun ReceiptSample.toUiModel(): ReceiptSampleUiModel = ReceiptSampleUiMo
 internal fun ReceiptDraft.toUiModel(): ReceiptDraftUiModel = ReceiptDraftUiModel(
     merchant = merchant,
     amount = formatAmount(amountMinor, currencyCode),
+    currencyCode = currencyCode,
     occurredOn = occurredOn.toString(),
     categoryName = categoryName,
+    lines = lines.map { line ->
+        ReceiptLineUiModel(
+            name = line.name,
+            amount = formatAmount(line.amountMinor, currencyCode),
+        )
+    },
 )
 
 internal fun formatAmount(amountMinor: Long, currencyCode: String): String {

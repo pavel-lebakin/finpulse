@@ -75,7 +75,7 @@ class AskScreenViewModelTest {
         )
         val model = model(PhraseSession(), RecordingNavigator(), reader)
 
-        model.onAction(AskAction.Send("How much did I spend this month?"))
+        model.onAction(AskAction.Send("сколько я потратил за месяц"))
 
         val ready = assertIs<Loadable.Ready<com.lebakin.finpulse.feature.assistant.presentation.model.mvi.AskContent>>(
             model.state.value.content,

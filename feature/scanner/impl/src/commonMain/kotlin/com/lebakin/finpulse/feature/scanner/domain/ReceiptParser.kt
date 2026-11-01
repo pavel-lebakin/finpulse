@@ -1,8 +1,5 @@
 package com.lebakin.finpulse.feature.scanner.domain
 
-private const val MERCHANT_LIMIT = 80
-private const val MIN_MERCHANT_LETTERS = 2
-
 private val groceries = listOf("market", "grocery", "groceries", "supermarket")
 private val transport = listOf("metro", "taxi", "fuel", "petrol", "uber", "bus")
 private val eatingOut = listOf("cafe", "coffee", "restaurant")
@@ -11,8 +8,9 @@ internal class ReceiptParser(
     private val clock: ReceiptClock,
 ) {
     fun parse(text: String): ReceiptDraft {
-        val lines = text.lines().map { it.trim() }.filter { it.isNotEmpty() }
-        val amount = findAmount(lines)
+        val lines = receiptLines(text)
+        val items = findItems(lines)
+        val amount = findAmount(lines, items)?.let { token -> withLanguageCurrency(token, text) }
         val merchant = findMerchant(lines)
         if (lines.isEmpty() || amount == null || merchant == null) {
             throw ReceiptUnreadable(ReceiptUnreadable.UNREADABLE)
@@ -23,21 +21,15 @@ internal class ReceiptParser(
             currencyCode = amount.currencyCode,
             occurredOn = findDate(lines) ?: clock.today(),
             categoryName = categoryName(merchant, text),
+            lines = items,
         )
     }
 }
 
 internal fun findMerchant(lines: List<String>): String? {
-    val line = lines.firstOrNull { isMerchantLine(it) } ?: return null
-    return line.trim().take(MERCHANT_LIMIT)
-}
-
-private fun isMerchantLine(line: String): Boolean {
-    if (isTotalLine(line)) {
-        return false
-    }
-    val stripped = dateShape.replace(withoutMoney(line), " ")
-    return stripped.count { it.isLetter() } >= MIN_MERCHANT_LETTERS
+    val candidates = lines.filter { line -> !isSummaryLine(line) && labelOf(line) != null }
+    val line = candidates.firstOrNull { monies(it).isEmpty() } ?: candidates.firstOrNull() ?: return null
+    return labelOf(line)
 }
 
 private fun categoryName(merchant: String, text: String): String {
