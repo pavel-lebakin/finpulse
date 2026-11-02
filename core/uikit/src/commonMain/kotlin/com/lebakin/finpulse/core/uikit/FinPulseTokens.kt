@@ -5,7 +5,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 object FinPulseTokens {
-    val seed: Color = Color(0xFF1F7A4D)
+    val seed: Color = Color(0xFF3C4F9A)
     val baseRadius: Dp = 12.dp
 }
 

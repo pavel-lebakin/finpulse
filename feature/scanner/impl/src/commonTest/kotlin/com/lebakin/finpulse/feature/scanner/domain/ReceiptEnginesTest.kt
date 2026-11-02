@@ -17,7 +17,32 @@ class ReceiptEnginesTest {
     private val cafe = ReceiptSamples.text("cafe").orEmpty()
 
     @Test
-    fun acceptedOnDeviceReplyBecomesTheDraft() = runTest {
+    fun readableTextKeepsRuleLinesWhenTheModelHasNone() = runTest {
+        var opened = 0
+        val engines = engines(onDevice = {
+            opened += 1
+            CountingModel(ACCEPTED)
+        })
+
+        val draft = engines.parse(cafe)
+        assertEquals("North Cafe", draft.merchant)
+        assertEquals(listOf("Coffee"), draft.lines.map { it.name })
+        assertEquals(1, opened)
+    }
+
+    @Test
+    fun moreModelLinesReplaceTheRules() = runTest {
+        val engines = engines(onDevice = { CountingModel(ITEMIZED) })
+
+        val draft = engines.parse(cafe)
+
+        assertEquals("Model Shop", draft.merchant)
+        assertEquals(listOf("Tea", "Cake"), draft.lines.map { it.name })
+        assertEquals(listOf(400L, 599L), draft.lines.map { it.amountMinor })
+    }
+
+    @Test
+    fun unreadableTextUsesAnAcceptedOnDeviceReply() = runTest {
         var byokOpened = 0
         val engines = engines(
             onDevice = { CountingModel(ACCEPTED) },
@@ -27,7 +52,7 @@ class ReceiptEnginesTest {
             },
         )
 
-        val draft = engines.parse(cafe)
+        val draft = engines.parse("Hello")
 
         assertEquals("Model Shop", draft.merchant)
         assertEquals(999L, draft.amountMinor)
@@ -38,27 +63,23 @@ class ReceiptEnginesTest {
     }
 
     @Test
-    fun rejectedOnDeviceReplyUsesTheRules() = runTest {
-        var byokOpened = 0
+    fun rejectedOnDeviceUsesByok() = runTest {
         val engines = engines(
             onDevice = { CountingModel("not json") },
-            byok = {
-                byokOpened += 1
-                null
-            },
+            byok = { CountingModel(ACCEPTED) },
         )
 
-        val draft = engines.parse(cafe)
-
-        assertEquals("North Cafe", draft.merchant)
-        assertEquals(0, byokOpened)
+        assertEquals("Model Shop", engines.parse("Hello").merchant)
     }
 
     @Test
-    fun onDeviceFailureUsesTheRules() = runTest {
-        val engines = engines(onDevice = { CountingModel { throw OnDeviceFailed() } })
+    fun onDeviceFailureUsesByok() = runTest {
+        val engines = engines(
+            onDevice = { CountingModel { throw OnDeviceFailed() } },
+            byok = { CountingModel(ACCEPTED) },
+        )
 
-        assertEquals("North Cafe", engines.parse(cafe).merchant)
+        assertEquals("Model Shop", engines.parse("Hello").merchant)
     }
 
     @Test
@@ -123,16 +144,16 @@ class ReceiptEnginesTest {
     @Test
     fun onDevicePromptContainsTheReceiptAsData() = runTest {
         val model = CountingModel(ACCEPTED)
-        engines(onDevice = { model }).parse(cafe)
+        engines(onDevice = { model }).parse("Hello")
 
-        assertTrue(model.prompts.single().contains("North Cafe"))
+        assertTrue(model.prompts.single().contains("Hello"))
     }
 
     @Test
     fun cancellationFromOnDevicePropagates() = runTest {
         val engines = engines(onDevice = { CountingModel { throw CancellationException("stop") } })
 
-        assertFailsWith<CancellationException> { engines.parse(cafe) }
+        assertFailsWith<CancellationException> { engines.parse("Hello") }
     }
 
     @Test
@@ -157,6 +178,9 @@ class ReceiptEnginesTest {
 
 private const val ACCEPTED =
     """{"merchant":"Model Shop","amountMinor":999,"currencyCode":"GBP","occurredOn":"2026-03-04","categoryName":"Transport"}"""
+
+private const val ITEMIZED =
+    """{"merchant":"Model Shop","amountMinor":999,"currencyCode":"GBP","occurredOn":"2026-03-04","categoryName":"Transport","lines":[{"name":"Tea","amountMinor":400},{"name":"Cake","amountMinor":599}]}"""
 
 private object EngineClock : ReceiptClock {
     override fun today(): LocalDate = LocalDate(2026, 10, 29)

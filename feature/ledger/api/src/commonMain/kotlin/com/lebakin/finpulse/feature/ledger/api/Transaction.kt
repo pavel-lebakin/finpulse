@@ -2,6 +2,11 @@ package com.lebakin.finpulse.feature.ledger.api
 
 import kotlinx.datetime.LocalDate
 
+data class TransactionLine(
+    val name: String,
+    val amountMinor: Long,
+)
+
 data class Transaction(
     val id: String,
     val categoryId: String,
@@ -11,4 +16,5 @@ data class Transaction(
     val merchant: String,
     val occurredOn: LocalDate,
     val origin: RecordOrigin,
+    val lines: List<TransactionLine> = emptyList(),
 )

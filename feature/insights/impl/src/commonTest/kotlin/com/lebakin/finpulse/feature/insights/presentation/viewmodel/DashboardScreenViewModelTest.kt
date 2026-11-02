@@ -3,6 +3,7 @@ package com.lebakin.finpulse.feature.insights.presentation.viewmodel
 import com.lebakin.finpulse.core.common.Loadable
 import com.lebakin.finpulse.core.preferences.ShowcasePreferences
 import com.lebakin.finpulse.feature.insights.domain.InsightsClock
+import com.lebakin.finpulse.feature.insights.presentation.navigation.InsightsNavigator
 import com.lebakin.finpulse.feature.insights.presentation.model.mvi.DashboardAction
 import com.lebakin.finpulse.feature.insights.presentation.model.mvi.DashboardContent
 import com.lebakin.finpulse.feature.ledger.api.Category
@@ -46,6 +47,7 @@ class DashboardScreenViewModelTest {
             ledgerReader = EmptyLedgerReader(),
             ledgerWriter = writer,
             clock = FixedClock,
+            navigator = SilentNavigator,
         )
         val before = assertIs<Loadable.Ready<DashboardContent>>(model.state.value.content)
         assertIs<DashboardContent.Ready>(before.value)
@@ -80,6 +82,14 @@ class DashboardScreenViewModelTest {
         assertEquals("−186.45 RUB", ready.spending.monthExpense)
         assertEquals(listOf("Aug", "Sep", "Oct"), ready.spending.months.map { it.label })
     }
+}
+
+private object SilentNavigator : InsightsNavigator {
+    override fun openDashboard() = Unit
+
+    override fun openReceipt(transactionId: String) = Unit
+
+    override fun back() = Unit
 }
 
 private object FixedClock : InsightsClock {

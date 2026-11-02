@@ -14,7 +14,7 @@ data class FinPulsePalette(
 
 object FinPulsePalettes {
     val all: List<FinPulsePalette> = listOf(
-        FinPulsePalette(name = "Green", seed = FinPulseTokens.seed),
+        FinPulsePalette(name = "Indigo", seed = FinPulseTokens.seed),
         FinPulsePalette(name = "Blue", seed = Color(0xFF1D4E89)),
         FinPulsePalette(name = "Rust", seed = Color(0xFFB85C38)),
         FinPulsePalette(name = "Plum", seed = Color(0xFF5C4B8A)),

@@ -9,6 +9,7 @@ private const val AMOUNT = "amountMinor"
 private const val CURRENCY = "currencyCode"
 private const val OCCURRED_ON = "occurredOn"
 private const val CATEGORY = "categoryName"
+private const val LINES = "lines"
 private const val MERCHANT_LIMIT = 80
 private const val MIN_MERCHANT_LETTERS = 2
 
@@ -18,13 +19,16 @@ private val minorDigits = Regex("[1-9]\\d{0,8}")
 private val isoDate = Regex("\\d{4}-\\d{2}-\\d{2}")
 
 internal fun replyOf(obj: JsonObject): ReceiptReply? {
+    val allowed = obj.keys == keys || obj.keys == keys + LINES
+    val lines = if (!allowed) null else if (LINES in obj.keys) itemLines(obj) else emptyList()
     val merchant = merchantOf(obj)
     val amountMinor = amountOf(obj)
     val currencyCode = currencyOf(obj)
     val occurredOn = dateOf(obj)
     val category = categoryOf(obj)
     return when {
-        obj.keys != keys -> null
+        !allowed -> null
+        lines == null -> null
         merchant == null -> null
         amountMinor == null -> null
         currencyCode == null -> null
@@ -36,6 +40,7 @@ internal fun replyOf(obj: JsonObject): ReceiptReply? {
             currencyCode = currencyCode,
             occurredOn = occurredOn,
             category = category,
+            lines = lines,
         )
     }
 }

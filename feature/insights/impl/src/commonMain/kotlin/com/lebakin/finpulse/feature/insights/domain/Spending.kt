@@ -19,11 +19,13 @@ internal data class CategorySpend(
 )
 
 internal data class RecentMovement(
+    val id: String,
     val merchant: String,
     val occurredOn: LocalDate,
     val amountMinor: Long,
     val currencyCode: String,
     val direction: MoneyDirection,
+    val lineCount: Int,
 )
 
 internal data class Spending(
@@ -99,11 +101,13 @@ private fun Transaction.fallsInMonth(currency: String, monthStart: LocalDate): B
 }
 
 private fun Transaction.toRecent(): RecentMovement = RecentMovement(
+    id = id,
     merchant = merchant,
     occurredOn = occurredOn,
     amountMinor = amountMinor,
     currencyCode = currencyCode,
     direction = direction,
+    lineCount = lines.size,
 )
 
 private fun newestFirst(): Comparator<Transaction> =

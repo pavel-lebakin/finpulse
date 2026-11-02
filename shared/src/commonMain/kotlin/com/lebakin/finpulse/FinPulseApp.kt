@@ -26,6 +26,7 @@ import com.lebakin.finpulse.feature.assistant.presentation.navigation.AssistantD
 import com.lebakin.finpulse.feature.assistant.presentation.navigation.assistantGraph
 import com.lebakin.finpulse.feature.insights.presentation.navigation.DashboardSection
 import com.lebakin.finpulse.feature.insights.presentation.navigation.InsightsDestination
+import com.lebakin.finpulse.feature.insights.presentation.navigation.ReceiptSection
 import com.lebakin.finpulse.feature.insights.presentation.navigation.insightsGraph
 import com.lebakin.finpulse.feature.onboarding.presentation.navigation.OnboardingDestination
 import com.lebakin.finpulse.feature.onboarding.presentation.navigation.onboardingGraph
@@ -50,6 +51,7 @@ private val navSavedState = SavedStateConfiguration {
             subclass(OnboardingDestination.Launch::class, OnboardingDestination.Launch.serializer())
             subclass(OnboardingDestination.Flow::class, OnboardingDestination.Flow.serializer())
             subclass(InsightsDestination.Dashboard::class, InsightsDestination.Dashboard.serializer())
+            subclass(InsightsDestination.Receipt::class, InsightsDestination.Receipt.serializer())
             subclass(ScannerDestination.Capture::class, ScannerDestination.Capture.serializer())
             subclass(ScannerDestination.Review::class, ScannerDestination.Review.serializer())
             subclass(AssistantDestination.Ask::class, AssistantDestination.Ask.serializer())
@@ -135,6 +137,7 @@ private fun SectionPage(page: Int) {
 private fun DetailPage(key: NavKey) {
     when (key) {
         ScannerDestination.Review -> ReviewSection()
+        is InsightsDestination.Receipt -> ReceiptSection(key.transactionId)
         AssistantDestination.Confirm -> ConfirmSection()
         SettingsDestination.Consent -> ConsentSection()
         SettingsDestination.Key -> KeySection()

@@ -150,6 +150,7 @@ class ReceiptParserTest {
         assertEquals(write.category.id, write.transaction.categoryId)
         assertEquals(com.lebakin.finpulse.feature.ledger.api.RecordOrigin.USER, write.transaction.origin)
         assertEquals(com.lebakin.finpulse.feature.ledger.api.MoneyDirection.EXPENSE, write.transaction.direction)
+        assertEquals(listOf("Milk", "Bread"), write.transaction.lines.map { it.name })
     }
 }
 

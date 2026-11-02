@@ -11,19 +11,26 @@ internal fun interface ReceiptModel {
     suspend fun complete(prompt: String): String
 }
 
-// On-device first, then the rules, then BYOK. A local draft does not open BYOK.
+// On-device reads every receipt. Rules stay when they list at least as many items.
 internal class ReceiptEngines(
     private val rules: ReceiptParser,
     private val onDevice: suspend () -> ReceiptModel?,
     private val byok: suspend () -> ReceiptModel?,
 ) {
-    suspend fun parse(text: String): ReceiptDraft =
-        draftOrNull(onDevice, text) ?: rulesOrByok(text)
+    suspend fun parse(text: String): ReceiptDraft {
+        val ruled = ruledOrNull(text)
+        val modeled = draftOrNull(onDevice, text)
+        val chosen = preferReceipt(ruled, modeled)
+        if (chosen != null) {
+            return chosen
+        }
+        return draftOrNull(byok, text) ?: throw ReceiptUnreadable(ReceiptUnreadable.UNREADABLE)
+    }
 
-    private suspend fun rulesOrByok(text: String): ReceiptDraft = try {
+    private fun ruledOrNull(text: String): ReceiptDraft? = try {
         rules.parse(text)
-    } catch (unreadable: ReceiptUnreadable) {
-        draftOrNull(byok, text) ?: throw unreadable
+    } catch (_: ReceiptUnreadable) {
+        null
     }
 
     private suspend fun draftOrNull(
@@ -59,7 +66,16 @@ internal class ReceiptEngines(
             currencyCode = check.reply.currencyCode,
             occurredOn = check.reply.occurredOn,
             categoryName = check.reply.category.label,
+            lines = check.reply.lines.map { line ->
+                ReceiptLine(name = line.name, amountMinor = line.amountMinor, currencyCode = check.reply.currencyCode)
+            },
         )
         ReceiptCheck.Rejected -> null
     }
+}
+
+private fun preferReceipt(ruled: ReceiptDraft?, modeled: ReceiptDraft?): ReceiptDraft? = when {
+    modeled != null && modeled.lines.size > (ruled?.lines?.size ?: -1) -> modeled
+    ruled != null -> ruled
+    else -> modeled
 }

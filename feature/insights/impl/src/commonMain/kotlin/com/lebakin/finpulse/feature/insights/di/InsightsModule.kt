@@ -7,6 +7,8 @@ import com.lebakin.finpulse.feature.insights.presentation.navigation.InsightsEnt
 import com.lebakin.finpulse.feature.insights.presentation.navigation.InsightsNavigator
 import com.lebakin.finpulse.feature.insights.presentation.navigation.InsightsNavigatorImpl
 import com.lebakin.finpulse.feature.insights.presentation.viewmodel.DashboardScreenViewModel
+import com.lebakin.finpulse.feature.insights.presentation.viewmodel.ReceiptScreenViewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -15,4 +17,11 @@ val insightsModule = module {
     single<InsightsNavigator> { InsightsNavigatorImpl(get()) }
     single<InsightsEntry> { InsightsEntryImpl(get()) }
     viewModelOf(::DashboardScreenViewModel)
+    viewModel { parameters ->
+        ReceiptScreenViewModel(
+            transactionId = parameters.get<String>(),
+            ledgerReader = get(),
+            navigator = get(),
+        )
+    }
 }

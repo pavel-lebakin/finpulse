@@ -7,4 +7,7 @@ import kotlinx.serialization.Serializable
 sealed interface InsightsDestination : Destination {
     @Serializable
     data object Dashboard : InsightsDestination
+
+    @Serializable
+    data class Receipt(val transactionId: String) : InsightsDestination
 }

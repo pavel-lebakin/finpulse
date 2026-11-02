@@ -14,9 +14,11 @@ data class CategorySpendUiModel(
 )
 
 data class RecentMovementUiModel(
+    val id: String,
     val title: String,
     val subtitle: String,
     val amount: String,
+    val opensReceipt: Boolean,
 )
 
 data class SpendingUiModel(
@@ -39,8 +41,10 @@ internal fun Spending.toUiModel(): SpendingUiModel = SpendingUiModel(
     },
     recent = recent.map { movement ->
         RecentMovementUiModel(
+            id = movement.id,
             title = movement.merchant,
             subtitle = movement.occurredOn.toString(),
+            opensReceipt = movement.lineCount > 0,
             amount = formatMinor(
                 amountMinor = movement.amountMinor,
                 currencyCode = movement.currencyCode,

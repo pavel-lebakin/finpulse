@@ -31,6 +31,8 @@ sealed interface DashboardAction : ScreenAction {
     data object DismissMessage : DashboardAction
 
     data object DismissSheet : DashboardAction
+
+    data class OpenReceipt(val transactionId: String) : DashboardAction
 }
 
 object DashboardReducer {

@@ -87,7 +87,7 @@ class CaptureScreenViewModelTest {
     }
 
     @Test
-    fun recognizedPhotoUsesAnAcceptedOnDeviceReply() {
+    fun recognizedPhotoUsesAnAcceptedOnDeviceReplyWhenTheRulesCannotReadIt() {
         val session = ReceiptSession()
         val navigator = RecordingNavigator()
         val image = ReceiptImage(byteArrayOf(1))
@@ -100,7 +100,7 @@ class CaptureScreenViewModelTest {
             session,
             navigator,
             FakeReceiptCapture(CaptureOutcome.Image(image)),
-            FakeReceiptOcr(ReceiptSamples.text("cafe").orEmpty()),
+            FakeReceiptOcr("Hello"),
             engines,
         )
         model.onAction(CaptureAction.PickFromGallery)

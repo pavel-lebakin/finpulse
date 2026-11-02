@@ -9,12 +9,18 @@ enum class ReceiptCategory(val label: String) {
     General("General"),
 }
 
+data class ReceiptItemReply(
+    val name: String,
+    val amountMinor: Long,
+)
+
 data class ReceiptReply(
     val merchant: String,
     val amountMinor: Long,
     val currencyCode: String,
     val occurredOn: LocalDate,
     val category: ReceiptCategory,
+    val lines: List<ReceiptItemReply> = emptyList(),
 )
 
 sealed interface ReceiptCheck {

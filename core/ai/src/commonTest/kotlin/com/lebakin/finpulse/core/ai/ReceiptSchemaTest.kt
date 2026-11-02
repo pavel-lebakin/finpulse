@@ -20,6 +20,26 @@ class ReceiptSchemaTest {
         assertEquals("USD", accepted.reply.currencyCode)
         assertEquals(LocalDate(2026, 10, 1), accepted.reply.occurredOn)
         assertEquals(ReceiptCategory.Groceries, accepted.reply.category)
+        assertEquals(emptyList(), accepted.reply.lines)
+    }
+
+    @Test
+    fun itemLinesAreAccepted() {
+        val check = checkReceiptReply(
+            reply().dropLast(1) +
+                ""","lines":[{"name":"Milk","amountMinor":240},{"name":"Bread","amountMinor":310}]}""",
+        )
+
+        val accepted = assertIs<ReceiptCheck.Accepted>(check)
+        assertEquals(listOf("Milk", "Bread"), accepted.reply.lines.map { it.name })
+        assertEquals(listOf(240L, 310L), accepted.reply.lines.map { it.amountMinor })
+    }
+
+    @Test
+    fun brokenItemLinesAreRejected() {
+        assertIs<ReceiptCheck.Rejected>(
+            checkReceiptReply(reply().dropLast(1) + ""","lines":[{"name":"A","amountMinor":240}]}"""),
+        )
     }
 
     @Test

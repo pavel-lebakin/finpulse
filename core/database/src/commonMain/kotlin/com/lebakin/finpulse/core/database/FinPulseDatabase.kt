@@ -7,7 +7,7 @@ import androidx.room.RoomDatabaseConstructor
 
 @Database(
     entities = [CategoryEntity::class, TransactionEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
 @ConstructedBy(FinPulseDatabaseConstructor::class)

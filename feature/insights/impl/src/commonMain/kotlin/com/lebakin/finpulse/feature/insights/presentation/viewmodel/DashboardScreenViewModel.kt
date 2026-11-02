@@ -5,6 +5,7 @@ import com.lebakin.finpulse.core.preferences.ShowcasePreferences
 import com.lebakin.finpulse.feature.insights.domain.InsightsClock
 import com.lebakin.finpulse.feature.insights.domain.spendingOf
 import com.lebakin.finpulse.feature.insights.presentation.mapper.toUiModel
+import com.lebakin.finpulse.feature.insights.presentation.navigation.InsightsNavigator
 import com.lebakin.finpulse.feature.insights.presentation.model.mvi.DashboardAction
 import com.lebakin.finpulse.feature.insights.presentation.model.mvi.DashboardContent
 import com.lebakin.finpulse.feature.insights.presentation.model.mvi.DashboardReducer
@@ -24,6 +25,7 @@ internal class DashboardScreenViewModel(
     private val ledgerReader: LedgerReader,
     private val ledgerWriter: LedgerWriter,
     private val clock: InsightsClock,
+    private val navigator: InsightsNavigator,
 ) : ScreenViewModel<DashboardState, DashboardAction>() {
     init {
         observe()
@@ -37,6 +39,7 @@ internal class DashboardScreenViewModel(
             DashboardAction.Retry -> observe()
             DashboardAction.DismissMessage -> reduce { DashboardReducer.run { withMessage(null) } }
             DashboardAction.DismissSheet -> reduce { DashboardReducer.run { withSheet(null) } }
+            is DashboardAction.OpenReceipt -> navigator.openReceipt(action.transactionId)
         }
     }
 

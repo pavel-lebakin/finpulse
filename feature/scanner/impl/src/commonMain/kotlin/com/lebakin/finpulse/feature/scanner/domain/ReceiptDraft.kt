@@ -4,6 +4,7 @@ import com.lebakin.finpulse.feature.ledger.api.Category
 import com.lebakin.finpulse.feature.ledger.api.MoneyDirection
 import com.lebakin.finpulse.feature.ledger.api.RecordOrigin
 import com.lebakin.finpulse.feature.ledger.api.Transaction
+import com.lebakin.finpulse.feature.ledger.api.TransactionLine
 import kotlinx.datetime.LocalDate
 
 internal data class MoneyToken(
@@ -54,6 +55,7 @@ internal fun ReceiptDraft.toUserReceipt(ids: ReceiptIds): UserReceipt {
             merchant = merchant,
             occurredOn = occurredOn,
             origin = RecordOrigin.USER,
+            lines = lines.map { line -> TransactionLine(name = line.name, amountMinor = line.amountMinor) },
         ),
     )
 }

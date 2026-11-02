@@ -71,7 +71,7 @@ The app does not track. `NSPrivacyTracking` is false. There is no tracking domai
 
 Icons in the project:
 
-- Android adaptive icon, green `#1F7A4D`, white bars, `androidApp/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`.
+- Android adaptive icon, indigo `#3C4F9A`, white bars, `androidApp/src/main/res/mipmap-anydpi-v26/ic_launcher.xml`.
 - iOS `AppIcon`, 1024×1024, no alpha, `iosApp/iosApp/Assets.xcassets/AppIcon.appiconset/`.
 
 Screenshots are captured from a running build and uploaded in the store consoles. They are not stored in git.

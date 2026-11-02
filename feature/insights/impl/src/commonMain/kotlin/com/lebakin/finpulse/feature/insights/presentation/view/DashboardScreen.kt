@@ -1,5 +1,6 @@
 package com.lebakin.finpulse.feature.insights.presentation.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -97,7 +98,7 @@ private fun ReadyContent(
     MoneyAmount(amount = content.spending.monthExpense)
     MonthChart(spending = content.spending)
     CategoryList(spending = content.spending)
-    RecentList(spending = content.spending)
+    RecentList(spending = content.spending, onAction = onAction)
 }
 
 @Composable
@@ -129,7 +130,10 @@ private fun CategoryList(spending: SpendingUiModel) {
 }
 
 @Composable
-private fun RecentList(spending: SpendingUiModel) {
+private fun RecentList(
+    spending: SpendingUiModel,
+    onAction: (DashboardAction) -> Unit,
+) {
     if (spending.recent.isNotEmpty()) {
         Text(text = "Recent", style = MaterialTheme.typography.titleMedium)
         spending.recent.forEach { movement ->
@@ -137,6 +141,11 @@ private fun RecentList(spending: SpendingUiModel) {
                 title = movement.title,
                 subtitle = movement.subtitle,
                 amount = movement.amount,
+                modifier = if (movement.opensReceipt) {
+                    Modifier.clickable { onAction(DashboardAction.OpenReceipt(movement.id)) }
+                } else {
+                    Modifier
+                },
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.lebakin.finpulse.core.database
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -30,4 +31,5 @@ data class TransactionEntity(
     val merchant: String,
     val occurredOn: String,
     val origin: String,
+    @ColumnInfo(defaultValue = "''") val linesText: String = "",
 )

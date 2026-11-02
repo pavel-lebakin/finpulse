@@ -10,7 +10,9 @@ Public types: `FinPulseTheme`, `FinPulseTokens`, `FinPulseSpacing`, `FinPulseRad
 
 `FinPulseTheme` keeps the product scheme unless `palette` is true. The catalog turns that on so the page background, surface, and accent colors follow the selected palette in light and dark.
 
-Starting values: seed `0xFF1F7A4D`, spacing step `4.dp`, base radius `12.dp`.
+`AmountBars` draws a rounded track in `primaryContainer` and a rounded value in `primary`.
+
+Starting values: seed `0xFF3C4F9A`, spacing step `4.dp`, base radius `12.dp`. The first palette is Indigo.
 
 Check: `scripts/check.sh :core:uikit:jvmTest :core:uikit:compileKotlinIosSimulatorArm64`.
 

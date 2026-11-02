@@ -28,4 +28,5 @@ actual fun openFinPulseDatabase(path: String): FinPulseDatabase =
     Room.databaseBuilder<FinPulseDatabase>(name = path)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(queryDispatcher)
+        .addMigrations(Migration1To2)
         .build()
