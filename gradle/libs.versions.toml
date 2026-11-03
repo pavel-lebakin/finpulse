@@ -28,12 +28,12 @@ okio = "3.17.0"
 datetime = "0.7.1"
 # On-device Latin text recognition. Checked against maven-metadata.xml on 2026-10-29.
 mlkit-text-recognition = "16.0.1"
+# On-device document crop and cleanup. Checked against maven-metadata.xml on 2026-10-30.
+mlkit-document-scanner = "16.0.0"
 # Gemini Nano prompt API. Checked against maven-metadata.xml on 2026-10-29.
 mlkit-genai-prompt = "1.0.0-beta5"
 # HTTPS client. maven-metadata.xml on 2026-10-29 lists 3.6.1, but that release has no iOS artifacts.
 ktor = "3.6.0"
-# Open source notices. Checked against maven-metadata.xml on 2026-10-29.
-aboutlibraries = "15.3.0"
 # JDBC driver. Checked against maven-metadata.xml on 2026-10-30. License BSD-2-Clause.
 postgres = "42.7.14"
 # Kafka clients. Checked against maven-metadata.xml on 2026-10-30. License Apache-2.0.
@@ -68,6 +68,7 @@ androidx-datastore-preferences-core = { module = "androidx.datastore:datastore-p
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 mlkit-text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "mlkit-text-recognition" }
+mlkit-document-scanner = { module = "com.google.android.gms:play-services-mlkit-document-scanner", version.ref = "mlkit-document-scanner" }
 mlkit-genai-prompt = { module = "com.google.mlkit:genai-prompt", version.ref = "mlkit-genai-prompt" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -75,8 +76,6 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
-aboutlibraries-core = { module = "com.mikepenz:aboutlibraries-core", version.ref = "aboutlibraries" }
-aboutlibraries-compose-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutlibraries" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
 
@@ -90,4 +89,3 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-kmp-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
-aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlibraries" }

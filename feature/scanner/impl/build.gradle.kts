@@ -29,6 +29,7 @@ kotlin {
         dependencies {
             implementation(libs.androidx.activity.compose)
             implementation(libs.mlkit.text.recognition)
+            implementation(libs.mlkit.document.scanner)
         }
     }
     sourceSets.named("commonTest") {

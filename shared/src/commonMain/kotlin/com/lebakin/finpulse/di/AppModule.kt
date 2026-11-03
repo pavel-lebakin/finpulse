@@ -20,7 +20,6 @@ import com.lebakin.finpulse.feature.insights.di.insightsModule
 import com.lebakin.finpulse.feature.ledger.di.ledgerModule
 import com.lebakin.finpulse.feature.onboarding.di.onboardingModule
 import com.lebakin.finpulse.feature.scanner.di.scannerModule
-import com.lebakin.finpulse.feature.settings.api.LicenseReader
 import com.lebakin.finpulse.feature.settings.di.settingsModule
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -49,7 +48,6 @@ val appModule = module {
     includes(assistantModule)
     includes(settingsModule)
     cloudModules().forEach { cloud -> includes(cloud) }
-    single<LicenseReader> { GeneratedLicenseReader() }
     single<ErrorReporter> { NoOpErrorReporter() }
     single { ComposeRootNavigator() }
     single<RootNavigator> { get<ComposeRootNavigator>() }

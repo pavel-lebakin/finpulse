@@ -38,7 +38,6 @@ internal fun SettingsScreen(
         ThemeChoices(selected = state.theme, onSelect = { onAction(SettingsAction.ChooseTheme(it)) })
         SettingRow(label = "Allow sending to Gemini", onClick = { onAction(SettingsAction.OpenConsent) })
         SettingRow(label = "Gemini key", onClick = { onAction(SettingsAction.OpenKey) })
-        SettingRow(label = "Open source licenses", onClick = { onAction(SettingsAction.OpenLicenses) })
         SettingRow(label = "Show onboarding again", onClick = { onAction(SettingsAction.ShowOnboardingAgain) })
         MessageText(message = state.message, onDismiss = { onAction(SettingsAction.DismissMessage) })
         if (state.sheet != null) {

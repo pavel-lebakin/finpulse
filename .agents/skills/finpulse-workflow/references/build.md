@@ -24,7 +24,7 @@ Kafka clients `org.apache.kafka:kafka-clients` 4.4.0. Checked against maven-meta
 
 `:storage` speaks S3 SigV4 itself. No AWS SDK and no MinIO SDK are in the catalog. The MinIO Java SDK is AGPL. The test starts the community `minio` binary. Community release `RELEASE.2025-09-07T16-13-09Z` serves S3 without a license. An AIStor build that denies S3 without a license does not satisfy the test.
 
-AboutLibraries 15.3.0 (`com.mikepenz:aboutlibraries-core`, `aboutlibraries-compose-m3`, plugin `com.mikepenz.aboutlibraries.plugin`). Checked against maven-metadata.xml on 2026-10-29. The license is Apache-2.0. `:shared` exports the notices. The settings screen draws them.
+AboutLibraries is not a dependency. Open-source notices stay in `NOTICE` and `THIRD_PARTY_NOTICES`. The settings screen does not list them.
 
 ML Kit GenAI Prompt API `com.google.mlkit:genai-prompt` 1.0.0-beta5. Checked against maven-metadata.xml on 2026-10-29. The license is ML Kit Terms of Service, a reviewed Licensee exception.
 

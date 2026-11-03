@@ -34,6 +34,9 @@ extensions.configure<LicenseeExtension>("licensee") {
     allowDependency("com.google.android.gms", "play-services-mlkit-text-recognition-common", "19.1.0") {
         because("Required by ML Kit text recognition. ML Kit Terms of Service.")
     }
+    allowDependency("com.google.android.gms", "play-services-mlkit-document-scanner", "16.0.0") {
+        because("On-device receipt crop and cleanup. Android Software Development Kit License.")
+    }
     allowDependency("com.google.android.gms", "play-services-base", "18.5.0") {
         because("Required by ML Kit text recognition. Android SDK license.")
     }

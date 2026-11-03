@@ -31,7 +31,6 @@ internal class SettingsScreenViewModel(
         when (action) {
             SettingsAction.OpenConsent -> navigator.openConsent()
             SettingsAction.OpenKey -> navigator.openKey()
-            SettingsAction.OpenLicenses -> navigator.openLicenses()
             is SettingsAction.ChooseTheme -> chooseTheme(action)
             SettingsAction.ShowOnboardingAgain -> showAgain()
             SettingsAction.DismissMessage -> reduce { SettingsReducer.run { withMessage(null) } }

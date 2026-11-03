@@ -13,7 +13,4 @@ sealed interface SettingsDestination : Destination {
 
     @Serializable
     data object Key : SettingsDestination
-
-    @Serializable
-    data object Licenses : SettingsDestination
 }

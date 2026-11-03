@@ -1,5 +1,6 @@
 package com.lebakin.finpulse.feature.scanner.platform
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.ExifInterface
 import com.google.android.gms.tasks.Task
@@ -13,6 +14,7 @@ import com.lebakin.finpulse.feature.scanner.domain.ReceiptUnreadable
 import java.io.ByteArrayInputStream
 import java.io.IOException
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.math.max
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -20,6 +22,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 private const val ROTATE_90 = 90
 private const val ROTATE_180 = 180
 private const val ROTATE_270 = 270
+private const val MIN_LONG_SIDE = 1600
 
 internal class AndroidReceiptOcr : ReceiptOcr {
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
@@ -41,16 +44,35 @@ internal class AndroidReceiptOcr : ReceiptOcr {
         if (bitmap == null) {
             return null
         }
+        val prepared = enlarge(bitmap)
         return try {
-            recognizer.process(InputImage.fromBitmap(bitmap, rotationDegrees(bytes))).await().text
+            textRows(recognizer.process(InputImage.fromBitmap(prepared, rotationDegrees(bytes))).await())
         } catch (cancelled: CancellationException) {
             throw cancelled
         } catch (failure: MlKitException) {
             throw ReceiptUnreadable(ReceiptUnreadable.UNREADABLE, failure)
+        } finally {
+            if (prepared != bitmap) {
+                prepared.recycle()
+            }
+            bitmap.recycle()
         }
     }
 }
 
+private fun enlarge(bitmap: Bitmap): Bitmap {
+    val longest = max(bitmap.width, bitmap.height)
+    if (longest <= 0 || longest >= MIN_LONG_SIDE) {
+        return bitmap
+    }
+    val scale = MIN_LONG_SIDE.toFloat() / longest
+    return Bitmap.createScaledBitmap(
+        bitmap,
+        (bitmap.width * scale).toInt().coerceAtLeast(1),
+        (bitmap.height * scale).toInt().coerceAtLeast(1),
+        true,
+    )
+}
 
 private fun rotationDegrees(bytes: ByteArray): Int = try {
     val orientation = ExifInterface(ByteArrayInputStream(bytes)).getAttributeInt(

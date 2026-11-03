@@ -46,14 +46,6 @@ class SettingsScreenViewModelTest {
     }
 
     @Test
-    fun openLicensesLeavesTheList() {
-        val navigator = SettingsListNavigator()
-        val model = settingsModel(navigator)
-        model.onAction(SettingsAction.OpenLicenses)
-        assertEquals(listOf("licenses"), navigator.calls)
-    }
-
-    @Test
     fun chooseThemeStoresTheMode() {
         val theme = MemoryTheme()
         val model = settingsModel(theme = theme)
@@ -110,10 +102,6 @@ private class SettingsListNavigator : SettingsNavigator {
 
     override fun openKey() {
         calls += "key"
-    }
-
-    override fun openLicenses() {
-        calls += "licenses"
     }
 
     override fun back() {

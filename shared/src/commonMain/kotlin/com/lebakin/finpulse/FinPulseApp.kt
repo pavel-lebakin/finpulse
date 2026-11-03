@@ -36,7 +36,6 @@ import com.lebakin.finpulse.feature.scanner.presentation.navigation.ScannerDesti
 import com.lebakin.finpulse.feature.scanner.presentation.navigation.scannerGraph
 import com.lebakin.finpulse.feature.settings.presentation.navigation.ConsentSection
 import com.lebakin.finpulse.feature.settings.presentation.navigation.KeySection
-import com.lebakin.finpulse.feature.settings.presentation.navigation.LicensesSection
 import com.lebakin.finpulse.feature.settings.presentation.navigation.SettingsDestination
 import com.lebakin.finpulse.feature.settings.presentation.navigation.SettingsSection
 import com.lebakin.finpulse.feature.settings.presentation.navigation.settingsGraph
@@ -59,7 +58,6 @@ private val navSavedState = SavedStateConfiguration {
             subclass(SettingsDestination.Home::class, SettingsDestination.Home.serializer())
             subclass(SettingsDestination.Consent::class, SettingsDestination.Consent.serializer())
             subclass(SettingsDestination.Key::class, SettingsDestination.Key.serializer())
-            subclass(SettingsDestination.Licenses::class, SettingsDestination.Licenses.serializer())
         }
     }
 }
@@ -141,7 +139,6 @@ private fun DetailPage(key: NavKey) {
         AssistantDestination.Confirm -> ConfirmSection()
         SettingsDestination.Consent -> ConsentSection()
         SettingsDestination.Key -> KeySection()
-        SettingsDestination.Licenses -> LicensesSection()
         else -> Box(modifier = Modifier.fillMaxSize())
     }
 }

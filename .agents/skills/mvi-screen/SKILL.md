@@ -17,7 +17,7 @@ The app frame in `:shared` applies `WindowInsets.safeDrawing` once. A screen fil
 
 Back from a pushed screen is `BackArrow` at the top of the frame. Do not put a "Back" text button at the bottom. A step back inside one screen, such as an onboarding page, is also `BackArrow` at the top start and sends an Action. It does not pop the graph.
 
-Settings live on the settings screen. Another feature does not list consent, a key, licenses, or other preferences.
+Settings live on the settings screen. Another feature does not list consent, a key, or other preferences.
 
 Primary sections are Home, Scan, Assistant, and Settings. A compact width shows them in `BottomNavBar`. Those roots are a `HorizontalPager`, so a tap or a swipe slides toward the selected index. A wide width shows them in a menu opened by `MenuButton` and still uses that pager. Choosing a section replaces the back stack with that section's root after the pager settles. A detail screen slides over the pager, and the frame shows `BackArrow` instead of the bar or the menu.
 

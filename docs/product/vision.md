@@ -11,7 +11,7 @@ FinPulse shows where money goes, and it can create a transaction from a receipt 
 | `insights` | Dashboard and charts |
 | `scanner` | Camera, gallery, receipt samples, parsing into a transaction |
 | `assistant` | Quick entry by phrase and answers about the user's own data |
-| `settings` | Theme, data, AI mode, licenses |
+| `settings` | Theme, data, and AI mode |
 | `account` | Cloud build only: sign-in and sync |
 
 ## Onboarding

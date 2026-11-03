@@ -2,44 +2,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     id("finpulse.kmp.compose")
-    alias(libs.plugins.aboutlibraries)
-}
-
-val licenseNoticesDir = layout.buildDirectory.dir("generated/aboutLibraries")
-
-aboutLibraries {
-    offlineMode.set(true)
-    collect {
-        fetchRemoteLicense.set(false)
-        fetchRemoteFunding.set(false)
-        includePlatform.set(true)
-        includeTargets.set(true)
-    }
-    license {
-        strictMode.set(com.mikepenz.aboutlibraries.plugin.StrictMode.WARN)
-    }
-    export {
-        prettyPrint.set(true)
-        excludeFields.set(setOf("generated"))
-        outputFile.set(licenseNoticesDir.map { it.file("files/aboutlibraries.json") })
-    }
-}
-
-configure<org.jetbrains.compose.ComposeExtension> {
-    extensions.configure<org.jetbrains.compose.resources.ResourcesExtension>("resources") {
-        packageOfResClass = "com.lebakin.finpulse.generated.resources"
-        customDirectory("commonMain", licenseNoticesDir)
-    }
-}
-
-tasks.withType<com.mikepenz.aboutlibraries.plugin.AboutLibrariesTask>().configureEach {
-    enabled = name == "exportLibraryDefinitions"
-}
-
-tasks.configureEach {
-    if (name == "copyNonXmlValueResourcesForCommonMain" || name == "convertXmlValueResourcesForCommonMain") {
-        dependsOn("exportLibraryDefinitions")
-    }
 }
 
 kotlin {
@@ -70,7 +32,6 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.navigation3.ui)
-            implementation(compose.components.resources)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

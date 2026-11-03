@@ -8,5 +8,4 @@ Related, but in other files:
 
 - [LICENSE](../../LICENSE) — sources may be read and built for evaluation. They may not be redistributed or published to stores.
 - [NOTICE](../../NOTICE) and [THIRD_PARTY_NOTICES](../../THIRD_PARTY_NOTICES) — product copyright and third-party licenses.
-- The in-app "Open source licenses" screen is built with AboutLibraries (Stage 4, settings).
 - [Data safety and App Privacy answers](../release/README.md).

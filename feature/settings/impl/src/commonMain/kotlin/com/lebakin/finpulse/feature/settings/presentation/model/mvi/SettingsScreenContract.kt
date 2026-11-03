@@ -17,8 +17,6 @@ sealed interface SettingsAction : ScreenAction {
 
     data object OpenKey : SettingsAction
 
-    data object OpenLicenses : SettingsAction
-
     data class ChooseTheme(val mode: ThemeMode) : SettingsAction
 
     data object ShowOnboardingAgain : SettingsAction

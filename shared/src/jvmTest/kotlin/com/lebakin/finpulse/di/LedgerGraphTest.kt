@@ -12,7 +12,6 @@ import com.lebakin.finpulse.feature.onboarding.api.OnboardingEntry
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingReader
 import com.lebakin.finpulse.feature.onboarding.api.OnboardingWriter
 import com.lebakin.finpulse.feature.scanner.api.ScannerEntry
-import com.lebakin.finpulse.feature.settings.api.LicenseReader
 import com.lebakin.finpulse.feature.settings.api.SettingsEntry
 import com.lebakin.finpulse.feature.settings.api.SettingsReader
 import com.lebakin.finpulse.feature.settings.api.SettingsWriter
@@ -44,7 +43,6 @@ class LedgerGraphTest {
             koin.get<SettingsReader>()
             koin.get<SettingsWriter>()
             koin.get<SettingsEntry>()
-            koin.get<LicenseReader>()
             koin.get<RootNavigator>()
         } finally {
             System.clearProperty("finpulse.database.file")
