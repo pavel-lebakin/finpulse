@@ -7,7 +7,7 @@ serialization = "1.12.0"
 koin = "4.2.2"
 lifecycle = "2.11.0"
 # CMP 1.12.2 publishes this Navigation 3 line. Navigation 2 in the same release is also a candidate.
-navigation3 = "1.2.0-rc01"
+navigation3 = "1.2.0"
 activity = "1.13.0"
 # 1.23.8 does not parse Kotlin 2.4. This line is the current dev.detekt release.
 detekt = "2.0.0-alpha.6"
