@@ -33,7 +33,7 @@ mlkit-document-scanner = "16.0.0"
 # Gemini Nano prompt API. Checked against maven-metadata.xml on 2026-10-29.
 mlkit-genai-prompt = "1.0.0-beta5"
 # HTTPS client. maven-metadata.xml on 2026-10-29 lists 3.6.1, but that release has no iOS artifacts.
-ktor = "3.6.0"
+ktor = "3.6.1"
 # JDBC driver. Checked against maven-metadata.xml on 2026-10-30. License BSD-2-Clause.
 postgres = "42.7.14"
 # Kafka clients. Checked against maven-metadata.xml on 2026-10-30. License Apache-2.0.
