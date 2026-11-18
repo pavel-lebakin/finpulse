@@ -14,7 +14,7 @@ detekt = "2.0.0-alpha.6"
 # Same Kotlin line as the project compiler. Checked against maven-metadata.xml on 2026-10-29.
 konsist = "0.18.1"
 # Desktop Compose screenshots. Checked against maven-metadata.xml on 2026-10-29.
-roborazzi = "1.77.0"
+roborazzi = "1.79.0"
 # Dependency license check. Checked against maven-metadata.xml on 2026-10-29.
 licensee = "1.14.1"
 # Room 2.8.5 metadata pulls sqlite 2.6.2. Checked against maven-metadata.xml on 2026-10-29.
